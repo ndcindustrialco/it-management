@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { generatePOCode } from "@/lib/code-generator";
 
 export async function GET() {
   try {
@@ -34,8 +35,11 @@ export async function POST(request: Request) {
       date_order 
     } = body;
 
+    const po_code = await generatePOCode();
+
     const order = await prisma.equipmentPurchaseOrder.create({
       data: {
+        po_code,
         list,
         detail,
         quantity: quantity || 0,

@@ -3,30 +3,34 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { logAudit } from "@/lib/audit";
 import { headers } from "next/headers";
+import { generateNewCode } from "@/lib/code-generator";
 
 export async function GET() {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const requests = await prisma.equipmentRequest.findMany({
+    // Return groups (batches) instead of solo requests if possible
+    const groups = await prisma.equipmentBorrowGroup.findMany({
       include: {
         user: { include: { employee: true } },
-        equipmentList: {
+        requests: {
           include: {
-            equipmentEntry: {
+            equipmentList: {
               include: {
-                purchaseOrder: true
+                equipmentEntry: {
+                  include: {
+                    purchaseOrder: true
+                  }
+                }
               }
             }
           }
-        },
+        }
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(requests);
+    return NextResponse.json(groups);
   } catch (error) {
     console.error("GET /api/equipment-requests error:", error);
     return NextResponse.json({ error: "Failed to fetch equipment requests" }, { status: 500 });
@@ -38,87 +42,83 @@ export async function POST(request: Request) {
     const session = await auth();
     const body = await request.json();
     const { 
-      equipment_list_id, 
-      quantity,
+      items, // Array of { equipmentListId, quantity, borrow_type, remarks }
       reason,
-      approval_comment,
-      approval, 
-      approval_status, 
-      userId,
-      it_approval,
-      it_approval_status,
-      it_approval_comment
+      approval,
+      userId
     } = body;
 
     const finalUserId = userId || session?.user?.id;
-
-    if (!equipment_list_id || !finalUserId) {
-      return NextResponse.json({ error: "Required fields missing" }, { status: 400 });
+    if (!items || !Array.isArray(items) || items.length === 0 || !finalUserId) {
+      return NextResponse.json({ error: "Items and User ID are required" }, { status: 400 });
     }
 
-    const inventoryItem = await prisma.equipmentList.findUnique({
-      where: { id: equipment_list_id },
-      include: { equipmentEntry: true }
-    });
 
-    if (!inventoryItem) {
-      return NextResponse.json({ error: "Inventory item not found" }, { status: 404 });
-    }
 
-    if (inventoryItem.remaining < (quantity || 1)) {
-      return NextResponse.json({ error: "Insufficient stock" }, { status: 400 });
-    }
-
-    let finalDeptStatus = approval_status || "PENDING";
-    let finalITStatus = it_approval_status || "PENDING";
-    let finalDeptApprover = approval;
-    let finalITApprover = it_approval;
-    let finalDeptDate: Date | null = null;
-    let finalITDate: Date | null = null;
-
-    if (inventoryItem?.equipmentEntry?.item_type === "PERIPHERAL") {
-      finalDeptStatus = "APPROVED";
-      finalITStatus = "APPROVED";
-      finalDeptApprover = "SYSTEM (Auto)";
-      finalITApprover = "SYSTEM (Auto)";
-      finalDeptDate = new Date();
-      finalITDate = new Date();
-    }
-
-    const equipmentRequest = await prisma.$transaction(async (tx) => {
-      const requestCreate = await tx.equipmentRequest.create({
+    const result = await prisma.$transaction(async (tx) => {
+      // 1. Create the Group first
+      const group_code = await generateNewCode('equipmentGroup', tx);
+      const group = await tx.equipmentBorrowGroup.create({
         data: {
-          equipment_list_id,
+          group_code,
           userId: finalUserId,
-          quantity: quantity || 1,
-          reason,
-          approval: finalDeptApprover,
-          approval_status: finalDeptStatus,
-          approval_comment: approval_comment,
-          approval_date: finalDeptDate,
-          it_approval: finalITApprover,
-          it_approval_status: finalITStatus,
-          it_approval_comment: it_approval_comment,
-          it_approval_date: finalITDate,
-        },
-        include: {
-          equipmentList: true,
-        },
+          reason: reason || "",
+          approval: approval,
+          approval_status: "PENDING", // Initial state
+        }
       });
 
-      // Deduct from inventory ONLY IF IT_APPROVED (e.g. for peripherals or auto-approved)
-      if (finalITStatus === "APPROVED") {
-        await tx.equipmentList.update({
-          where: { id: equipment_list_id },
+      let overallStatus = "PENDING"; // All requests start as PENDING for manual review
+
+      // 2. Process each item
+      for (const item of items) {
+        let invItem = null;
+        if (item.equipmentListId) {
+          invItem = await tx.equipmentList.findUnique({
+             where: { id: item.equipmentListId },
+             include: { equipmentEntry: true }
+          });
+          
+          if (!invItem) throw new Error(`Item ${item.equipmentListId} not found`);
+          
+          // Only throw if it's NOT a purchase-style request and stock is low
+          if (item.borrow_type !== 'PURCHASE' && invItem.remaining < (item.quantity || 1)) {
+            throw new Error(`Insufficient stock for ${invItem.equipmentEntry?.list}`);
+          }
+        }
+
+        const equipment_code = await generateNewCode('equipmentRequest', tx);
+        await tx.equipmentRequest.create({
           data: {
-            remaining: {
-              decrement: quantity || 1
-            }
+             equipment_code,
+             equipment_list_id: item.equipmentListId || null,
+             manual_item_name: item.manual_item_name || null,
+             manual_item_type: item.manual_item_type || null,
+             groupId: group.id,
+             userId: finalUserId,
+             quantity: item.quantity || 1,
+             reason: reason,
+             borrow_type: item.borrow_type || "NEW",
+             remarks: item.remarks || "",
+             approval: approval,
+             approval_status: "PENDING",
+             approval_comment: "",
+             approval_date: null,
+             it_approval: null,
+             it_approval_status: "PENDING",
+             it_approval_date: null,
           }
         });
       }
 
-      return requestCreate;
+      // 4. Update group status based on items
+      const updatedGroup = await tx.equipmentBorrowGroup.update({
+         where: { id: group.id },
+         data: { approval_status: overallStatus },
+         include: { requests: { include: { equipmentList: { include: { equipmentEntry: true } } } } }
+      });
+
+      return updatedGroup;
     });
 
     const headList = await headers();
@@ -128,16 +128,16 @@ export async function POST(request: Request) {
     await logAudit({
       userId: finalUserId,
       userName: (session?.user as any)?.name,
-      action: "CREATE_BORROW_REQUEST",
+      action: "CREATE_BATCH_BORROW",
       module: "EQUIPMENT_BORROW",
-      details: { requestId: equipmentRequest.id, itemId: equipment_list_id, quantity },
+      details: { groupId: result.id, itemCount: items.length },
       ipAddress: ip,
       userAgent: ua
     });
 
-    return NextResponse.json(equipmentRequest, { status: 201 });
-  } catch (error) {
+    return NextResponse.json(result, { status: 201 });
+  } catch (error: any) {
     console.error("POST /api/equipment-requests error:", error);
-    return NextResponse.json({ error: "Failed to create equipment request" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to create batch request" }, { status: 500 });
   }
 }

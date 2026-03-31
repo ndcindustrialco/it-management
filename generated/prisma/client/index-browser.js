@@ -148,6 +148,7 @@ exports.Prisma.EmployeeScalarFieldEnum = {
 exports.Prisma.RequestScalarFieldEnum = {
   id: 'id',
   employeeId: 'employeeId',
+  request_code: 'request_code',
   type_request: 'type_request',
   description: 'description',
   reason: 'reason',
@@ -179,6 +180,7 @@ exports.Prisma.CommentScalarFieldEnum = {
 
 exports.Prisma.EquipmentPurchaseOrderScalarFieldEnum = {
   id: 'id',
+  po_code: 'po_code',
   list: 'list',
   detail: 'detail',
   quantity: 'quantity',
@@ -209,6 +211,7 @@ exports.Prisma.EquipmentEntryListScalarFieldEnum = {
 
 exports.Prisma.EquipmentListScalarFieldEnum = {
   id: 'id',
+  eq_code: 'eq_code',
   equipment_entry_id: 'equipment_entry_id',
   payout_amount: 'payout_amount',
   remaining: 'remaining',
@@ -219,10 +222,15 @@ exports.Prisma.EquipmentListScalarFieldEnum = {
 
 exports.Prisma.EquipmentRequestScalarFieldEnum = {
   id: 'id',
+  equipment_code: 'equipment_code',
   equipment_list_id: 'equipment_list_id',
+  manual_item_name: 'manual_item_name',
+  manual_item_type: 'manual_item_type',
   quantity: 'quantity',
   reason: 'reason',
   remarks: 'remarks',
+  groupId: 'groupId',
+  borrow_type: 'borrow_type',
   approval: 'approval',
   approval_status: 'approval_status',
   approval_comment: 'approval_comment',
@@ -232,6 +240,24 @@ exports.Prisma.EquipmentRequestScalarFieldEnum = {
   it_approval_comment: 'it_approval_comment',
   it_approval_date: 'it_approval_date',
   userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EquipmentBorrowGroupScalarFieldEnum = {
+  id: 'id',
+  group_code: 'group_code',
+  userId: 'userId',
+  reason: 'reason',
+  approval: 'approval',
+  approval_status: 'approval_status',
+  approval_comment: 'approval_comment',
+  approval_date: 'approval_date',
+  it_approval: 'it_approval',
+  it_approval_status: 'it_approval_status',
+  it_approval_comment: 'it_approval_comment',
+  it_approval_date: 'it_approval_date',
+  date_needed: 'date_needed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -292,6 +318,7 @@ exports.Prisma.ModelName = {
   EquipmentEntryList: 'EquipmentEntryList',
   EquipmentList: 'EquipmentList',
   EquipmentRequest: 'EquipmentRequest',
+  EquipmentBorrowGroup: 'EquipmentBorrowGroup',
   AuditLog: 'AuditLog'
 };
 

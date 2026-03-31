@@ -21,6 +21,7 @@ model User {
   requests          Request[]
   comments          Comment[]
   equipmentRequests EquipmentRequest[]
+  equipmentGroups   EquipmentBorrowGroup[]
   auditLogs         AuditLog[]
 }
 
@@ -67,6 +68,7 @@ model Request {
   id                  String    @id @default(cuid())
   employeeId          String
   employee            Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  request_code        String    @unique
   type_request        String
   description         String
   reason              String?
@@ -113,6 +115,7 @@ model Comment {
 
 model EquipmentPurchaseOrder {
   id           String   @id @default(cuid())
+  po_code      String?  @unique
   list         String?
   detail       String?
   quantity     Int      @default(0)
@@ -154,6 +157,7 @@ model EquipmentEntryList {
 
 model EquipmentList {
   id                 String             @id @default(cuid())
+  eq_code            String?            @unique
   equipment_entry_id String
   equipmentEntry     EquipmentEntryList @relation(fields: [equipment_entry_id], references: [id], onDelete: Cascade)
   payout_amount      Float?
@@ -169,12 +173,23 @@ model EquipmentList {
 }
 
 model EquipmentRequest {
-  id                  String        @id @default(cuid())
-  equipment_list_id   String
-  equipmentList       EquipmentList @relation(fields: [equipment_list_id], references: [id], onDelete: Cascade)
-  quantity            Int           @default(1)
-  reason              String?
-  remarks             String?
+  id                String         @id @default(cuid())
+  equipment_code    String         @unique
+  equipment_list_id String?
+  equipmentList     EquipmentList? @relation(fields: [equipment_list_id], references: [id], onDelete: Cascade)
+  manual_item_name  String?
+  manual_item_type  String?
+  quantity          Int            @default(1)
+  reason            String?
+  remarks           String?
+
+  // New: Link to Batch/Group
+  groupId String?
+  group   EquipmentBorrowGroup? @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  // New: Borrow Reason Type (based on new form)
+  borrow_type String? @default("NEW") // NEW, BROKEN, OTHER
+
   approval            String?
   approval_status     String?
   approval_comment    String?
@@ -191,6 +206,33 @@ model EquipmentRequest {
   updatedAt DateTime @updatedAt
 
   @@map("equipment_requests")
+}
+
+model EquipmentBorrowGroup {
+  id         String  @id @default(cuid())
+  group_code String  @unique
+  userId     String
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reason     String?
+
+  approval         String?
+  approval_status  String?   @default("PENDING")
+  approval_comment String?
+  approval_date    DateTime?
+
+  it_approval         String?
+  it_approval_status  String?   @default("PENDING")
+  it_approval_comment String?
+  it_approval_date    DateTime?
+
+  date_needed DateTime?
+
+  requests EquipmentRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("equipment_borrow_groups")
 }
 
 model AuditLog {

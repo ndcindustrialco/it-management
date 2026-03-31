@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { generateEQCode } from "@/lib/code-generator";
 
 export async function GET() {
   try {
@@ -51,9 +52,12 @@ export async function POST(request: Request) {
         },
       });
 
+      const eq_code = await generateEQCode();
+      
       // Automatically create inventory record
       await tx.equipmentList.create({
         data: {
+          eq_code,
           equipment_entry_id: newEntry.id,
           payout_amount: 0,
           remaining: newEntry.quantity,

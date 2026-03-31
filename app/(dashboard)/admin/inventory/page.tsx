@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, Loader2, Package, Plus, Edit2, Trash2, Box, BarChart3, Clock, Image as ImageIcon, ChevronUp, ChevronDown, FileSpreadsheet } from "lucide-react";
+import { Search, Loader2, Plus, Edit2, Trash2, Box, Image as ImageIcon, ChevronUp, ChevronDown, FileSpreadsheet, Clock } from "lucide-react";
 import { 
   Table, 
   TableHeader, 
@@ -16,13 +16,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { exportToExcel } from "@/lib/export-utils";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
- interface InventoryItem {
+interface InventoryItem {
   id: string;
   equipment_entry_id: string;
+  eq_code: string;
   payout_amount: number;
   remaining: number;
   status: string;
+  createdAt?: string;
+  updatedAt?: string;
   equipmentEntry?: {
     item_name: string;
     item_type: string;
@@ -39,6 +43,7 @@ import { exportToExcel } from "@/lib/export-utils";
 }
 
 export default function InventoryPage() {
+  const { t, locale } = useTranslation();
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -131,7 +136,6 @@ export default function InventoryPage() {
   const processExport = async () => {
     let dataToExport = filteredInventory;
 
-    // Apply date range filter based on date_received
     if (exportDateStart || exportDateEnd) {
       dataToExport = dataToExport.filter(item => {
         const receivedDate = item.equipmentEntry?.date_received ? new Date(item.equipmentEntry.date_received) : null;
@@ -204,7 +208,7 @@ export default function InventoryPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this inventory record?")) return;
+    if (!confirm(t('common.confirm_delete'))) return;
     try {
       const res = await fetch(`/api/equipment-lists/${id}`, { method: "DELETE" });
       if (res.ok) fetchInventory();
@@ -218,52 +222,52 @@ export default function InventoryPage() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-zinc-900 tracking-tight uppercase flex items-center gap-3">
-             <div className="h-10 w-10 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white shadow-sm">
+             <div className="h-10 w-10 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white shadow-sm border border-[#0F1059]/10">
                 <Box className="h-5 w-5" />
              </div>
-             สต็อกอุปกรณ์ / Inventory Control
+             {t('inventory.title')}
           </h1>
-          <p className="text-sm font-medium text-zinc-500 uppercase tracking-widest mt-1">การบริหารจัดเก็บและติดตามสถานะอุปกรณ์ / Advanced Warehouse & Stock Traceability</p>
+          <p className="text-sm font-medium text-zinc-500 uppercase tracking-widest mt-1">{t('inventory.subtitle')}</p>
         </div>
         <Button 
              onClick={() => handleExportExcel()} 
              variant="outline"
              className="rounded-2xl border-zinc-200 hover:border-[#0F1059] hover:text-[#0F1059] py-6 px-6 font-black uppercase tracking-widest text-[11px] transition-all"
           >
-            <FileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" /> ส่งออก EXPORT
+            <FileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" /> {t('admin_tickets.export_excel')}
           </Button>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
         <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-2xl border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all col-span-1 lg:col-span-2">
              <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059]" />
              <input 
-                className="bg-transparent border-none outline-none text-sm font-medium w-full"
-                placeholder="Search by equipment, brand, or PO..."
+                className="bg-transparent border-none outline-none text-xs font-black uppercase w-full"
+                placeholder={t('inventory.search_placeholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
              />
         </div>
         
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-xs font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30"
+          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
-          <option value="ALL">All Status / สถานะทั้งหมด</option>
-          <option value="AVAILABLE">AVAILABLE / พร้อมใช้</option>
-          <option value="LOW_STOCK">LOW STOCK / ใกล้หมด</option>
-          <option value="OUT_OF_STOCK">OUT OF STOCK / หมด</option>
-          <option value="MAINTENANCE">MAINTENANCE / ส่งซ่อม</option>
+          <option value="ALL">{t('inventory.all_status')}</option>
+          <option value="AVAILABLE">{t('inventory.available')}</option>
+          <option value="LOW_STOCK">{t('inventory.low_stock')}</option>
+          <option value="OUT_OF_STOCK">{t('inventory.out_of_stock')}</option>
+          <option value="MAINTENANCE">{t('inventory.maintenance')}</option>
         </select>
 
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-xs font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30"
+          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30"
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
         >
-          <option value="ALL">All Categories / หมวดหมู่ทั้งหมด</option>
+          <option value="ALL">{t('inventory.all_categories')}</option>
           <option value="Software">Software</option>
           <option value="Hardware">Hardware</option>
           <option value="Network">Network</option>
@@ -274,16 +278,25 @@ export default function InventoryPage() {
 
       <Card className="rounded-[40px] border-zinc-100 overflow-hidden bg-white/90">
         <div className="overflow-x-auto">
-          <Table className="w-full text-left">
+          <Table className="w-full text-left font-sans">
             <TableHeader className="bg-zinc-50/50">
               <TableRow className="border-none">
-                <TableHead className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest w-24">Asset</TableHead>
+                <TableHead className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest w-24">{t('inventory.asset')}</TableHead>
+                <TableHead 
+                   className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest cursor-pointer hover:bg-zinc-100 transition-colors"
+                   onClick={() => handleSort('eq_code')}
+                >
+                  <div className="flex items-center gap-1">
+                    {t('inventory.code') || 'CODE'}
+                    {sortConfig.key === 'eq_code' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
+                  </div>
+                </TableHead>
                 <TableHead 
                    className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest cursor-pointer hover:bg-zinc-100 transition-colors"
                    onClick={() => handleSort('item_name')}
                 >
                   <div className="flex items-center gap-1">
-                    Specifications
+                    {t('inventory.specifications')}
                     {sortConfig.key === 'item_name' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
@@ -292,7 +305,7 @@ export default function InventoryPage() {
                    onClick={() => handleSort('item_type')}
                 >
                   <div className="flex items-center gap-1">
-                    Classification
+                    {t('inventory.classification')}
                     {sortConfig.key === 'item_type' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
@@ -301,11 +314,11 @@ export default function InventoryPage() {
                    onClick={() => handleSort('remaining')}
                 >
                   <div className="flex items-center gap-1">
-                    Stock Metrics
+                    {t('inventory.stock_metrics')}
                     {sortConfig.key === 'remaining' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
-                <TableHead className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">Status</TableHead>
+                <TableHead className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{t('common.status')}</TableHead>
                 <TableHead className="p-0"></TableHead>
               </TableRow>
             </TableHeader>
@@ -313,26 +326,31 @@ export default function InventoryPage() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell colSpan={6} className="h-24 animate-pulse bg-zinc-50/20" />
+                    <TableCell colSpan={7} className="h-24 animate-pulse bg-zinc-50/20" />
                   </TableRow>
                 ))
               ) : filteredInventory.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
-                      ไม่มีรายการในคลัง / Empty Warehouse
+                  <TableCell colSpan={7} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
+                      {t('inventory.empty_warehouse')}
                   </TableCell>
                 </TableRow>
               ) : filteredInventory.map((item) => (
                 <TableRow key={item.id} className="hover:bg-zinc-50/50 transition-colors group">
                   <TableCell className="px-6 py-4 whitespace-nowrap">
                       {item.equipmentEntry?.purchaseOrder?.picture ? (
-                         <div className="w-14 h-14 rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200">
+                         <div className="w-14 h-14 rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200 shadow-sm">
                             <img src={item.equipmentEntry.purchaseOrder.picture} alt="" className="w-full h-full object-cover hover:scale-125 transition-transform duration-700" />
                          </div>
                       ) : (
                          <div className="w-14 h-14 rounded-2xl bg-zinc-50 flex items-center justify-center border border-dashed border-zinc-200 text-zinc-300"><ImageIcon className="w-6 h-6" /></div>
                       )}
                     </TableCell>
+                  <TableCell className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2 text-[9px] font-black text-[#0F1059] uppercase bg-[#0F1059]/5 px-2 py-1 rounded-md w-fit border border-[#0F1059]/10 shadow-sm">
+                         <Box className="h-2.5 w-2.5" /> {item.eq_code || 'NO-CODE'}
+                      </div>
+                  </TableCell>
                   <TableCell className="px-6 py-4 min-w-[300px]">
                      <div className="space-y-1">
                         <div className="space-y-0.5">
@@ -341,7 +359,7 @@ export default function InventoryPage() {
                               {item.equipmentEntry?.item_name}
                            </div>
                         </div>
-                        <div className="flex items-center gap-2 text-[9px] font-bold text-zinc-400 uppercase">
+                        <div className="flex items-center gap-2 text-[9px] font-bold text-zinc-400 uppercase mt-2">
                            <span>PO: {item.equipmentEntry?.purchaseOrder?.po_number}</span>
                            {item.equipmentEntry?.date_received && (
                               <div className="flex items-center gap-1">
@@ -362,12 +380,16 @@ export default function InventoryPage() {
                            </span>
                            <span className="text-[9px] font-black text-zinc-300 uppercase">/ {item.equipmentEntry?.unit || 'UNIT'}</span>
                         </div>
-                        <div className="text-[8px] font-bold text-blue-500/60 uppercase">Issued: {item.payout_amount || 0}</div>
+                        <div className="text-[8px] font-bold text-blue-500/60 uppercase">{t('inventory.issued')}: {item.payout_amount || 0}</div>
                      </div>
                   </TableCell>
                   <TableCell className="px-6 py-4 whitespace-nowrap">
                      <Badge variant="outline" className={cn("rounded-lg px-2.5 py-1 text-[8px] font-black uppercase tracking-widest border-zinc-200", item.remaining > 0 ? "text-emerald-600" : "text-rose-500")}>
-                        {item.status || (item.remaining > 0 ? 'AVAILABLE' : 'OUT_OF_STOCK')}
+                        {item.status === 'AVAILABLE' ? t('inventory.available') : 
+                         item.status === 'LOW_STOCK' ? t('inventory.low_stock') :
+                         item.status === 'OUT_OF_STOCK' ? t('inventory.out_of_stock') :
+                         item.status === 'MAINTENANCE' ? t('inventory.maintenance') :
+                         item.status === 'RESERVED' ? t('inventory.reserved') : (item.remaining > 0 ? t('inventory.available') : t('inventory.out_of_stock'))}
                      </Badge>
                   </TableCell>
                   <TableCell className="px-6 py-4 whitespace-nowrap text-right">
@@ -386,45 +408,58 @@ export default function InventoryPage() {
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        title="ปรับจูนสต็อก / ADJUST STOCK"
+        title={t('inventory.adjust_stock_title')}
       >
-        <form onSubmit={handleSave} className="space-y-6">
-           <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-100">
-              <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">รายการอุปกรณ์ / Stock Item</p>
+        <form onSubmit={handleSave} className="space-y-6 font-sans">
+           <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-100 shadow-sm">
+              <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">{t('inventory.stock_item')}</p>
               <p className="text-sm font-bold text-[#0F1059]">{selectedItem?.equipmentEntry?.item_name}</p>
+              
+              {selectedItem && (
+                 <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-zinc-200/50">
+                    <div>
+                       <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-0.5">{locale === 'th' ? 'วันที่สร้าง' : 'Created At'}</p>
+                       <p className="text-[10px] font-bold text-zinc-600">{selectedItem.createdAt ? new Date(selectedItem.createdAt).toLocaleString(locale === 'th' ? 'th-TH' : 'en-GB') : '-'}</p>
+                    </div>
+                    <div>
+                       <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-0.5">{locale === 'th' ? 'อัพเดตล่าสุด' : 'Updated At'}</p>
+                       <p className="text-[10px] font-bold text-zinc-600">{selectedItem.updatedAt ? new Date(selectedItem.updatedAt).toLocaleString(locale === 'th' ? 'th-TH' : 'en-GB') : '-'}</p>
+                    </div>
+                 </div>
+              )}
            </div>
            
            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                 <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">จำนวนคงเหลือ / Remaining Stock</label>
+                 <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">{t('inventory.remaining_stock')}</label>
                  <input 
                     type="number" 
-                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
-                    value={formData.remaining}
-                    onChange={(e) => setFormData({...formData, remaining: parseInt(e.target.value)})}
-                 />
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all"
+                     value={formData.remaining}
+                     onChange={(e) => setFormData({...formData, remaining: parseInt(e.target.value) || 0})}
+                  />
               </div>
                <div className="space-y-1.5">
-                  <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">จำนวนที่เบิกแล้ว / Amount Issued</label>
+                  <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">{t('inventory.amount_issued')}</label>
                   <input 
                      type="number" 
-                     className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
+                     className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all"
                      value={formData.payout_amount}
                      onChange={(e) => setFormData({...formData, payout_amount: parseInt(e.target.value) || 0})}
                   />
                </div>
               <div className="space-y-1.5 col-span-2">
-                 <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">แก้ไขสถานะ / Status Override</label>
+                 <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">{t('inventory.status_override')}</label>
                  <select 
-                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none cursor-pointer"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none cursor-pointer focus:border-[#0F1059]/30 transition-all"
                     value={formData.status}
                     onChange={(e) => setFormData({...formData, status: e.target.value})}
                  >
-                    <option value="AVAILABLE">พร้อมใช้งาน / AVAILABLE</option>
-                    <option value="LOW_STOCK">ของใกล้หมด / LOW STOCK</option>
-                    <option value="OUT_OF_STOCK">สินค้าหมด / OUT OF STOCK</option>
-                    <option value="RESERVED">จองไว้ / RESERVED</option>
-                    <option value="MAINTENANCE">ส่งซ่อม / MAINTENANCE</option>
+                    <option value="AVAILABLE">{t('inventory.available')}</option>
+                    <option value="LOW_STOCK">{t('inventory.low_stock')}</option>
+                    <option value="OUT_OF_STOCK">{t('inventory.out_of_stock')}</option>
+                    <option value="RESERVED">{t('inventory.reserved')}</option>
+                    <option value="MAINTENANCE">{t('inventory.maintenance')}</option>
                  </select>
               </div>
            </div>
@@ -436,14 +471,14 @@ export default function InventoryPage() {
                  onClick={() => setIsModalOpen(false)}
                  className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest"
               >
-                 ยกเลิก / Cancel
+                 {t('common.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={isSaving}
-                className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all"
+                className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-[#0F1059]/10"
               >
-                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : "ยืนยันการปรับปรุง / Verify Adjustments"}
+                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t('inventory.verify_adjustments')}
               </Button>
            </div>
         </form>
@@ -452,23 +487,23 @@ export default function InventoryPage() {
       <Modal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}
-        title="ส่งออกรายงาน Excel / EXPORT DATA"
+        title={t('admin_tickets.export_report_title')}
       >
-        <div className="space-y-6">
-          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-4">
+        <div className="space-y-6 font-sans">
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-4 shadow-sm">
              <div className="h-12 w-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white">
                 <FileSpreadsheet className="h-6 w-6" />
              </div>
              <div>
-                <h3 className="text-sm font-black text-emerald-900 uppercase">Export Settings</h3>
-                <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Select filters for your report</p>
+                <h3 className="text-sm font-black text-emerald-900 uppercase">{t('admin_tickets.export_settings')}</h3>
+                <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">{locale === 'th' ? 'เลือกหัวข้อรายงานที่คุณต้องการ' : 'Select filters for your report'}</p>
              </div>
           </div>
 
           <div className="space-y-4">
              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                   <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Start Date (Received)</label>
+                   <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{locale === 'th' ? 'วันที่เริ่ม (รับเข้า)' : 'Start Date (Received)'}</label>
                    <input 
                       type="date" 
                       className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
@@ -477,7 +512,7 @@ export default function InventoryPage() {
                    />
                 </div>
                 <div className="space-y-1.5">
-                   <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">End Date (Received)</label>
+                   <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{locale === 'th' ? 'วันที่สิ้นสุด (รับเข้า)' : 'End Date (Received)'}</label>
                    <input 
                       type="date" 
                       className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
@@ -488,24 +523,24 @@ export default function InventoryPage() {
              </div>
 
              <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-100 space-y-2">
-                <p className="text-[10px] font-black text-zinc-400 uppercase">Active UI Filters (Will be applied)</p>
+                <p className="text-[10px] font-black text-zinc-400 uppercase">{t('admin_tickets.active_filters')}</p>
                 <div className="flex flex-wrap gap-2">
-                   <Badge variant="outline" className="bg-white text-[#0F1059] border-zinc-100 text-[10px]">Status: {filterStatus}</Badge>
-                   <Badge variant="outline" className="bg-white text-[#0F1059] border-zinc-100 text-[10px]">Category: {filterCategory}</Badge>
-                   {search && <Badge variant="outline" className="bg-white text-[#0F1059] border-zinc-100 text-[10px]">Search: {search}</Badge>}
+                   <Badge variant="outline" className="bg-white text-[#0F1059] border-zinc-100 text-[10px] uppercase">Status: {filterStatus}</Badge>
+                   <Badge variant="outline" className="bg-white text-[#0F1059] border-zinc-100 text-[10px] uppercase">Category: {filterCategory}</Badge>
+                   {search && <Badge variant="outline" className="bg-white text-[#0F1059] border-zinc-100 text-[10px] uppercase">Search: {search}</Badge>}
                 </div>
              </div>
           </div>
 
           <div className="flex items-center gap-3 pt-4">
              <Button variant="ghost" onClick={() => setIsExportModalOpen(false)} className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest">
-                Cancel
+                {t('common.cancel')}
              </Button>
              <Button 
                 onClick={processExport}
-                className="flex-1 h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black uppercase tracking-widest"
+                className="flex-1 h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20"
              >
-                Download Excel
+                {t('admin_tickets.download_excel')}
              </Button>
           </div>
         </div>

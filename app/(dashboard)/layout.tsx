@@ -14,8 +14,8 @@ import {
 import { Dropdown, DropdownItem } from "@/components/ui/dropdown";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-import { FloatingActionButton } from "@/components/fab";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
  export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
@@ -61,7 +61,11 @@ import { FloatingActionButton } from "@/components/fab";
           </div>
 
           <div className="flex items-center gap-6">
-             <div className="h-10 w-px bg-zinc-100 hidden md:block" />
+             <div className="flex items-center gap-2">
+                <ThemeSwitcher />
+                <LanguageSwitcher />
+             </div>
+             <div className="w-px h-3 bg-zinc-200 mx-0.5 hidden md:block" />
 
              <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="text-right hidden sm:block">
@@ -89,9 +93,6 @@ import { FloatingActionButton } from "@/components/fab";
         <div className="flex-1 w-full p-6 lg:p-8">
           {children}
         </div>
-        
-        {/* Floating Action Button */}
-        <FloatingActionButton />
       </main>
     </div>
   );

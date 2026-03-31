@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,8 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -25,15 +27,21 @@ export function LoginForm() {
       const result = await signIn("credentials", {
         username,
         password,
-        callbackUrl: callbackUrl,
-        redirect: true,
-      }) as any;
+        redirect: false, // Handle redirect manually for better UX
+      });
+
       if (result?.error) {
-        setError("Invalid username or password");
+        if (result.error === "CredentialsSignin") {
+          setError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง / Incorrect username or password.");
+        } else {
+          setError("เกิดข้อผิดพลาดทางเทคนิค: " + result.error);
+        }
+      } else if (result?.ok) {
+        window.location.href = callbackUrl;
       }
     } catch (err) {
       console.error(err);
-      setError("An unexpected error occurred");
+      setError("ระบบขัดข้องชั่วคราว โปรดลองใหม่ภายหลัง / System error. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -41,16 +49,10 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-md border-none shadow-none bg-transparent">
-      <CardHeader className="space-y-1 pb-6 text-center">
-        <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-[#F8F9FA] border border-[#E9ECEF] flex items-center justify-center text-[#0F1059]">
-          <LogIn className="h-6 w-6" />
+      <CardHeader className="space-y-1 text-center">
+        <div className="text-center">
+          <div className="h-16 w-16 bg-[#0F1059] rounded-md flex items-center justify-center text-white font-normal text-2xl mx-auto">IT</div>
         </div>
-        <CardTitle className="text-base font-normal tracking-wide text-[#0F1059] uppercase">
-          Welcome Over
-        </CardTitle>
-        <p className="text-sm text-[#ADB5BD] font-normal uppercase tracking-wide">
-          IT Service Portal Access
-        </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -61,23 +63,26 @@ export function LoginForm() {
             </div>
           )}
           <div className="space-y-1.5">
-            <label className="text-sm font-normal text-[#ADB5BD] uppercase tracking-wide px-1">Username</label>
+            <label className="text-sm font-normal text-black/80 uppercase tracking-wide px-1">Username</label>
             <div className="relative group">
               <div className="absolute left-3 top-3 text-[#ADB5BD] group-focus-within:text-[#0F1059] transition-colors">
                 <User className="h-4 w-4" />
               </div>
               <input
                 type="text"
-                placeholder="User ID / Username"
+                placeholder="รหัสพนักงาน / Employee ID"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  if (error) setError("");
+                }}
                 className="w-full rounded-md border border-[#E9ECEF] bg-[#F8F9FA] py-2.5 pl-10 pr-4 outline-none focus:border-[#0F1059]/20 transition-all font-normal text-sm placeholder:text-[#ADB5BD]"
                 required
               />
             </div>
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-normal text-[#ADB5BD] uppercase tracking-wide px-1">Password</label>
+            <label className="text-sm font-normal text-black/80 uppercase tracking-wide px-1">Password</label>
             <div className="relative group">
               <div className="absolute left-3 top-3 text-[#ADB5BD] group-focus-within:text-[#0F1059] transition-colors">
                 <Lock className="h-4 w-4" />
@@ -86,7 +91,10 @@ export function LoginForm() {
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error) setError("");
+                }}
                 className="w-full rounded-md border border-[#E9ECEF] bg-[#F8F9FA] py-2.5 pl-10 pr-4 outline-none focus:border-[#0F1059]/20 transition-all font-normal text-sm placeholder:text-[#ADB5BD]"
                 required
               />
@@ -101,9 +109,6 @@ export function LoginForm() {
             {isLoading ? "Signing in..." : "Login to System"}
           </Button>
         </form>
-        <div className="mt-8 text-center">
-          <p className="text-sm text-[#ADB5BD] font-normal uppercase tracking-[0.2em] opacity-40">System Powered by NDC</p>
-        </div>
       </CardContent>
     </Card>
   );

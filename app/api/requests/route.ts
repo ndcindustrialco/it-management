@@ -4,23 +4,15 @@ import { auth } from "@/lib/auth";
 import { Status } from "@prisma/client";
 import { logAudit } from "@/lib/audit";
 import { headers } from "next/headers";
+import { generateNewCode } from "@/lib/code-generator";
 
 export async function GET(request: Request) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const role = (session.user as any)?.role;
-    const userId = (session.user as any)?.id;
-
-    // Filter by user if not admin. 
-    // New Requirement: Users can see all non-closed requests from others.
-    const where = role === "admin" ? {} : { 
-      OR: [
-        { userId }, // My own requests (even closed)
-        { status: { not: Status.CLOSED } } // Everyone's non-closed requests
-      ]
-    };
+    // Removed restriction to allow seeing others' requests too
+    const where = {};
 
     const requests = await prisma.request.findMany({
       where,
@@ -76,11 +68,28 @@ export async function POST(request: Request) {
       if (!employee) {
         return NextResponse.json({ error: "Employee profile not found" }, { status: 404 });
       }
+
+      // Generate the new request code
+      const request_code = await generateNewCode('request');
+  
+      // Server-side auto-approval logic for Standard Requests (Pre-approved)
+      const typeLabels: Record<string, string> = {
+        SUPPORT: "บริการสนับสนุนอุปกรณ์ไอที",
+        PASSWORD_ACCOUNT: "แก้รหัสผ่าน / บัญชี",
+        BORROW_ACC: "ขอยืมอุปกรณ์เสริม-อุปกรณ์ไอทีพื้นฐาน",
+        REPAIR: "แจ้งซ่อมอุปกรณ์ตามมาตรฐาน",
+        ACCESS: "ขอสิทธิ์เข้าใช้งานระบบมาตรฐาน"
+      };  
+
+      const typeName = typeLabels[type_request] || type_request;
+      const standardTypes = ["SUPPORT", "PASSWORD_ACCOUNT", "BORROW_ACC", "REPAIR"];
+      const finalApprovalStatus = standardTypes.includes(type_request) ? "APPROVED" : (approval_status || "PENDING");
   
       const newRequest = await prisma.request.create({
         data: {
           employeeId,
           userId: authUserId,
+          request_code,
           type_request,
           description,
           reason,
@@ -88,8 +97,10 @@ export async function POST(request: Request) {
           priority,
           status: status || "OPEN",
           approval,
-          approval_status: approval_status || "PENDING",
-          approval_comment,
+          approval_status: finalApprovalStatus,
+          approval_comment: standardTypes.includes(type_request) 
+            ? `อนุมัติอัตโนมัติ: รายการงาน "${typeName}" นี้เป็นบริการมาตรฐานที่มีความเสี่ยงต่ำ จึงไม่ต้องรอการอนุมัติรายกรณี / Pre-approved standard ${type_request} request.` 
+            : approval_comment,
           it_approval,
           it_approval_status: it_approval_status || "PENDING",
           it_approval_comment,

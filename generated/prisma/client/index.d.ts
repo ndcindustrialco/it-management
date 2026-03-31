@@ -54,6 +54,11 @@ export type EquipmentList = $Result.DefaultSelection<Prisma.$EquipmentListPayloa
  */
 export type EquipmentRequest = $Result.DefaultSelection<Prisma.$EquipmentRequestPayload>
 /**
+ * Model EquipmentBorrowGroup
+ * 
+ */
+export type EquipmentBorrowGroup = $Result.DefaultSelection<Prisma.$EquipmentBorrowGroupPayload>
+/**
  * Model AuditLog
  * 
  */
@@ -305,6 +310,16 @@ export class PrismaClient<
     * ```
     */
   get equipmentRequest(): Prisma.EquipmentRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.equipmentBorrowGroup`: Exposes CRUD operations for the **EquipmentBorrowGroup** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EquipmentBorrowGroups
+    * const equipmentBorrowGroups = await prisma.equipmentBorrowGroup.findMany()
+    * ```
+    */
+  get equipmentBorrowGroup(): Prisma.EquipmentBorrowGroupDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
@@ -757,6 +772,7 @@ export namespace Prisma {
     EquipmentEntryList: 'EquipmentEntryList',
     EquipmentList: 'EquipmentList',
     EquipmentRequest: 'EquipmentRequest',
+    EquipmentBorrowGroup: 'EquipmentBorrowGroup',
     AuditLog: 'AuditLog'
   };
 
@@ -773,7 +789,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "employee" | "request" | "comment" | "equipmentPurchaseOrder" | "equipmentEntryList" | "equipmentList" | "equipmentRequest" | "auditLog"
+      modelProps: "user" | "employee" | "request" | "comment" | "equipmentPurchaseOrder" | "equipmentEntryList" | "equipmentList" | "equipmentRequest" | "equipmentBorrowGroup" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1369,6 +1385,80 @@ export namespace Prisma {
           }
         }
       }
+      EquipmentBorrowGroup: {
+        payload: Prisma.$EquipmentBorrowGroupPayload<ExtArgs>
+        fields: Prisma.EquipmentBorrowGroupFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EquipmentBorrowGroupFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EquipmentBorrowGroupFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>
+          }
+          findFirst: {
+            args: Prisma.EquipmentBorrowGroupFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EquipmentBorrowGroupFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>
+          }
+          findMany: {
+            args: Prisma.EquipmentBorrowGroupFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>[]
+          }
+          create: {
+            args: Prisma.EquipmentBorrowGroupCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>
+          }
+          createMany: {
+            args: Prisma.EquipmentBorrowGroupCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EquipmentBorrowGroupCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>[]
+          }
+          delete: {
+            args: Prisma.EquipmentBorrowGroupDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>
+          }
+          update: {
+            args: Prisma.EquipmentBorrowGroupUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>
+          }
+          deleteMany: {
+            args: Prisma.EquipmentBorrowGroupDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EquipmentBorrowGroupUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EquipmentBorrowGroupUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>[]
+          }
+          upsert: {
+            args: Prisma.EquipmentBorrowGroupUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentBorrowGroupPayload>
+          }
+          aggregate: {
+            args: Prisma.EquipmentBorrowGroupAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEquipmentBorrowGroup>
+          }
+          groupBy: {
+            args: Prisma.EquipmentBorrowGroupGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EquipmentBorrowGroupGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EquipmentBorrowGroupCountArgs<ExtArgs>
+            result: $Utils.Optional<EquipmentBorrowGroupCountAggregateOutputType> | number
+          }
+        }
+      }
       AuditLog: {
         payload: Prisma.$AuditLogPayload<ExtArgs>
         fields: Prisma.AuditLogFieldRefs
@@ -1559,6 +1649,7 @@ export namespace Prisma {
     equipmentEntryList?: EquipmentEntryListOmit
     equipmentList?: EquipmentListOmit
     equipmentRequest?: EquipmentRequestOmit
+    equipmentBorrowGroup?: EquipmentBorrowGroupOmit
     auditLog?: AuditLogOmit
   }
 
@@ -1643,6 +1734,7 @@ export namespace Prisma {
     requests: number
     comments: number
     equipmentRequests: number
+    equipmentGroups: number
     auditLogs: number
   }
 
@@ -1650,6 +1742,7 @@ export namespace Prisma {
     requests?: boolean | UserCountOutputTypeCountRequestsArgs
     comments?: boolean | UserCountOutputTypeCountCommentsArgs
     equipmentRequests?: boolean | UserCountOutputTypeCountEquipmentRequestsArgs
+    equipmentGroups?: boolean | UserCountOutputTypeCountEquipmentGroupsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   }
 
@@ -1683,6 +1776,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountEquipmentRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EquipmentRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEquipmentGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EquipmentBorrowGroupWhereInput
   }
 
   /**
@@ -1844,6 +1944,37 @@ export namespace Prisma {
    * EquipmentListCountOutputType without action
    */
   export type EquipmentListCountOutputTypeCountRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EquipmentRequestWhereInput
+  }
+
+
+  /**
+   * Count Type EquipmentBorrowGroupCountOutputType
+   */
+
+  export type EquipmentBorrowGroupCountOutputType = {
+    requests: number
+  }
+
+  export type EquipmentBorrowGroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    requests?: boolean | EquipmentBorrowGroupCountOutputTypeCountRequestsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EquipmentBorrowGroupCountOutputType without action
+   */
+  export type EquipmentBorrowGroupCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroupCountOutputType
+     */
+    select?: EquipmentBorrowGroupCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EquipmentBorrowGroupCountOutputType without action
+   */
+  export type EquipmentBorrowGroupCountOutputTypeCountRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EquipmentRequestWhereInput
   }
 
@@ -2036,6 +2167,7 @@ export namespace Prisma {
     requests?: boolean | User$requestsArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
     equipmentRequests?: boolean | User$equipmentRequestsArgs<ExtArgs>
+    equipmentGroups?: boolean | User$equipmentGroupsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -2078,6 +2210,7 @@ export namespace Prisma {
     requests?: boolean | User$requestsArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
     equipmentRequests?: boolean | User$equipmentRequestsArgs<ExtArgs>
+    equipmentGroups?: boolean | User$equipmentGroupsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2095,6 +2228,7 @@ export namespace Prisma {
       requests: Prisma.$RequestPayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
       equipmentRequests: Prisma.$EquipmentRequestPayload<ExtArgs>[]
+      equipmentGroups: Prisma.$EquipmentBorrowGroupPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2503,6 +2637,7 @@ export namespace Prisma {
     requests<T extends User$requestsArgs<ExtArgs> = {}>(args?: Subset<T, User$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     equipmentRequests<T extends User$equipmentRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$equipmentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    equipmentGroups<T extends User$equipmentGroupsArgs<ExtArgs> = {}>(args?: Subset<T, User$equipmentGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3029,6 +3164,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EquipmentRequestScalarFieldEnum | EquipmentRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.equipmentGroups
+   */
+  export type User$equipmentGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    where?: EquipmentBorrowGroupWhereInput
+    orderBy?: EquipmentBorrowGroupOrderByWithRelationInput | EquipmentBorrowGroupOrderByWithRelationInput[]
+    cursor?: EquipmentBorrowGroupWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EquipmentBorrowGroupScalarFieldEnum | EquipmentBorrowGroupScalarFieldEnum[]
   }
 
   /**
@@ -4276,6 +4435,7 @@ export namespace Prisma {
   export type RequestMinAggregateOutputType = {
     id: string | null
     employeeId: string | null
+    request_code: string | null
     type_request: string | null
     description: string | null
     reason: string | null
@@ -4298,6 +4458,7 @@ export namespace Prisma {
   export type RequestMaxAggregateOutputType = {
     id: string | null
     employeeId: string | null
+    request_code: string | null
     type_request: string | null
     description: string | null
     reason: string | null
@@ -4320,6 +4481,7 @@ export namespace Prisma {
   export type RequestCountAggregateOutputType = {
     id: number
     employeeId: number
+    request_code: number
     type_request: number
     description: number
     reason: number
@@ -4344,6 +4506,7 @@ export namespace Prisma {
   export type RequestMinAggregateInputType = {
     id?: true
     employeeId?: true
+    request_code?: true
     type_request?: true
     description?: true
     reason?: true
@@ -4366,6 +4529,7 @@ export namespace Prisma {
   export type RequestMaxAggregateInputType = {
     id?: true
     employeeId?: true
+    request_code?: true
     type_request?: true
     description?: true
     reason?: true
@@ -4388,6 +4552,7 @@ export namespace Prisma {
   export type RequestCountAggregateInputType = {
     id?: true
     employeeId?: true
+    request_code?: true
     type_request?: true
     description?: true
     reason?: true
@@ -4483,6 +4648,7 @@ export namespace Prisma {
   export type RequestGroupByOutputType = {
     id: string
     employeeId: string
+    request_code: string
     type_request: string
     description: string
     reason: string | null
@@ -4522,6 +4688,7 @@ export namespace Prisma {
   export type RequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     employeeId?: boolean
+    request_code?: boolean
     type_request?: boolean
     description?: boolean
     reason?: boolean
@@ -4548,6 +4715,7 @@ export namespace Prisma {
   export type RequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     employeeId?: boolean
+    request_code?: boolean
     type_request?: boolean
     description?: boolean
     reason?: boolean
@@ -4572,6 +4740,7 @@ export namespace Prisma {
   export type RequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     employeeId?: boolean
+    request_code?: boolean
     type_request?: boolean
     description?: boolean
     reason?: boolean
@@ -4596,6 +4765,7 @@ export namespace Prisma {
   export type RequestSelectScalar = {
     id?: boolean
     employeeId?: boolean
+    request_code?: boolean
     type_request?: boolean
     description?: boolean
     reason?: boolean
@@ -4615,7 +4785,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type RequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "type_request" | "description" | "reason" | "category" | "priority" | "status" | "approval" | "approval_status" | "approval_comment" | "approval_date" | "it_approval" | "it_approval_status" | "it_approval_comment" | "it_approval_date" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["request"]>
+  export type RequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "request_code" | "type_request" | "description" | "reason" | "category" | "priority" | "status" | "approval" | "approval_status" | "approval_comment" | "approval_date" | "it_approval" | "it_approval_status" | "it_approval_comment" | "it_approval_date" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["request"]>
   export type RequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -4641,6 +4811,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       employeeId: string
+      request_code: string
       type_request: string
       description: string
       reason: string | null
@@ -5086,6 +5257,7 @@ export namespace Prisma {
   interface RequestFieldRefs {
     readonly id: FieldRef<"Request", 'String'>
     readonly employeeId: FieldRef<"Request", 'String'>
+    readonly request_code: FieldRef<"Request", 'String'>
     readonly type_request: FieldRef<"Request", 'String'>
     readonly description: FieldRef<"Request", 'String'>
     readonly reason: FieldRef<"Request", 'String'>
@@ -6665,6 +6837,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderMinAggregateOutputType = {
     id: string | null
+    po_code: string | null
     list: string | null
     detail: string | null
     quantity: number | null
@@ -6681,6 +6854,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderMaxAggregateOutputType = {
     id: string | null
+    po_code: string | null
     list: string | null
     detail: string | null
     quantity: number | null
@@ -6697,6 +6871,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderCountAggregateOutputType = {
     id: number
+    po_code: number
     list: number
     detail: number
     quantity: number
@@ -6723,6 +6898,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderMinAggregateInputType = {
     id?: true
+    po_code?: true
     list?: true
     detail?: true
     quantity?: true
@@ -6739,6 +6915,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderMaxAggregateInputType = {
     id?: true
+    po_code?: true
     list?: true
     detail?: true
     quantity?: true
@@ -6755,6 +6932,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderCountAggregateInputType = {
     id?: true
+    po_code?: true
     list?: true
     detail?: true
     quantity?: true
@@ -6858,6 +7036,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderGroupByOutputType = {
     id: string
+    po_code: string | null
     list: string | null
     detail: string | null
     quantity: number
@@ -6893,6 +7072,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    po_code?: boolean
     list?: boolean
     detail?: boolean
     quantity?: boolean
@@ -6911,6 +7091,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    po_code?: boolean
     list?: boolean
     detail?: boolean
     quantity?: boolean
@@ -6927,6 +7108,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    po_code?: boolean
     list?: boolean
     detail?: boolean
     quantity?: boolean
@@ -6943,6 +7125,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderSelectScalar = {
     id?: boolean
+    po_code?: boolean
     list?: boolean
     detail?: boolean
     quantity?: boolean
@@ -6957,7 +7140,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type EquipmentPurchaseOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "list" | "detail" | "quantity" | "reason_order" | "picture" | "buyer" | "reviewer" | "approver" | "date_order" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentPurchaseOrder"]>
+  export type EquipmentPurchaseOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "po_code" | "list" | "detail" | "quantity" | "reason_order" | "picture" | "buyer" | "reviewer" | "approver" | "date_order" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentPurchaseOrder"]>
   export type EquipmentPurchaseOrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     entries?: boolean | EquipmentPurchaseOrder$entriesArgs<ExtArgs>
     _count?: boolean | EquipmentPurchaseOrderCountOutputTypeDefaultArgs<ExtArgs>
@@ -6972,6 +7155,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      po_code: string | null
       list: string | null
       detail: string | null
       quantity: number
@@ -7409,6 +7593,7 @@ export namespace Prisma {
    */
   interface EquipmentPurchaseOrderFieldRefs {
     readonly id: FieldRef<"EquipmentPurchaseOrder", 'String'>
+    readonly po_code: FieldRef<"EquipmentPurchaseOrder", 'String'>
     readonly list: FieldRef<"EquipmentPurchaseOrder", 'String'>
     readonly detail: FieldRef<"EquipmentPurchaseOrder", 'String'>
     readonly quantity: FieldRef<"EquipmentPurchaseOrder", 'Int'>
@@ -9085,6 +9270,7 @@ export namespace Prisma {
 
   export type EquipmentListMinAggregateOutputType = {
     id: string | null
+    eq_code: string | null
     equipment_entry_id: string | null
     payout_amount: number | null
     remaining: number | null
@@ -9095,6 +9281,7 @@ export namespace Prisma {
 
   export type EquipmentListMaxAggregateOutputType = {
     id: string | null
+    eq_code: string | null
     equipment_entry_id: string | null
     payout_amount: number | null
     remaining: number | null
@@ -9105,6 +9292,7 @@ export namespace Prisma {
 
   export type EquipmentListCountAggregateOutputType = {
     id: number
+    eq_code: number
     equipment_entry_id: number
     payout_amount: number
     remaining: number
@@ -9127,6 +9315,7 @@ export namespace Prisma {
 
   export type EquipmentListMinAggregateInputType = {
     id?: true
+    eq_code?: true
     equipment_entry_id?: true
     payout_amount?: true
     remaining?: true
@@ -9137,6 +9326,7 @@ export namespace Prisma {
 
   export type EquipmentListMaxAggregateInputType = {
     id?: true
+    eq_code?: true
     equipment_entry_id?: true
     payout_amount?: true
     remaining?: true
@@ -9147,6 +9337,7 @@ export namespace Prisma {
 
   export type EquipmentListCountAggregateInputType = {
     id?: true
+    eq_code?: true
     equipment_entry_id?: true
     payout_amount?: true
     remaining?: true
@@ -9244,6 +9435,7 @@ export namespace Prisma {
 
   export type EquipmentListGroupByOutputType = {
     id: string
+    eq_code: string | null
     equipment_entry_id: string
     payout_amount: number | null
     remaining: number
@@ -9273,6 +9465,7 @@ export namespace Prisma {
 
   export type EquipmentListSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    eq_code?: boolean
     equipment_entry_id?: boolean
     payout_amount?: boolean
     remaining?: boolean
@@ -9286,6 +9479,7 @@ export namespace Prisma {
 
   export type EquipmentListSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    eq_code?: boolean
     equipment_entry_id?: boolean
     payout_amount?: boolean
     remaining?: boolean
@@ -9297,6 +9491,7 @@ export namespace Prisma {
 
   export type EquipmentListSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    eq_code?: boolean
     equipment_entry_id?: boolean
     payout_amount?: boolean
     remaining?: boolean
@@ -9308,6 +9503,7 @@ export namespace Prisma {
 
   export type EquipmentListSelectScalar = {
     id?: boolean
+    eq_code?: boolean
     equipment_entry_id?: boolean
     payout_amount?: boolean
     remaining?: boolean
@@ -9316,7 +9512,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type EquipmentListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "equipment_entry_id" | "payout_amount" | "remaining" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentList"]>
+  export type EquipmentListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eq_code" | "equipment_entry_id" | "payout_amount" | "remaining" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentList"]>
   export type EquipmentListInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     equipmentEntry?: boolean | EquipmentEntryListDefaultArgs<ExtArgs>
     requests?: boolean | EquipmentList$requestsArgs<ExtArgs>
@@ -9337,6 +9533,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      eq_code: string | null
       equipment_entry_id: string
       payout_amount: number | null
       remaining: number
@@ -9769,6 +9966,7 @@ export namespace Prisma {
    */
   interface EquipmentListFieldRefs {
     readonly id: FieldRef<"EquipmentList", 'String'>
+    readonly eq_code: FieldRef<"EquipmentList", 'String'>
     readonly equipment_entry_id: FieldRef<"EquipmentList", 'String'>
     readonly payout_amount: FieldRef<"EquipmentList", 'Float'>
     readonly remaining: FieldRef<"EquipmentList", 'Int'>
@@ -10240,10 +10438,15 @@ export namespace Prisma {
 
   export type EquipmentRequestMinAggregateOutputType = {
     id: string | null
+    equipment_code: string | null
     equipment_list_id: string | null
+    manual_item_name: string | null
+    manual_item_type: string | null
     quantity: number | null
     reason: string | null
     remarks: string | null
+    groupId: string | null
+    borrow_type: string | null
     approval: string | null
     approval_status: string | null
     approval_comment: string | null
@@ -10259,10 +10462,15 @@ export namespace Prisma {
 
   export type EquipmentRequestMaxAggregateOutputType = {
     id: string | null
+    equipment_code: string | null
     equipment_list_id: string | null
+    manual_item_name: string | null
+    manual_item_type: string | null
     quantity: number | null
     reason: string | null
     remarks: string | null
+    groupId: string | null
+    borrow_type: string | null
     approval: string | null
     approval_status: string | null
     approval_comment: string | null
@@ -10278,10 +10486,15 @@ export namespace Prisma {
 
   export type EquipmentRequestCountAggregateOutputType = {
     id: number
+    equipment_code: number
     equipment_list_id: number
+    manual_item_name: number
+    manual_item_type: number
     quantity: number
     reason: number
     remarks: number
+    groupId: number
+    borrow_type: number
     approval: number
     approval_status: number
     approval_comment: number
@@ -10307,10 +10520,15 @@ export namespace Prisma {
 
   export type EquipmentRequestMinAggregateInputType = {
     id?: true
+    equipment_code?: true
     equipment_list_id?: true
+    manual_item_name?: true
+    manual_item_type?: true
     quantity?: true
     reason?: true
     remarks?: true
+    groupId?: true
+    borrow_type?: true
     approval?: true
     approval_status?: true
     approval_comment?: true
@@ -10326,10 +10544,15 @@ export namespace Prisma {
 
   export type EquipmentRequestMaxAggregateInputType = {
     id?: true
+    equipment_code?: true
     equipment_list_id?: true
+    manual_item_name?: true
+    manual_item_type?: true
     quantity?: true
     reason?: true
     remarks?: true
+    groupId?: true
+    borrow_type?: true
     approval?: true
     approval_status?: true
     approval_comment?: true
@@ -10345,10 +10568,15 @@ export namespace Prisma {
 
   export type EquipmentRequestCountAggregateInputType = {
     id?: true
+    equipment_code?: true
     equipment_list_id?: true
+    manual_item_name?: true
+    manual_item_type?: true
     quantity?: true
     reason?: true
     remarks?: true
+    groupId?: true
+    borrow_type?: true
     approval?: true
     approval_status?: true
     approval_comment?: true
@@ -10451,10 +10679,15 @@ export namespace Prisma {
 
   export type EquipmentRequestGroupByOutputType = {
     id: string
-    equipment_list_id: string
+    equipment_code: string
+    equipment_list_id: string | null
+    manual_item_name: string | null
+    manual_item_type: string | null
     quantity: number
     reason: string | null
     remarks: string | null
+    groupId: string | null
+    borrow_type: string | null
     approval: string | null
     approval_status: string | null
     approval_comment: string | null
@@ -10489,10 +10722,15 @@ export namespace Prisma {
 
   export type EquipmentRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    equipment_code?: boolean
     equipment_list_id?: boolean
+    manual_item_name?: boolean
+    manual_item_type?: boolean
     quantity?: boolean
     reason?: boolean
     remarks?: boolean
+    groupId?: boolean
+    borrow_type?: boolean
     approval?: boolean
     approval_status?: boolean
     approval_comment?: boolean
@@ -10504,16 +10742,22 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    equipmentList?: boolean | EquipmentListDefaultArgs<ExtArgs>
+    equipmentList?: boolean | EquipmentRequest$equipmentListArgs<ExtArgs>
+    group?: boolean | EquipmentRequest$groupArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["equipmentRequest"]>
 
   export type EquipmentRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    equipment_code?: boolean
     equipment_list_id?: boolean
+    manual_item_name?: boolean
+    manual_item_type?: boolean
     quantity?: boolean
     reason?: boolean
     remarks?: boolean
+    groupId?: boolean
+    borrow_type?: boolean
     approval?: boolean
     approval_status?: boolean
     approval_comment?: boolean
@@ -10525,16 +10769,22 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    equipmentList?: boolean | EquipmentListDefaultArgs<ExtArgs>
+    equipmentList?: boolean | EquipmentRequest$equipmentListArgs<ExtArgs>
+    group?: boolean | EquipmentRequest$groupArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["equipmentRequest"]>
 
   export type EquipmentRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    equipment_code?: boolean
     equipment_list_id?: boolean
+    manual_item_name?: boolean
+    manual_item_type?: boolean
     quantity?: boolean
     reason?: boolean
     remarks?: boolean
+    groupId?: boolean
+    borrow_type?: boolean
     approval?: boolean
     approval_status?: boolean
     approval_comment?: boolean
@@ -10546,16 +10796,22 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    equipmentList?: boolean | EquipmentListDefaultArgs<ExtArgs>
+    equipmentList?: boolean | EquipmentRequest$equipmentListArgs<ExtArgs>
+    group?: boolean | EquipmentRequest$groupArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["equipmentRequest"]>
 
   export type EquipmentRequestSelectScalar = {
     id?: boolean
+    equipment_code?: boolean
     equipment_list_id?: boolean
+    manual_item_name?: boolean
+    manual_item_type?: boolean
     quantity?: boolean
     reason?: boolean
     remarks?: boolean
+    groupId?: boolean
+    borrow_type?: boolean
     approval?: boolean
     approval_status?: boolean
     approval_comment?: boolean
@@ -10569,32 +10825,41 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type EquipmentRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "equipment_list_id" | "quantity" | "reason" | "remarks" | "approval" | "approval_status" | "approval_comment" | "approval_date" | "it_approval" | "it_approval_status" | "it_approval_comment" | "it_approval_date" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentRequest"]>
+  export type EquipmentRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "equipment_code" | "equipment_list_id" | "manual_item_name" | "manual_item_type" | "quantity" | "reason" | "remarks" | "groupId" | "borrow_type" | "approval" | "approval_status" | "approval_comment" | "approval_date" | "it_approval" | "it_approval_status" | "it_approval_comment" | "it_approval_date" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentRequest"]>
   export type EquipmentRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    equipmentList?: boolean | EquipmentListDefaultArgs<ExtArgs>
+    equipmentList?: boolean | EquipmentRequest$equipmentListArgs<ExtArgs>
+    group?: boolean | EquipmentRequest$groupArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type EquipmentRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    equipmentList?: boolean | EquipmentListDefaultArgs<ExtArgs>
+    equipmentList?: boolean | EquipmentRequest$equipmentListArgs<ExtArgs>
+    group?: boolean | EquipmentRequest$groupArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type EquipmentRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    equipmentList?: boolean | EquipmentListDefaultArgs<ExtArgs>
+    equipmentList?: boolean | EquipmentRequest$equipmentListArgs<ExtArgs>
+    group?: boolean | EquipmentRequest$groupArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $EquipmentRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EquipmentRequest"
     objects: {
-      equipmentList: Prisma.$EquipmentListPayload<ExtArgs>
+      equipmentList: Prisma.$EquipmentListPayload<ExtArgs> | null
+      group: Prisma.$EquipmentBorrowGroupPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      equipment_list_id: string
+      equipment_code: string
+      equipment_list_id: string | null
+      manual_item_name: string | null
+      manual_item_type: string | null
       quantity: number
       reason: string | null
       remarks: string | null
+      groupId: string | null
+      borrow_type: string | null
       approval: string | null
       approval_status: string | null
       approval_comment: string | null
@@ -11000,7 +11265,8 @@ export namespace Prisma {
    */
   export interface Prisma__EquipmentRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    equipmentList<T extends EquipmentListDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EquipmentListDefaultArgs<ExtArgs>>): Prisma__EquipmentListClient<$Result.GetResult<Prisma.$EquipmentListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    equipmentList<T extends EquipmentRequest$equipmentListArgs<ExtArgs> = {}>(args?: Subset<T, EquipmentRequest$equipmentListArgs<ExtArgs>>): Prisma__EquipmentListClient<$Result.GetResult<Prisma.$EquipmentListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    group<T extends EquipmentRequest$groupArgs<ExtArgs> = {}>(args?: Subset<T, EquipmentRequest$groupArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11032,10 +11298,15 @@ export namespace Prisma {
    */
   interface EquipmentRequestFieldRefs {
     readonly id: FieldRef<"EquipmentRequest", 'String'>
+    readonly equipment_code: FieldRef<"EquipmentRequest", 'String'>
     readonly equipment_list_id: FieldRef<"EquipmentRequest", 'String'>
+    readonly manual_item_name: FieldRef<"EquipmentRequest", 'String'>
+    readonly manual_item_type: FieldRef<"EquipmentRequest", 'String'>
     readonly quantity: FieldRef<"EquipmentRequest", 'Int'>
     readonly reason: FieldRef<"EquipmentRequest", 'String'>
     readonly remarks: FieldRef<"EquipmentRequest", 'String'>
+    readonly groupId: FieldRef<"EquipmentRequest", 'String'>
+    readonly borrow_type: FieldRef<"EquipmentRequest", 'String'>
     readonly approval: FieldRef<"EquipmentRequest", 'String'>
     readonly approval_status: FieldRef<"EquipmentRequest", 'String'>
     readonly approval_comment: FieldRef<"EquipmentRequest", 'String'>
@@ -11448,6 +11719,44 @@ export namespace Prisma {
   }
 
   /**
+   * EquipmentRequest.equipmentList
+   */
+  export type EquipmentRequest$equipmentListArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentList
+     */
+    select?: EquipmentListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentList
+     */
+    omit?: EquipmentListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentListInclude<ExtArgs> | null
+    where?: EquipmentListWhereInput
+  }
+
+  /**
+   * EquipmentRequest.group
+   */
+  export type EquipmentRequest$groupArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    where?: EquipmentBorrowGroupWhereInput
+  }
+
+  /**
    * EquipmentRequest without action
    */
   export type EquipmentRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11463,6 +11772,1229 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EquipmentRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EquipmentBorrowGroup
+   */
+
+  export type AggregateEquipmentBorrowGroup = {
+    _count: EquipmentBorrowGroupCountAggregateOutputType | null
+    _min: EquipmentBorrowGroupMinAggregateOutputType | null
+    _max: EquipmentBorrowGroupMaxAggregateOutputType | null
+  }
+
+  export type EquipmentBorrowGroupMinAggregateOutputType = {
+    id: string | null
+    group_code: string | null
+    userId: string | null
+    reason: string | null
+    approval: string | null
+    approval_status: string | null
+    approval_comment: string | null
+    approval_date: Date | null
+    it_approval: string | null
+    it_approval_status: string | null
+    it_approval_comment: string | null
+    it_approval_date: Date | null
+    date_needed: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EquipmentBorrowGroupMaxAggregateOutputType = {
+    id: string | null
+    group_code: string | null
+    userId: string | null
+    reason: string | null
+    approval: string | null
+    approval_status: string | null
+    approval_comment: string | null
+    approval_date: Date | null
+    it_approval: string | null
+    it_approval_status: string | null
+    it_approval_comment: string | null
+    it_approval_date: Date | null
+    date_needed: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EquipmentBorrowGroupCountAggregateOutputType = {
+    id: number
+    group_code: number
+    userId: number
+    reason: number
+    approval: number
+    approval_status: number
+    approval_comment: number
+    approval_date: number
+    it_approval: number
+    it_approval_status: number
+    it_approval_comment: number
+    it_approval_date: number
+    date_needed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EquipmentBorrowGroupMinAggregateInputType = {
+    id?: true
+    group_code?: true
+    userId?: true
+    reason?: true
+    approval?: true
+    approval_status?: true
+    approval_comment?: true
+    approval_date?: true
+    it_approval?: true
+    it_approval_status?: true
+    it_approval_comment?: true
+    it_approval_date?: true
+    date_needed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EquipmentBorrowGroupMaxAggregateInputType = {
+    id?: true
+    group_code?: true
+    userId?: true
+    reason?: true
+    approval?: true
+    approval_status?: true
+    approval_comment?: true
+    approval_date?: true
+    it_approval?: true
+    it_approval_status?: true
+    it_approval_comment?: true
+    it_approval_date?: true
+    date_needed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EquipmentBorrowGroupCountAggregateInputType = {
+    id?: true
+    group_code?: true
+    userId?: true
+    reason?: true
+    approval?: true
+    approval_status?: true
+    approval_comment?: true
+    approval_date?: true
+    it_approval?: true
+    it_approval_status?: true
+    it_approval_comment?: true
+    it_approval_date?: true
+    date_needed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EquipmentBorrowGroupAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EquipmentBorrowGroup to aggregate.
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EquipmentBorrowGroups to fetch.
+     */
+    orderBy?: EquipmentBorrowGroupOrderByWithRelationInput | EquipmentBorrowGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EquipmentBorrowGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EquipmentBorrowGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EquipmentBorrowGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EquipmentBorrowGroups
+    **/
+    _count?: true | EquipmentBorrowGroupCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EquipmentBorrowGroupMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EquipmentBorrowGroupMaxAggregateInputType
+  }
+
+  export type GetEquipmentBorrowGroupAggregateType<T extends EquipmentBorrowGroupAggregateArgs> = {
+        [P in keyof T & keyof AggregateEquipmentBorrowGroup]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEquipmentBorrowGroup[P]>
+      : GetScalarType<T[P], AggregateEquipmentBorrowGroup[P]>
+  }
+
+
+
+
+  export type EquipmentBorrowGroupGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EquipmentBorrowGroupWhereInput
+    orderBy?: EquipmentBorrowGroupOrderByWithAggregationInput | EquipmentBorrowGroupOrderByWithAggregationInput[]
+    by: EquipmentBorrowGroupScalarFieldEnum[] | EquipmentBorrowGroupScalarFieldEnum
+    having?: EquipmentBorrowGroupScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EquipmentBorrowGroupCountAggregateInputType | true
+    _min?: EquipmentBorrowGroupMinAggregateInputType
+    _max?: EquipmentBorrowGroupMaxAggregateInputType
+  }
+
+  export type EquipmentBorrowGroupGroupByOutputType = {
+    id: string
+    group_code: string
+    userId: string
+    reason: string | null
+    approval: string | null
+    approval_status: string | null
+    approval_comment: string | null
+    approval_date: Date | null
+    it_approval: string | null
+    it_approval_status: string | null
+    it_approval_comment: string | null
+    it_approval_date: Date | null
+    date_needed: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EquipmentBorrowGroupCountAggregateOutputType | null
+    _min: EquipmentBorrowGroupMinAggregateOutputType | null
+    _max: EquipmentBorrowGroupMaxAggregateOutputType | null
+  }
+
+  type GetEquipmentBorrowGroupGroupByPayload<T extends EquipmentBorrowGroupGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EquipmentBorrowGroupGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EquipmentBorrowGroupGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EquipmentBorrowGroupGroupByOutputType[P]>
+            : GetScalarType<T[P], EquipmentBorrowGroupGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EquipmentBorrowGroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    group_code?: boolean
+    userId?: boolean
+    reason?: boolean
+    approval?: boolean
+    approval_status?: boolean
+    approval_comment?: boolean
+    approval_date?: boolean
+    it_approval?: boolean
+    it_approval_status?: boolean
+    it_approval_comment?: boolean
+    it_approval_date?: boolean
+    date_needed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    requests?: boolean | EquipmentBorrowGroup$requestsArgs<ExtArgs>
+    _count?: boolean | EquipmentBorrowGroupCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["equipmentBorrowGroup"]>
+
+  export type EquipmentBorrowGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    group_code?: boolean
+    userId?: boolean
+    reason?: boolean
+    approval?: boolean
+    approval_status?: boolean
+    approval_comment?: boolean
+    approval_date?: boolean
+    it_approval?: boolean
+    it_approval_status?: boolean
+    it_approval_comment?: boolean
+    it_approval_date?: boolean
+    date_needed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["equipmentBorrowGroup"]>
+
+  export type EquipmentBorrowGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    group_code?: boolean
+    userId?: boolean
+    reason?: boolean
+    approval?: boolean
+    approval_status?: boolean
+    approval_comment?: boolean
+    approval_date?: boolean
+    it_approval?: boolean
+    it_approval_status?: boolean
+    it_approval_comment?: boolean
+    it_approval_date?: boolean
+    date_needed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["equipmentBorrowGroup"]>
+
+  export type EquipmentBorrowGroupSelectScalar = {
+    id?: boolean
+    group_code?: boolean
+    userId?: boolean
+    reason?: boolean
+    approval?: boolean
+    approval_status?: boolean
+    approval_comment?: boolean
+    approval_date?: boolean
+    it_approval?: boolean
+    it_approval_status?: boolean
+    it_approval_comment?: boolean
+    it_approval_date?: boolean
+    date_needed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EquipmentBorrowGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "group_code" | "userId" | "reason" | "approval" | "approval_status" | "approval_comment" | "approval_date" | "it_approval" | "it_approval_status" | "it_approval_comment" | "it_approval_date" | "date_needed" | "createdAt" | "updatedAt", ExtArgs["result"]["equipmentBorrowGroup"]>
+  export type EquipmentBorrowGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    requests?: boolean | EquipmentBorrowGroup$requestsArgs<ExtArgs>
+    _count?: boolean | EquipmentBorrowGroupCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type EquipmentBorrowGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EquipmentBorrowGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $EquipmentBorrowGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EquipmentBorrowGroup"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      requests: Prisma.$EquipmentRequestPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      group_code: string
+      userId: string
+      reason: string | null
+      approval: string | null
+      approval_status: string | null
+      approval_comment: string | null
+      approval_date: Date | null
+      it_approval: string | null
+      it_approval_status: string | null
+      it_approval_comment: string | null
+      it_approval_date: Date | null
+      date_needed: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["equipmentBorrowGroup"]>
+    composites: {}
+  }
+
+  type EquipmentBorrowGroupGetPayload<S extends boolean | null | undefined | EquipmentBorrowGroupDefaultArgs> = $Result.GetResult<Prisma.$EquipmentBorrowGroupPayload, S>
+
+  type EquipmentBorrowGroupCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EquipmentBorrowGroupFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EquipmentBorrowGroupCountAggregateInputType | true
+    }
+
+  export interface EquipmentBorrowGroupDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EquipmentBorrowGroup'], meta: { name: 'EquipmentBorrowGroup' } }
+    /**
+     * Find zero or one EquipmentBorrowGroup that matches the filter.
+     * @param {EquipmentBorrowGroupFindUniqueArgs} args - Arguments to find a EquipmentBorrowGroup
+     * @example
+     * // Get one EquipmentBorrowGroup
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EquipmentBorrowGroupFindUniqueArgs>(args: SelectSubset<T, EquipmentBorrowGroupFindUniqueArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EquipmentBorrowGroup that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EquipmentBorrowGroupFindUniqueOrThrowArgs} args - Arguments to find a EquipmentBorrowGroup
+     * @example
+     * // Get one EquipmentBorrowGroup
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EquipmentBorrowGroupFindUniqueOrThrowArgs>(args: SelectSubset<T, EquipmentBorrowGroupFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EquipmentBorrowGroup that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupFindFirstArgs} args - Arguments to find a EquipmentBorrowGroup
+     * @example
+     * // Get one EquipmentBorrowGroup
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EquipmentBorrowGroupFindFirstArgs>(args?: SelectSubset<T, EquipmentBorrowGroupFindFirstArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EquipmentBorrowGroup that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupFindFirstOrThrowArgs} args - Arguments to find a EquipmentBorrowGroup
+     * @example
+     * // Get one EquipmentBorrowGroup
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EquipmentBorrowGroupFindFirstOrThrowArgs>(args?: SelectSubset<T, EquipmentBorrowGroupFindFirstOrThrowArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EquipmentBorrowGroups that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EquipmentBorrowGroups
+     * const equipmentBorrowGroups = await prisma.equipmentBorrowGroup.findMany()
+     * 
+     * // Get first 10 EquipmentBorrowGroups
+     * const equipmentBorrowGroups = await prisma.equipmentBorrowGroup.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const equipmentBorrowGroupWithIdOnly = await prisma.equipmentBorrowGroup.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EquipmentBorrowGroupFindManyArgs>(args?: SelectSubset<T, EquipmentBorrowGroupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EquipmentBorrowGroup.
+     * @param {EquipmentBorrowGroupCreateArgs} args - Arguments to create a EquipmentBorrowGroup.
+     * @example
+     * // Create one EquipmentBorrowGroup
+     * const EquipmentBorrowGroup = await prisma.equipmentBorrowGroup.create({
+     *   data: {
+     *     // ... data to create a EquipmentBorrowGroup
+     *   }
+     * })
+     * 
+     */
+    create<T extends EquipmentBorrowGroupCreateArgs>(args: SelectSubset<T, EquipmentBorrowGroupCreateArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EquipmentBorrowGroups.
+     * @param {EquipmentBorrowGroupCreateManyArgs} args - Arguments to create many EquipmentBorrowGroups.
+     * @example
+     * // Create many EquipmentBorrowGroups
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EquipmentBorrowGroupCreateManyArgs>(args?: SelectSubset<T, EquipmentBorrowGroupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EquipmentBorrowGroups and returns the data saved in the database.
+     * @param {EquipmentBorrowGroupCreateManyAndReturnArgs} args - Arguments to create many EquipmentBorrowGroups.
+     * @example
+     * // Create many EquipmentBorrowGroups
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EquipmentBorrowGroups and only return the `id`
+     * const equipmentBorrowGroupWithIdOnly = await prisma.equipmentBorrowGroup.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EquipmentBorrowGroupCreateManyAndReturnArgs>(args?: SelectSubset<T, EquipmentBorrowGroupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EquipmentBorrowGroup.
+     * @param {EquipmentBorrowGroupDeleteArgs} args - Arguments to delete one EquipmentBorrowGroup.
+     * @example
+     * // Delete one EquipmentBorrowGroup
+     * const EquipmentBorrowGroup = await prisma.equipmentBorrowGroup.delete({
+     *   where: {
+     *     // ... filter to delete one EquipmentBorrowGroup
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EquipmentBorrowGroupDeleteArgs>(args: SelectSubset<T, EquipmentBorrowGroupDeleteArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EquipmentBorrowGroup.
+     * @param {EquipmentBorrowGroupUpdateArgs} args - Arguments to update one EquipmentBorrowGroup.
+     * @example
+     * // Update one EquipmentBorrowGroup
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EquipmentBorrowGroupUpdateArgs>(args: SelectSubset<T, EquipmentBorrowGroupUpdateArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EquipmentBorrowGroups.
+     * @param {EquipmentBorrowGroupDeleteManyArgs} args - Arguments to filter EquipmentBorrowGroups to delete.
+     * @example
+     * // Delete a few EquipmentBorrowGroups
+     * const { count } = await prisma.equipmentBorrowGroup.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EquipmentBorrowGroupDeleteManyArgs>(args?: SelectSubset<T, EquipmentBorrowGroupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EquipmentBorrowGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EquipmentBorrowGroups
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EquipmentBorrowGroupUpdateManyArgs>(args: SelectSubset<T, EquipmentBorrowGroupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EquipmentBorrowGroups and returns the data updated in the database.
+     * @param {EquipmentBorrowGroupUpdateManyAndReturnArgs} args - Arguments to update many EquipmentBorrowGroups.
+     * @example
+     * // Update many EquipmentBorrowGroups
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EquipmentBorrowGroups and only return the `id`
+     * const equipmentBorrowGroupWithIdOnly = await prisma.equipmentBorrowGroup.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EquipmentBorrowGroupUpdateManyAndReturnArgs>(args: SelectSubset<T, EquipmentBorrowGroupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EquipmentBorrowGroup.
+     * @param {EquipmentBorrowGroupUpsertArgs} args - Arguments to update or create a EquipmentBorrowGroup.
+     * @example
+     * // Update or create a EquipmentBorrowGroup
+     * const equipmentBorrowGroup = await prisma.equipmentBorrowGroup.upsert({
+     *   create: {
+     *     // ... data to create a EquipmentBorrowGroup
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EquipmentBorrowGroup we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EquipmentBorrowGroupUpsertArgs>(args: SelectSubset<T, EquipmentBorrowGroupUpsertArgs<ExtArgs>>): Prisma__EquipmentBorrowGroupClient<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EquipmentBorrowGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupCountArgs} args - Arguments to filter EquipmentBorrowGroups to count.
+     * @example
+     * // Count the number of EquipmentBorrowGroups
+     * const count = await prisma.equipmentBorrowGroup.count({
+     *   where: {
+     *     // ... the filter for the EquipmentBorrowGroups we want to count
+     *   }
+     * })
+    **/
+    count<T extends EquipmentBorrowGroupCountArgs>(
+      args?: Subset<T, EquipmentBorrowGroupCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EquipmentBorrowGroupCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EquipmentBorrowGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EquipmentBorrowGroupAggregateArgs>(args: Subset<T, EquipmentBorrowGroupAggregateArgs>): Prisma.PrismaPromise<GetEquipmentBorrowGroupAggregateType<T>>
+
+    /**
+     * Group by EquipmentBorrowGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentBorrowGroupGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EquipmentBorrowGroupGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EquipmentBorrowGroupGroupByArgs['orderBy'] }
+        : { orderBy?: EquipmentBorrowGroupGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EquipmentBorrowGroupGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEquipmentBorrowGroupGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EquipmentBorrowGroup model
+   */
+  readonly fields: EquipmentBorrowGroupFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EquipmentBorrowGroup.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EquipmentBorrowGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    requests<T extends EquipmentBorrowGroup$requestsArgs<ExtArgs> = {}>(args?: Subset<T, EquipmentBorrowGroup$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EquipmentBorrowGroup model
+   */
+  interface EquipmentBorrowGroupFieldRefs {
+    readonly id: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly group_code: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly userId: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly reason: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly approval: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly approval_status: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly approval_comment: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly approval_date: FieldRef<"EquipmentBorrowGroup", 'DateTime'>
+    readonly it_approval: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly it_approval_status: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly it_approval_comment: FieldRef<"EquipmentBorrowGroup", 'String'>
+    readonly it_approval_date: FieldRef<"EquipmentBorrowGroup", 'DateTime'>
+    readonly date_needed: FieldRef<"EquipmentBorrowGroup", 'DateTime'>
+    readonly createdAt: FieldRef<"EquipmentBorrowGroup", 'DateTime'>
+    readonly updatedAt: FieldRef<"EquipmentBorrowGroup", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EquipmentBorrowGroup findUnique
+   */
+  export type EquipmentBorrowGroupFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which EquipmentBorrowGroup to fetch.
+     */
+    where: EquipmentBorrowGroupWhereUniqueInput
+  }
+
+  /**
+   * EquipmentBorrowGroup findUniqueOrThrow
+   */
+  export type EquipmentBorrowGroupFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which EquipmentBorrowGroup to fetch.
+     */
+    where: EquipmentBorrowGroupWhereUniqueInput
+  }
+
+  /**
+   * EquipmentBorrowGroup findFirst
+   */
+  export type EquipmentBorrowGroupFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which EquipmentBorrowGroup to fetch.
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EquipmentBorrowGroups to fetch.
+     */
+    orderBy?: EquipmentBorrowGroupOrderByWithRelationInput | EquipmentBorrowGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EquipmentBorrowGroups.
+     */
+    cursor?: EquipmentBorrowGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EquipmentBorrowGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EquipmentBorrowGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EquipmentBorrowGroups.
+     */
+    distinct?: EquipmentBorrowGroupScalarFieldEnum | EquipmentBorrowGroupScalarFieldEnum[]
+  }
+
+  /**
+   * EquipmentBorrowGroup findFirstOrThrow
+   */
+  export type EquipmentBorrowGroupFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which EquipmentBorrowGroup to fetch.
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EquipmentBorrowGroups to fetch.
+     */
+    orderBy?: EquipmentBorrowGroupOrderByWithRelationInput | EquipmentBorrowGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EquipmentBorrowGroups.
+     */
+    cursor?: EquipmentBorrowGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EquipmentBorrowGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EquipmentBorrowGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EquipmentBorrowGroups.
+     */
+    distinct?: EquipmentBorrowGroupScalarFieldEnum | EquipmentBorrowGroupScalarFieldEnum[]
+  }
+
+  /**
+   * EquipmentBorrowGroup findMany
+   */
+  export type EquipmentBorrowGroupFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which EquipmentBorrowGroups to fetch.
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EquipmentBorrowGroups to fetch.
+     */
+    orderBy?: EquipmentBorrowGroupOrderByWithRelationInput | EquipmentBorrowGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EquipmentBorrowGroups.
+     */
+    cursor?: EquipmentBorrowGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EquipmentBorrowGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EquipmentBorrowGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EquipmentBorrowGroups.
+     */
+    distinct?: EquipmentBorrowGroupScalarFieldEnum | EquipmentBorrowGroupScalarFieldEnum[]
+  }
+
+  /**
+   * EquipmentBorrowGroup create
+   */
+  export type EquipmentBorrowGroupCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EquipmentBorrowGroup.
+     */
+    data: XOR<EquipmentBorrowGroupCreateInput, EquipmentBorrowGroupUncheckedCreateInput>
+  }
+
+  /**
+   * EquipmentBorrowGroup createMany
+   */
+  export type EquipmentBorrowGroupCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EquipmentBorrowGroups.
+     */
+    data: EquipmentBorrowGroupCreateManyInput | EquipmentBorrowGroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EquipmentBorrowGroup createManyAndReturn
+   */
+  export type EquipmentBorrowGroupCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * The data used to create many EquipmentBorrowGroups.
+     */
+    data: EquipmentBorrowGroupCreateManyInput | EquipmentBorrowGroupCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EquipmentBorrowGroup update
+   */
+  export type EquipmentBorrowGroupUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EquipmentBorrowGroup.
+     */
+    data: XOR<EquipmentBorrowGroupUpdateInput, EquipmentBorrowGroupUncheckedUpdateInput>
+    /**
+     * Choose, which EquipmentBorrowGroup to update.
+     */
+    where: EquipmentBorrowGroupWhereUniqueInput
+  }
+
+  /**
+   * EquipmentBorrowGroup updateMany
+   */
+  export type EquipmentBorrowGroupUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EquipmentBorrowGroups.
+     */
+    data: XOR<EquipmentBorrowGroupUpdateManyMutationInput, EquipmentBorrowGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which EquipmentBorrowGroups to update
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * Limit how many EquipmentBorrowGroups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EquipmentBorrowGroup updateManyAndReturn
+   */
+  export type EquipmentBorrowGroupUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * The data used to update EquipmentBorrowGroups.
+     */
+    data: XOR<EquipmentBorrowGroupUpdateManyMutationInput, EquipmentBorrowGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which EquipmentBorrowGroups to update
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * Limit how many EquipmentBorrowGroups to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EquipmentBorrowGroup upsert
+   */
+  export type EquipmentBorrowGroupUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EquipmentBorrowGroup to update in case it exists.
+     */
+    where: EquipmentBorrowGroupWhereUniqueInput
+    /**
+     * In case the EquipmentBorrowGroup found by the `where` argument doesn't exist, create a new EquipmentBorrowGroup with this data.
+     */
+    create: XOR<EquipmentBorrowGroupCreateInput, EquipmentBorrowGroupUncheckedCreateInput>
+    /**
+     * In case the EquipmentBorrowGroup was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EquipmentBorrowGroupUpdateInput, EquipmentBorrowGroupUncheckedUpdateInput>
+  }
+
+  /**
+   * EquipmentBorrowGroup delete
+   */
+  export type EquipmentBorrowGroupDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
+    /**
+     * Filter which EquipmentBorrowGroup to delete.
+     */
+    where: EquipmentBorrowGroupWhereUniqueInput
+  }
+
+  /**
+   * EquipmentBorrowGroup deleteMany
+   */
+  export type EquipmentBorrowGroupDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EquipmentBorrowGroups to delete
+     */
+    where?: EquipmentBorrowGroupWhereInput
+    /**
+     * Limit how many EquipmentBorrowGroups to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EquipmentBorrowGroup.requests
+   */
+  export type EquipmentBorrowGroup$requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentRequest
+     */
+    select?: EquipmentRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentRequest
+     */
+    omit?: EquipmentRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentRequestInclude<ExtArgs> | null
+    where?: EquipmentRequestWhereInput
+    orderBy?: EquipmentRequestOrderByWithRelationInput | EquipmentRequestOrderByWithRelationInput[]
+    cursor?: EquipmentRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EquipmentRequestScalarFieldEnum | EquipmentRequestScalarFieldEnum[]
+  }
+
+  /**
+   * EquipmentBorrowGroup without action
+   */
+  export type EquipmentBorrowGroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentBorrowGroup
+     */
+    select?: EquipmentBorrowGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EquipmentBorrowGroup
+     */
+    omit?: EquipmentBorrowGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentBorrowGroupInclude<ExtArgs> | null
   }
 
 
@@ -12661,6 +14193,7 @@ export namespace Prisma {
   export const RequestScalarFieldEnum: {
     id: 'id',
     employeeId: 'employeeId',
+    request_code: 'request_code',
     type_request: 'type_request',
     description: 'description',
     reason: 'reason',
@@ -12698,6 +14231,7 @@ export namespace Prisma {
 
   export const EquipmentPurchaseOrderScalarFieldEnum: {
     id: 'id',
+    po_code: 'po_code',
     list: 'list',
     detail: 'detail',
     quantity: 'quantity',
@@ -12734,6 +14268,7 @@ export namespace Prisma {
 
   export const EquipmentListScalarFieldEnum: {
     id: 'id',
+    eq_code: 'eq_code',
     equipment_entry_id: 'equipment_entry_id',
     payout_amount: 'payout_amount',
     remaining: 'remaining',
@@ -12747,10 +14282,15 @@ export namespace Prisma {
 
   export const EquipmentRequestScalarFieldEnum: {
     id: 'id',
+    equipment_code: 'equipment_code',
     equipment_list_id: 'equipment_list_id',
+    manual_item_name: 'manual_item_name',
+    manual_item_type: 'manual_item_type',
     quantity: 'quantity',
     reason: 'reason',
     remarks: 'remarks',
+    groupId: 'groupId',
+    borrow_type: 'borrow_type',
     approval: 'approval',
     approval_status: 'approval_status',
     approval_comment: 'approval_comment',
@@ -12765,6 +14305,27 @@ export namespace Prisma {
   };
 
   export type EquipmentRequestScalarFieldEnum = (typeof EquipmentRequestScalarFieldEnum)[keyof typeof EquipmentRequestScalarFieldEnum]
+
+
+  export const EquipmentBorrowGroupScalarFieldEnum: {
+    id: 'id',
+    group_code: 'group_code',
+    userId: 'userId',
+    reason: 'reason',
+    approval: 'approval',
+    approval_status: 'approval_status',
+    approval_comment: 'approval_comment',
+    approval_date: 'approval_date',
+    it_approval: 'it_approval',
+    it_approval_status: 'it_approval_status',
+    it_approval_comment: 'it_approval_comment',
+    it_approval_date: 'it_approval_date',
+    date_needed: 'date_needed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EquipmentBorrowGroupScalarFieldEnum = (typeof EquipmentBorrowGroupScalarFieldEnum)[keyof typeof EquipmentBorrowGroupScalarFieldEnum]
 
 
   export const AuditLogScalarFieldEnum: {
@@ -12928,6 +14489,7 @@ export namespace Prisma {
     requests?: RequestListRelationFilter
     comments?: CommentListRelationFilter
     equipmentRequests?: EquipmentRequestListRelationFilter
+    equipmentGroups?: EquipmentBorrowGroupListRelationFilter
     auditLogs?: AuditLogListRelationFilter
   }
 
@@ -12943,6 +14505,7 @@ export namespace Prisma {
     requests?: RequestOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
     equipmentRequests?: EquipmentRequestOrderByRelationAggregateInput
+    equipmentGroups?: EquipmentBorrowGroupOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
   }
 
@@ -12961,6 +14524,7 @@ export namespace Prisma {
     requests?: RequestListRelationFilter
     comments?: CommentListRelationFilter
     equipmentRequests?: EquipmentRequestListRelationFilter
+    equipmentGroups?: EquipmentBorrowGroupListRelationFilter
     auditLogs?: AuditLogListRelationFilter
   }, "id" | "username" | "employeeId">
 
@@ -13089,6 +14653,7 @@ export namespace Prisma {
     NOT?: RequestWhereInput | RequestWhereInput[]
     id?: StringFilter<"Request"> | string
     employeeId?: StringFilter<"Request"> | string
+    request_code?: StringFilter<"Request"> | string
     type_request?: StringFilter<"Request"> | string
     description?: StringFilter<"Request"> | string
     reason?: StringNullableFilter<"Request"> | string | null
@@ -13114,6 +14679,7 @@ export namespace Prisma {
   export type RequestOrderByWithRelationInput = {
     id?: SortOrder
     employeeId?: SortOrder
+    request_code?: SortOrder
     type_request?: SortOrder
     description?: SortOrder
     reason?: SortOrderInput | SortOrder
@@ -13138,6 +14704,7 @@ export namespace Prisma {
 
   export type RequestWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    request_code?: string
     AND?: RequestWhereInput | RequestWhereInput[]
     OR?: RequestWhereInput[]
     NOT?: RequestWhereInput | RequestWhereInput[]
@@ -13162,11 +14729,12 @@ export namespace Prisma {
     employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     comments?: CommentListRelationFilter
-  }, "id">
+  }, "id" | "request_code">
 
   export type RequestOrderByWithAggregationInput = {
     id?: SortOrder
     employeeId?: SortOrder
+    request_code?: SortOrder
     type_request?: SortOrder
     description?: SortOrder
     reason?: SortOrderInput | SortOrder
@@ -13195,6 +14763,7 @@ export namespace Prisma {
     NOT?: RequestScalarWhereWithAggregatesInput | RequestScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Request"> | string
     employeeId?: StringWithAggregatesFilter<"Request"> | string
+    request_code?: StringWithAggregatesFilter<"Request"> | string
     type_request?: StringWithAggregatesFilter<"Request"> | string
     description?: StringWithAggregatesFilter<"Request"> | string
     reason?: StringNullableWithAggregatesFilter<"Request"> | string | null
@@ -13287,6 +14856,7 @@ export namespace Prisma {
     OR?: EquipmentPurchaseOrderWhereInput[]
     NOT?: EquipmentPurchaseOrderWhereInput | EquipmentPurchaseOrderWhereInput[]
     id?: StringFilter<"EquipmentPurchaseOrder"> | string
+    po_code?: StringNullableFilter<"EquipmentPurchaseOrder"> | string | null
     list?: StringNullableFilter<"EquipmentPurchaseOrder"> | string | null
     detail?: StringNullableFilter<"EquipmentPurchaseOrder"> | string | null
     quantity?: IntFilter<"EquipmentPurchaseOrder"> | number
@@ -13304,6 +14874,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderOrderByWithRelationInput = {
     id?: SortOrder
+    po_code?: SortOrderInput | SortOrder
     list?: SortOrderInput | SortOrder
     detail?: SortOrderInput | SortOrder
     quantity?: SortOrder
@@ -13321,6 +14892,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    po_code?: string
     AND?: EquipmentPurchaseOrderWhereInput | EquipmentPurchaseOrderWhereInput[]
     OR?: EquipmentPurchaseOrderWhereInput[]
     NOT?: EquipmentPurchaseOrderWhereInput | EquipmentPurchaseOrderWhereInput[]
@@ -13337,10 +14909,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"EquipmentPurchaseOrder"> | Date | string
     updatedAt?: DateTimeFilter<"EquipmentPurchaseOrder"> | Date | string
     entries?: EquipmentEntryListListRelationFilter
-  }, "id">
+  }, "id" | "po_code">
 
   export type EquipmentPurchaseOrderOrderByWithAggregationInput = {
     id?: SortOrder
+    po_code?: SortOrderInput | SortOrder
     list?: SortOrderInput | SortOrder
     detail?: SortOrderInput | SortOrder
     quantity?: SortOrder
@@ -13365,6 +14938,7 @@ export namespace Prisma {
     OR?: EquipmentPurchaseOrderScalarWhereWithAggregatesInput[]
     NOT?: EquipmentPurchaseOrderScalarWhereWithAggregatesInput | EquipmentPurchaseOrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EquipmentPurchaseOrder"> | string
+    po_code?: StringNullableWithAggregatesFilter<"EquipmentPurchaseOrder"> | string | null
     list?: StringNullableWithAggregatesFilter<"EquipmentPurchaseOrder"> | string | null
     detail?: StringNullableWithAggregatesFilter<"EquipmentPurchaseOrder"> | string | null
     quantity?: IntWithAggregatesFilter<"EquipmentPurchaseOrder"> | number
@@ -13474,6 +15048,7 @@ export namespace Prisma {
     OR?: EquipmentListWhereInput[]
     NOT?: EquipmentListWhereInput | EquipmentListWhereInput[]
     id?: StringFilter<"EquipmentList"> | string
+    eq_code?: StringNullableFilter<"EquipmentList"> | string | null
     equipment_entry_id?: StringFilter<"EquipmentList"> | string
     payout_amount?: FloatNullableFilter<"EquipmentList"> | number | null
     remaining?: IntFilter<"EquipmentList"> | number
@@ -13486,6 +15061,7 @@ export namespace Prisma {
 
   export type EquipmentListOrderByWithRelationInput = {
     id?: SortOrder
+    eq_code?: SortOrderInput | SortOrder
     equipment_entry_id?: SortOrder
     payout_amount?: SortOrderInput | SortOrder
     remaining?: SortOrder
@@ -13498,6 +15074,7 @@ export namespace Prisma {
 
   export type EquipmentListWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    eq_code?: string
     AND?: EquipmentListWhereInput | EquipmentListWhereInput[]
     OR?: EquipmentListWhereInput[]
     NOT?: EquipmentListWhereInput | EquipmentListWhereInput[]
@@ -13509,10 +15086,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"EquipmentList"> | Date | string
     equipmentEntry?: XOR<EquipmentEntryListScalarRelationFilter, EquipmentEntryListWhereInput>
     requests?: EquipmentRequestListRelationFilter
-  }, "id">
+  }, "id" | "eq_code">
 
   export type EquipmentListOrderByWithAggregationInput = {
     id?: SortOrder
+    eq_code?: SortOrderInput | SortOrder
     equipment_entry_id?: SortOrder
     payout_amount?: SortOrderInput | SortOrder
     remaining?: SortOrder
@@ -13531,6 +15109,7 @@ export namespace Prisma {
     OR?: EquipmentListScalarWhereWithAggregatesInput[]
     NOT?: EquipmentListScalarWhereWithAggregatesInput | EquipmentListScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EquipmentList"> | string
+    eq_code?: StringNullableWithAggregatesFilter<"EquipmentList"> | string | null
     equipment_entry_id?: StringWithAggregatesFilter<"EquipmentList"> | string
     payout_amount?: FloatNullableWithAggregatesFilter<"EquipmentList"> | number | null
     remaining?: IntWithAggregatesFilter<"EquipmentList"> | number
@@ -13544,10 +15123,15 @@ export namespace Prisma {
     OR?: EquipmentRequestWhereInput[]
     NOT?: EquipmentRequestWhereInput | EquipmentRequestWhereInput[]
     id?: StringFilter<"EquipmentRequest"> | string
-    equipment_list_id?: StringFilter<"EquipmentRequest"> | string
+    equipment_code?: StringFilter<"EquipmentRequest"> | string
+    equipment_list_id?: StringNullableFilter<"EquipmentRequest"> | string | null
+    manual_item_name?: StringNullableFilter<"EquipmentRequest"> | string | null
+    manual_item_type?: StringNullableFilter<"EquipmentRequest"> | string | null
     quantity?: IntFilter<"EquipmentRequest"> | number
     reason?: StringNullableFilter<"EquipmentRequest"> | string | null
     remarks?: StringNullableFilter<"EquipmentRequest"> | string | null
+    groupId?: StringNullableFilter<"EquipmentRequest"> | string | null
+    borrow_type?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval_status?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval_comment?: StringNullableFilter<"EquipmentRequest"> | string | null
@@ -13559,16 +15143,22 @@ export namespace Prisma {
     userId?: StringFilter<"EquipmentRequest"> | string
     createdAt?: DateTimeFilter<"EquipmentRequest"> | Date | string
     updatedAt?: DateTimeFilter<"EquipmentRequest"> | Date | string
-    equipmentList?: XOR<EquipmentListScalarRelationFilter, EquipmentListWhereInput>
+    equipmentList?: XOR<EquipmentListNullableScalarRelationFilter, EquipmentListWhereInput> | null
+    group?: XOR<EquipmentBorrowGroupNullableScalarRelationFilter, EquipmentBorrowGroupWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type EquipmentRequestOrderByWithRelationInput = {
     id?: SortOrder
-    equipment_list_id?: SortOrder
+    equipment_code?: SortOrder
+    equipment_list_id?: SortOrderInput | SortOrder
+    manual_item_name?: SortOrderInput | SortOrder
+    manual_item_type?: SortOrderInput | SortOrder
     quantity?: SortOrder
     reason?: SortOrderInput | SortOrder
     remarks?: SortOrderInput | SortOrder
+    groupId?: SortOrderInput | SortOrder
+    borrow_type?: SortOrderInput | SortOrder
     approval?: SortOrderInput | SortOrder
     approval_status?: SortOrderInput | SortOrder
     approval_comment?: SortOrderInput | SortOrder
@@ -13581,18 +15171,24 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     equipmentList?: EquipmentListOrderByWithRelationInput
+    group?: EquipmentBorrowGroupOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
 
   export type EquipmentRequestWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    equipment_code?: string
     AND?: EquipmentRequestWhereInput | EquipmentRequestWhereInput[]
     OR?: EquipmentRequestWhereInput[]
     NOT?: EquipmentRequestWhereInput | EquipmentRequestWhereInput[]
-    equipment_list_id?: StringFilter<"EquipmentRequest"> | string
+    equipment_list_id?: StringNullableFilter<"EquipmentRequest"> | string | null
+    manual_item_name?: StringNullableFilter<"EquipmentRequest"> | string | null
+    manual_item_type?: StringNullableFilter<"EquipmentRequest"> | string | null
     quantity?: IntFilter<"EquipmentRequest"> | number
     reason?: StringNullableFilter<"EquipmentRequest"> | string | null
     remarks?: StringNullableFilter<"EquipmentRequest"> | string | null
+    groupId?: StringNullableFilter<"EquipmentRequest"> | string | null
+    borrow_type?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval_status?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval_comment?: StringNullableFilter<"EquipmentRequest"> | string | null
@@ -13604,16 +15200,22 @@ export namespace Prisma {
     userId?: StringFilter<"EquipmentRequest"> | string
     createdAt?: DateTimeFilter<"EquipmentRequest"> | Date | string
     updatedAt?: DateTimeFilter<"EquipmentRequest"> | Date | string
-    equipmentList?: XOR<EquipmentListScalarRelationFilter, EquipmentListWhereInput>
+    equipmentList?: XOR<EquipmentListNullableScalarRelationFilter, EquipmentListWhereInput> | null
+    group?: XOR<EquipmentBorrowGroupNullableScalarRelationFilter, EquipmentBorrowGroupWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "equipment_code">
 
   export type EquipmentRequestOrderByWithAggregationInput = {
     id?: SortOrder
-    equipment_list_id?: SortOrder
+    equipment_code?: SortOrder
+    equipment_list_id?: SortOrderInput | SortOrder
+    manual_item_name?: SortOrderInput | SortOrder
+    manual_item_type?: SortOrderInput | SortOrder
     quantity?: SortOrder
     reason?: SortOrderInput | SortOrder
     remarks?: SortOrderInput | SortOrder
+    groupId?: SortOrderInput | SortOrder
+    borrow_type?: SortOrderInput | SortOrder
     approval?: SortOrderInput | SortOrder
     approval_status?: SortOrderInput | SortOrder
     approval_comment?: SortOrderInput | SortOrder
@@ -13637,10 +15239,15 @@ export namespace Prisma {
     OR?: EquipmentRequestScalarWhereWithAggregatesInput[]
     NOT?: EquipmentRequestScalarWhereWithAggregatesInput | EquipmentRequestScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EquipmentRequest"> | string
-    equipment_list_id?: StringWithAggregatesFilter<"EquipmentRequest"> | string
+    equipment_code?: StringWithAggregatesFilter<"EquipmentRequest"> | string
+    equipment_list_id?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
+    manual_item_name?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
+    manual_item_type?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
     quantity?: IntWithAggregatesFilter<"EquipmentRequest"> | number
     reason?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
     remarks?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
+    groupId?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
+    borrow_type?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
     approval?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
     approval_status?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
     approval_comment?: StringNullableWithAggregatesFilter<"EquipmentRequest"> | string | null
@@ -13652,6 +15259,114 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"EquipmentRequest"> | string
     createdAt?: DateTimeWithAggregatesFilter<"EquipmentRequest"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EquipmentRequest"> | Date | string
+  }
+
+  export type EquipmentBorrowGroupWhereInput = {
+    AND?: EquipmentBorrowGroupWhereInput | EquipmentBorrowGroupWhereInput[]
+    OR?: EquipmentBorrowGroupWhereInput[]
+    NOT?: EquipmentBorrowGroupWhereInput | EquipmentBorrowGroupWhereInput[]
+    id?: StringFilter<"EquipmentBorrowGroup"> | string
+    group_code?: StringFilter<"EquipmentBorrowGroup"> | string
+    userId?: StringFilter<"EquipmentBorrowGroup"> | string
+    reason?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_status?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_comment?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_date?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    it_approval?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_status?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_comment?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_date?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    date_needed?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    createdAt?: DateTimeFilter<"EquipmentBorrowGroup"> | Date | string
+    updatedAt?: DateTimeFilter<"EquipmentBorrowGroup"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    requests?: EquipmentRequestListRelationFilter
+  }
+
+  export type EquipmentBorrowGroupOrderByWithRelationInput = {
+    id?: SortOrder
+    group_code?: SortOrder
+    userId?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    approval?: SortOrderInput | SortOrder
+    approval_status?: SortOrderInput | SortOrder
+    approval_comment?: SortOrderInput | SortOrder
+    approval_date?: SortOrderInput | SortOrder
+    it_approval?: SortOrderInput | SortOrder
+    it_approval_status?: SortOrderInput | SortOrder
+    it_approval_comment?: SortOrderInput | SortOrder
+    it_approval_date?: SortOrderInput | SortOrder
+    date_needed?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    requests?: EquipmentRequestOrderByRelationAggregateInput
+  }
+
+  export type EquipmentBorrowGroupWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    group_code?: string
+    AND?: EquipmentBorrowGroupWhereInput | EquipmentBorrowGroupWhereInput[]
+    OR?: EquipmentBorrowGroupWhereInput[]
+    NOT?: EquipmentBorrowGroupWhereInput | EquipmentBorrowGroupWhereInput[]
+    userId?: StringFilter<"EquipmentBorrowGroup"> | string
+    reason?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_status?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_comment?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_date?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    it_approval?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_status?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_comment?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_date?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    date_needed?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    createdAt?: DateTimeFilter<"EquipmentBorrowGroup"> | Date | string
+    updatedAt?: DateTimeFilter<"EquipmentBorrowGroup"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    requests?: EquipmentRequestListRelationFilter
+  }, "id" | "group_code">
+
+  export type EquipmentBorrowGroupOrderByWithAggregationInput = {
+    id?: SortOrder
+    group_code?: SortOrder
+    userId?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    approval?: SortOrderInput | SortOrder
+    approval_status?: SortOrderInput | SortOrder
+    approval_comment?: SortOrderInput | SortOrder
+    approval_date?: SortOrderInput | SortOrder
+    it_approval?: SortOrderInput | SortOrder
+    it_approval_status?: SortOrderInput | SortOrder
+    it_approval_comment?: SortOrderInput | SortOrder
+    it_approval_date?: SortOrderInput | SortOrder
+    date_needed?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EquipmentBorrowGroupCountOrderByAggregateInput
+    _max?: EquipmentBorrowGroupMaxOrderByAggregateInput
+    _min?: EquipmentBorrowGroupMinOrderByAggregateInput
+  }
+
+  export type EquipmentBorrowGroupScalarWhereWithAggregatesInput = {
+    AND?: EquipmentBorrowGroupScalarWhereWithAggregatesInput | EquipmentBorrowGroupScalarWhereWithAggregatesInput[]
+    OR?: EquipmentBorrowGroupScalarWhereWithAggregatesInput[]
+    NOT?: EquipmentBorrowGroupScalarWhereWithAggregatesInput | EquipmentBorrowGroupScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EquipmentBorrowGroup"> | string
+    group_code?: StringWithAggregatesFilter<"EquipmentBorrowGroup"> | string
+    userId?: StringWithAggregatesFilter<"EquipmentBorrowGroup"> | string
+    reason?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    approval?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    approval_status?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    approval_comment?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    approval_date?: DateTimeNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | Date | string | null
+    it_approval?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_status?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_comment?: StringNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_date?: DateTimeNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | Date | string | null
+    date_needed?: DateTimeNullableWithAggregatesFilter<"EquipmentBorrowGroup"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EquipmentBorrowGroup"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EquipmentBorrowGroup"> | Date | string
   }
 
   export type AuditLogWhereInput = {
@@ -13745,6 +15460,7 @@ export namespace Prisma {
     requests?: RequestCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
@@ -13759,6 +15475,7 @@ export namespace Prisma {
     requests?: RequestUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -13773,6 +15490,7 @@ export namespace Prisma {
     requests?: RequestUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
@@ -13787,6 +15505,7 @@ export namespace Prisma {
     requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -13934,6 +15653,7 @@ export namespace Prisma {
 
   export type RequestCreateInput = {
     id?: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -13958,6 +15678,7 @@ export namespace Prisma {
   export type RequestUncheckedCreateInput = {
     id?: string
     employeeId: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -13980,6 +15701,7 @@ export namespace Prisma {
 
   export type RequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14004,6 +15726,7 @@ export namespace Prisma {
   export type RequestUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     employeeId?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14027,6 +15750,7 @@ export namespace Prisma {
   export type RequestCreateManyInput = {
     id?: string
     employeeId: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -14048,6 +15772,7 @@ export namespace Prisma {
 
   export type RequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14069,6 +15794,7 @@ export namespace Prisma {
   export type RequestUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     employeeId?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14158,6 +15884,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderCreateInput = {
     id?: string
+    po_code?: string | null
     list?: string | null
     detail?: string | null
     quantity?: number
@@ -14175,6 +15902,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUncheckedCreateInput = {
     id?: string
+    po_code?: string | null
     list?: string | null
     detail?: string | null
     quantity?: number
@@ -14192,6 +15920,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    po_code?: NullableStringFieldUpdateOperationsInput | string | null
     list?: NullableStringFieldUpdateOperationsInput | string | null
     detail?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
@@ -14209,6 +15938,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    po_code?: NullableStringFieldUpdateOperationsInput | string | null
     list?: NullableStringFieldUpdateOperationsInput | string | null
     detail?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
@@ -14226,6 +15956,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderCreateManyInput = {
     id?: string
+    po_code?: string | null
     list?: string | null
     detail?: string | null
     quantity?: number
@@ -14242,6 +15973,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    po_code?: NullableStringFieldUpdateOperationsInput | string | null
     list?: NullableStringFieldUpdateOperationsInput | string | null
     detail?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
@@ -14258,6 +15990,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    po_code?: NullableStringFieldUpdateOperationsInput | string | null
     list?: NullableStringFieldUpdateOperationsInput | string | null
     detail?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
@@ -14375,6 +16108,7 @@ export namespace Prisma {
 
   export type EquipmentListCreateInput = {
     id?: string
+    eq_code?: string | null
     payout_amount?: number | null
     remaining?: number
     status?: string | null
@@ -14386,6 +16120,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedCreateInput = {
     id?: string
+    eq_code?: string | null
     equipment_entry_id: string
     payout_amount?: number | null
     remaining?: number
@@ -14397,6 +16132,7 @@ export namespace Prisma {
 
   export type EquipmentListUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14408,6 +16144,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     equipment_entry_id?: StringFieldUpdateOperationsInput | string
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
@@ -14419,6 +16156,7 @@ export namespace Prisma {
 
   export type EquipmentListCreateManyInput = {
     id?: string
+    eq_code?: string | null
     equipment_entry_id: string
     payout_amount?: number | null
     remaining?: number
@@ -14429,6 +16167,7 @@ export namespace Prisma {
 
   export type EquipmentListUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14438,6 +16177,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     equipment_entry_id?: StringFieldUpdateOperationsInput | string
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
@@ -14448,9 +16188,13 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateInput = {
     id?: string
+    equipment_code: string
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -14461,16 +16205,22 @@ export namespace Prisma {
     it_approval_date?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    equipmentList: EquipmentListCreateNestedOneWithoutRequestsInput
+    equipmentList?: EquipmentListCreateNestedOneWithoutRequestsInput
+    group?: EquipmentBorrowGroupCreateNestedOneWithoutRequestsInput
     user: UserCreateNestedOneWithoutEquipmentRequestsInput
   }
 
   export type EquipmentRequestUncheckedCreateInput = {
     id?: string
-    equipment_list_id: string
+    equipment_code: string
+    equipment_list_id?: string | null
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    groupId?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -14486,9 +16236,13 @@ export namespace Prisma {
 
   export type EquipmentRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14499,16 +16253,22 @@ export namespace Prisma {
     it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    equipmentList?: EquipmentListUpdateOneRequiredWithoutRequestsNestedInput
+    equipmentList?: EquipmentListUpdateOneWithoutRequestsNestedInput
+    group?: EquipmentBorrowGroupUpdateOneWithoutRequestsNestedInput
     user?: UserUpdateOneRequiredWithoutEquipmentRequestsNestedInput
   }
 
   export type EquipmentRequestUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    equipment_list_id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    equipment_list_id?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14524,10 +16284,15 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateManyInput = {
     id?: string
-    equipment_list_id: string
+    equipment_code: string
+    equipment_list_id?: string | null
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    groupId?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -14543,9 +16308,13 @@ export namespace Prisma {
 
   export type EquipmentRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14560,10 +16329,15 @@ export namespace Prisma {
 
   export type EquipmentRequestUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    equipment_list_id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    equipment_list_id?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14573,6 +16347,135 @@ export namespace Prisma {
     it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
     it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentBorrowGroupCreateInput = {
+    id?: string
+    group_code: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutEquipmentGroupsInput
+    requests?: EquipmentRequestCreateNestedManyWithoutGroupInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedCreateInput = {
+    id?: string
+    group_code: string
+    userId: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: EquipmentRequestUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type EquipmentBorrowGroupUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEquipmentGroupsNestedInput
+    requests?: EquipmentRequestUpdateManyWithoutGroupNestedInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: EquipmentRequestUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type EquipmentBorrowGroupCreateManyInput = {
+    id?: string
+    group_code: string
+    userId: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentBorrowGroupUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentBorrowGroupUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14731,6 +16634,12 @@ export namespace Prisma {
     none?: EquipmentRequestWhereInput
   }
 
+  export type EquipmentBorrowGroupListRelationFilter = {
+    every?: EquipmentBorrowGroupWhereInput
+    some?: EquipmentBorrowGroupWhereInput
+    none?: EquipmentBorrowGroupWhereInput
+  }
+
   export type AuditLogListRelationFilter = {
     every?: AuditLogWhereInput
     some?: AuditLogWhereInput
@@ -14751,6 +16660,10 @@ export namespace Prisma {
   }
 
   export type EquipmentRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EquipmentBorrowGroupOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14947,6 +16860,7 @@ export namespace Prisma {
   export type RequestCountOrderByAggregateInput = {
     id?: SortOrder
     employeeId?: SortOrder
+    request_code?: SortOrder
     type_request?: SortOrder
     description?: SortOrder
     reason?: SortOrder
@@ -14969,6 +16883,7 @@ export namespace Prisma {
   export type RequestMaxOrderByAggregateInput = {
     id?: SortOrder
     employeeId?: SortOrder
+    request_code?: SortOrder
     type_request?: SortOrder
     description?: SortOrder
     reason?: SortOrder
@@ -14991,6 +16906,7 @@ export namespace Prisma {
   export type RequestMinOrderByAggregateInput = {
     id?: SortOrder
     employeeId?: SortOrder
+    request_code?: SortOrder
     type_request?: SortOrder
     description?: SortOrder
     reason?: SortOrder
@@ -15098,6 +17014,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderCountOrderByAggregateInput = {
     id?: SortOrder
+    po_code?: SortOrder
     list?: SortOrder
     detail?: SortOrder
     quantity?: SortOrder
@@ -15118,6 +17035,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderMaxOrderByAggregateInput = {
     id?: SortOrder
+    po_code?: SortOrder
     list?: SortOrder
     detail?: SortOrder
     quantity?: SortOrder
@@ -15134,6 +17052,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderMinOrderByAggregateInput = {
     id?: SortOrder
+    po_code?: SortOrder
     list?: SortOrder
     detail?: SortOrder
     quantity?: SortOrder
@@ -15251,6 +17170,7 @@ export namespace Prisma {
 
   export type EquipmentListCountOrderByAggregateInput = {
     id?: SortOrder
+    eq_code?: SortOrder
     equipment_entry_id?: SortOrder
     payout_amount?: SortOrder
     remaining?: SortOrder
@@ -15266,6 +17186,7 @@ export namespace Prisma {
 
   export type EquipmentListMaxOrderByAggregateInput = {
     id?: SortOrder
+    eq_code?: SortOrder
     equipment_entry_id?: SortOrder
     payout_amount?: SortOrder
     remaining?: SortOrder
@@ -15276,6 +17197,7 @@ export namespace Prisma {
 
   export type EquipmentListMinOrderByAggregateInput = {
     id?: SortOrder
+    eq_code?: SortOrder
     equipment_entry_id?: SortOrder
     payout_amount?: SortOrder
     remaining?: SortOrder
@@ -15305,17 +17227,27 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type EquipmentListScalarRelationFilter = {
-    is?: EquipmentListWhereInput
-    isNot?: EquipmentListWhereInput
+  export type EquipmentListNullableScalarRelationFilter = {
+    is?: EquipmentListWhereInput | null
+    isNot?: EquipmentListWhereInput | null
+  }
+
+  export type EquipmentBorrowGroupNullableScalarRelationFilter = {
+    is?: EquipmentBorrowGroupWhereInput | null
+    isNot?: EquipmentBorrowGroupWhereInput | null
   }
 
   export type EquipmentRequestCountOrderByAggregateInput = {
     id?: SortOrder
+    equipment_code?: SortOrder
     equipment_list_id?: SortOrder
+    manual_item_name?: SortOrder
+    manual_item_type?: SortOrder
     quantity?: SortOrder
     reason?: SortOrder
     remarks?: SortOrder
+    groupId?: SortOrder
+    borrow_type?: SortOrder
     approval?: SortOrder
     approval_status?: SortOrder
     approval_comment?: SortOrder
@@ -15335,10 +17267,15 @@ export namespace Prisma {
 
   export type EquipmentRequestMaxOrderByAggregateInput = {
     id?: SortOrder
+    equipment_code?: SortOrder
     equipment_list_id?: SortOrder
+    manual_item_name?: SortOrder
+    manual_item_type?: SortOrder
     quantity?: SortOrder
     reason?: SortOrder
     remarks?: SortOrder
+    groupId?: SortOrder
+    borrow_type?: SortOrder
     approval?: SortOrder
     approval_status?: SortOrder
     approval_comment?: SortOrder
@@ -15354,10 +17291,15 @@ export namespace Prisma {
 
   export type EquipmentRequestMinOrderByAggregateInput = {
     id?: SortOrder
+    equipment_code?: SortOrder
     equipment_list_id?: SortOrder
+    manual_item_name?: SortOrder
+    manual_item_type?: SortOrder
     quantity?: SortOrder
     reason?: SortOrder
     remarks?: SortOrder
+    groupId?: SortOrder
+    borrow_type?: SortOrder
     approval?: SortOrder
     approval_status?: SortOrder
     approval_comment?: SortOrder
@@ -15373,6 +17315,60 @@ export namespace Prisma {
 
   export type EquipmentRequestSumOrderByAggregateInput = {
     quantity?: SortOrder
+  }
+
+  export type EquipmentBorrowGroupCountOrderByAggregateInput = {
+    id?: SortOrder
+    group_code?: SortOrder
+    userId?: SortOrder
+    reason?: SortOrder
+    approval?: SortOrder
+    approval_status?: SortOrder
+    approval_comment?: SortOrder
+    approval_date?: SortOrder
+    it_approval?: SortOrder
+    it_approval_status?: SortOrder
+    it_approval_comment?: SortOrder
+    it_approval_date?: SortOrder
+    date_needed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EquipmentBorrowGroupMaxOrderByAggregateInput = {
+    id?: SortOrder
+    group_code?: SortOrder
+    userId?: SortOrder
+    reason?: SortOrder
+    approval?: SortOrder
+    approval_status?: SortOrder
+    approval_comment?: SortOrder
+    approval_date?: SortOrder
+    it_approval?: SortOrder
+    it_approval_status?: SortOrder
+    it_approval_comment?: SortOrder
+    it_approval_date?: SortOrder
+    date_needed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EquipmentBorrowGroupMinOrderByAggregateInput = {
+    id?: SortOrder
+    group_code?: SortOrder
+    userId?: SortOrder
+    reason?: SortOrder
+    approval?: SortOrder
+    approval_status?: SortOrder
+    approval_comment?: SortOrder
+    approval_date?: SortOrder
+    it_approval?: SortOrder
+    it_approval_status?: SortOrder
+    it_approval_comment?: SortOrder
+    it_approval_date?: SortOrder
+    date_needed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type AuditLogCountOrderByAggregateInput = {
@@ -15441,6 +17437,13 @@ export namespace Prisma {
     connect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
   }
 
+  export type EquipmentBorrowGroupCreateNestedManyWithoutUserInput = {
+    create?: XOR<EquipmentBorrowGroupCreateWithoutUserInput, EquipmentBorrowGroupUncheckedCreateWithoutUserInput> | EquipmentBorrowGroupCreateWithoutUserInput[] | EquipmentBorrowGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EquipmentBorrowGroupCreateOrConnectWithoutUserInput | EquipmentBorrowGroupCreateOrConnectWithoutUserInput[]
+    createMany?: EquipmentBorrowGroupCreateManyUserInputEnvelope
+    connect?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+  }
+
   export type AuditLogCreateNestedManyWithoutUserInput = {
     create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
@@ -15467,6 +17470,13 @@ export namespace Prisma {
     connectOrCreate?: EquipmentRequestCreateOrConnectWithoutUserInput | EquipmentRequestCreateOrConnectWithoutUserInput[]
     createMany?: EquipmentRequestCreateManyUserInputEnvelope
     connect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+  }
+
+  export type EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EquipmentBorrowGroupCreateWithoutUserInput, EquipmentBorrowGroupUncheckedCreateWithoutUserInput> | EquipmentBorrowGroupCreateWithoutUserInput[] | EquipmentBorrowGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EquipmentBorrowGroupCreateOrConnectWithoutUserInput | EquipmentBorrowGroupCreateOrConnectWithoutUserInput[]
+    createMany?: EquipmentBorrowGroupCreateManyUserInputEnvelope
+    connect?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
   }
 
   export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
@@ -15536,6 +17546,20 @@ export namespace Prisma {
     deleteMany?: EquipmentRequestScalarWhereInput | EquipmentRequestScalarWhereInput[]
   }
 
+  export type EquipmentBorrowGroupUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EquipmentBorrowGroupCreateWithoutUserInput, EquipmentBorrowGroupUncheckedCreateWithoutUserInput> | EquipmentBorrowGroupCreateWithoutUserInput[] | EquipmentBorrowGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EquipmentBorrowGroupCreateOrConnectWithoutUserInput | EquipmentBorrowGroupCreateOrConnectWithoutUserInput[]
+    upsert?: EquipmentBorrowGroupUpsertWithWhereUniqueWithoutUserInput | EquipmentBorrowGroupUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EquipmentBorrowGroupCreateManyUserInputEnvelope
+    set?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    disconnect?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    delete?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    connect?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    update?: EquipmentBorrowGroupUpdateWithWhereUniqueWithoutUserInput | EquipmentBorrowGroupUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EquipmentBorrowGroupUpdateManyWithWhereWithoutUserInput | EquipmentBorrowGroupUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EquipmentBorrowGroupScalarWhereInput | EquipmentBorrowGroupScalarWhereInput[]
+  }
+
   export type AuditLogUpdateManyWithoutUserNestedInput = {
     create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
@@ -15594,6 +17618,20 @@ export namespace Prisma {
     update?: EquipmentRequestUpdateWithWhereUniqueWithoutUserInput | EquipmentRequestUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: EquipmentRequestUpdateManyWithWhereWithoutUserInput | EquipmentRequestUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: EquipmentRequestScalarWhereInput | EquipmentRequestScalarWhereInput[]
+  }
+
+  export type EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EquipmentBorrowGroupCreateWithoutUserInput, EquipmentBorrowGroupUncheckedCreateWithoutUserInput> | EquipmentBorrowGroupCreateWithoutUserInput[] | EquipmentBorrowGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EquipmentBorrowGroupCreateOrConnectWithoutUserInput | EquipmentBorrowGroupCreateOrConnectWithoutUserInput[]
+    upsert?: EquipmentBorrowGroupUpsertWithWhereUniqueWithoutUserInput | EquipmentBorrowGroupUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EquipmentBorrowGroupCreateManyUserInputEnvelope
+    set?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    disconnect?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    delete?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    connect?: EquipmentBorrowGroupWhereUniqueInput | EquipmentBorrowGroupWhereUniqueInput[]
+    update?: EquipmentBorrowGroupUpdateWithWhereUniqueWithoutUserInput | EquipmentBorrowGroupUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EquipmentBorrowGroupUpdateManyWithWhereWithoutUserInput | EquipmentBorrowGroupUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EquipmentBorrowGroupScalarWhereInput | EquipmentBorrowGroupScalarWhereInput[]
   }
 
   export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
@@ -15974,18 +18012,36 @@ export namespace Prisma {
     connect?: EquipmentListWhereUniqueInput
   }
 
+  export type EquipmentBorrowGroupCreateNestedOneWithoutRequestsInput = {
+    create?: XOR<EquipmentBorrowGroupCreateWithoutRequestsInput, EquipmentBorrowGroupUncheckedCreateWithoutRequestsInput>
+    connectOrCreate?: EquipmentBorrowGroupCreateOrConnectWithoutRequestsInput
+    connect?: EquipmentBorrowGroupWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutEquipmentRequestsInput = {
     create?: XOR<UserCreateWithoutEquipmentRequestsInput, UserUncheckedCreateWithoutEquipmentRequestsInput>
     connectOrCreate?: UserCreateOrConnectWithoutEquipmentRequestsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type EquipmentListUpdateOneRequiredWithoutRequestsNestedInput = {
+  export type EquipmentListUpdateOneWithoutRequestsNestedInput = {
     create?: XOR<EquipmentListCreateWithoutRequestsInput, EquipmentListUncheckedCreateWithoutRequestsInput>
     connectOrCreate?: EquipmentListCreateOrConnectWithoutRequestsInput
     upsert?: EquipmentListUpsertWithoutRequestsInput
+    disconnect?: EquipmentListWhereInput | boolean
+    delete?: EquipmentListWhereInput | boolean
     connect?: EquipmentListWhereUniqueInput
     update?: XOR<XOR<EquipmentListUpdateToOneWithWhereWithoutRequestsInput, EquipmentListUpdateWithoutRequestsInput>, EquipmentListUncheckedUpdateWithoutRequestsInput>
+  }
+
+  export type EquipmentBorrowGroupUpdateOneWithoutRequestsNestedInput = {
+    create?: XOR<EquipmentBorrowGroupCreateWithoutRequestsInput, EquipmentBorrowGroupUncheckedCreateWithoutRequestsInput>
+    connectOrCreate?: EquipmentBorrowGroupCreateOrConnectWithoutRequestsInput
+    upsert?: EquipmentBorrowGroupUpsertWithoutRequestsInput
+    disconnect?: EquipmentBorrowGroupWhereInput | boolean
+    delete?: EquipmentBorrowGroupWhereInput | boolean
+    connect?: EquipmentBorrowGroupWhereUniqueInput
+    update?: XOR<XOR<EquipmentBorrowGroupUpdateToOneWithWhereWithoutRequestsInput, EquipmentBorrowGroupUpdateWithoutRequestsInput>, EquipmentBorrowGroupUncheckedUpdateWithoutRequestsInput>
   }
 
   export type UserUpdateOneRequiredWithoutEquipmentRequestsNestedInput = {
@@ -15994,6 +18050,62 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutEquipmentRequestsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEquipmentRequestsInput, UserUpdateWithoutEquipmentRequestsInput>, UserUncheckedUpdateWithoutEquipmentRequestsInput>
+  }
+
+  export type UserCreateNestedOneWithoutEquipmentGroupsInput = {
+    create?: XOR<UserCreateWithoutEquipmentGroupsInput, UserUncheckedCreateWithoutEquipmentGroupsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEquipmentGroupsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EquipmentRequestCreateNestedManyWithoutGroupInput = {
+    create?: XOR<EquipmentRequestCreateWithoutGroupInput, EquipmentRequestUncheckedCreateWithoutGroupInput> | EquipmentRequestCreateWithoutGroupInput[] | EquipmentRequestUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: EquipmentRequestCreateOrConnectWithoutGroupInput | EquipmentRequestCreateOrConnectWithoutGroupInput[]
+    createMany?: EquipmentRequestCreateManyGroupInputEnvelope
+    connect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+  }
+
+  export type EquipmentRequestUncheckedCreateNestedManyWithoutGroupInput = {
+    create?: XOR<EquipmentRequestCreateWithoutGroupInput, EquipmentRequestUncheckedCreateWithoutGroupInput> | EquipmentRequestCreateWithoutGroupInput[] | EquipmentRequestUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: EquipmentRequestCreateOrConnectWithoutGroupInput | EquipmentRequestCreateOrConnectWithoutGroupInput[]
+    createMany?: EquipmentRequestCreateManyGroupInputEnvelope
+    connect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutEquipmentGroupsNestedInput = {
+    create?: XOR<UserCreateWithoutEquipmentGroupsInput, UserUncheckedCreateWithoutEquipmentGroupsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEquipmentGroupsInput
+    upsert?: UserUpsertWithoutEquipmentGroupsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEquipmentGroupsInput, UserUpdateWithoutEquipmentGroupsInput>, UserUncheckedUpdateWithoutEquipmentGroupsInput>
+  }
+
+  export type EquipmentRequestUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<EquipmentRequestCreateWithoutGroupInput, EquipmentRequestUncheckedCreateWithoutGroupInput> | EquipmentRequestCreateWithoutGroupInput[] | EquipmentRequestUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: EquipmentRequestCreateOrConnectWithoutGroupInput | EquipmentRequestCreateOrConnectWithoutGroupInput[]
+    upsert?: EquipmentRequestUpsertWithWhereUniqueWithoutGroupInput | EquipmentRequestUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: EquipmentRequestCreateManyGroupInputEnvelope
+    set?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    disconnect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    delete?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    connect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    update?: EquipmentRequestUpdateWithWhereUniqueWithoutGroupInput | EquipmentRequestUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: EquipmentRequestUpdateManyWithWhereWithoutGroupInput | EquipmentRequestUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: EquipmentRequestScalarWhereInput | EquipmentRequestScalarWhereInput[]
+  }
+
+  export type EquipmentRequestUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<EquipmentRequestCreateWithoutGroupInput, EquipmentRequestUncheckedCreateWithoutGroupInput> | EquipmentRequestCreateWithoutGroupInput[] | EquipmentRequestUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: EquipmentRequestCreateOrConnectWithoutGroupInput | EquipmentRequestCreateOrConnectWithoutGroupInput[]
+    upsert?: EquipmentRequestUpsertWithWhereUniqueWithoutGroupInput | EquipmentRequestUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: EquipmentRequestCreateManyGroupInputEnvelope
+    set?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    disconnect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    delete?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    connect?: EquipmentRequestWhereUniqueInput | EquipmentRequestWhereUniqueInput[]
+    update?: EquipmentRequestUpdateWithWhereUniqueWithoutGroupInput | EquipmentRequestUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: EquipmentRequestUpdateManyWithWhereWithoutGroupInput | EquipmentRequestUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: EquipmentRequestScalarWhereInput | EquipmentRequestScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAuditLogsInput = {
@@ -16290,6 +18402,7 @@ export namespace Prisma {
 
   export type RequestCreateWithoutUserInput = {
     id?: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -16313,6 +18426,7 @@ export namespace Prisma {
   export type RequestUncheckedCreateWithoutUserInput = {
     id?: string
     employeeId: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -16372,9 +18486,13 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateWithoutUserInput = {
     id?: string
+    equipment_code: string
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -16385,15 +18503,21 @@ export namespace Prisma {
     it_approval_date?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    equipmentList: EquipmentListCreateNestedOneWithoutRequestsInput
+    equipmentList?: EquipmentListCreateNestedOneWithoutRequestsInput
+    group?: EquipmentBorrowGroupCreateNestedOneWithoutRequestsInput
   }
 
   export type EquipmentRequestUncheckedCreateWithoutUserInput = {
     id?: string
-    equipment_list_id: string
+    equipment_code: string
+    equipment_list_id?: string | null
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    groupId?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -16413,6 +18537,52 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateManyUserInputEnvelope = {
     data: EquipmentRequestCreateManyUserInput | EquipmentRequestCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EquipmentBorrowGroupCreateWithoutUserInput = {
+    id?: string
+    group_code: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: EquipmentRequestCreateNestedManyWithoutGroupInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedCreateWithoutUserInput = {
+    id?: string
+    group_code: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: EquipmentRequestUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type EquipmentBorrowGroupCreateOrConnectWithoutUserInput = {
+    where: EquipmentBorrowGroupWhereUniqueInput
+    create: XOR<EquipmentBorrowGroupCreateWithoutUserInput, EquipmentBorrowGroupUncheckedCreateWithoutUserInput>
+  }
+
+  export type EquipmentBorrowGroupCreateManyUserInputEnvelope = {
+    data: EquipmentBorrowGroupCreateManyUserInput | EquipmentBorrowGroupCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -16515,6 +18685,7 @@ export namespace Prisma {
     NOT?: RequestScalarWhereInput | RequestScalarWhereInput[]
     id?: StringFilter<"Request"> | string
     employeeId?: StringFilter<"Request"> | string
+    request_code?: StringFilter<"Request"> | string
     type_request?: StringFilter<"Request"> | string
     description?: StringFilter<"Request"> | string
     reason?: StringNullableFilter<"Request"> | string | null
@@ -16584,10 +18755,15 @@ export namespace Prisma {
     OR?: EquipmentRequestScalarWhereInput[]
     NOT?: EquipmentRequestScalarWhereInput | EquipmentRequestScalarWhereInput[]
     id?: StringFilter<"EquipmentRequest"> | string
-    equipment_list_id?: StringFilter<"EquipmentRequest"> | string
+    equipment_code?: StringFilter<"EquipmentRequest"> | string
+    equipment_list_id?: StringNullableFilter<"EquipmentRequest"> | string | null
+    manual_item_name?: StringNullableFilter<"EquipmentRequest"> | string | null
+    manual_item_type?: StringNullableFilter<"EquipmentRequest"> | string | null
     quantity?: IntFilter<"EquipmentRequest"> | number
     reason?: StringNullableFilter<"EquipmentRequest"> | string | null
     remarks?: StringNullableFilter<"EquipmentRequest"> | string | null
+    groupId?: StringNullableFilter<"EquipmentRequest"> | string | null
+    borrow_type?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval_status?: StringNullableFilter<"EquipmentRequest"> | string | null
     approval_comment?: StringNullableFilter<"EquipmentRequest"> | string | null
@@ -16599,6 +18775,43 @@ export namespace Prisma {
     userId?: StringFilter<"EquipmentRequest"> | string
     createdAt?: DateTimeFilter<"EquipmentRequest"> | Date | string
     updatedAt?: DateTimeFilter<"EquipmentRequest"> | Date | string
+  }
+
+  export type EquipmentBorrowGroupUpsertWithWhereUniqueWithoutUserInput = {
+    where: EquipmentBorrowGroupWhereUniqueInput
+    update: XOR<EquipmentBorrowGroupUpdateWithoutUserInput, EquipmentBorrowGroupUncheckedUpdateWithoutUserInput>
+    create: XOR<EquipmentBorrowGroupCreateWithoutUserInput, EquipmentBorrowGroupUncheckedCreateWithoutUserInput>
+  }
+
+  export type EquipmentBorrowGroupUpdateWithWhereUniqueWithoutUserInput = {
+    where: EquipmentBorrowGroupWhereUniqueInput
+    data: XOR<EquipmentBorrowGroupUpdateWithoutUserInput, EquipmentBorrowGroupUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EquipmentBorrowGroupUpdateManyWithWhereWithoutUserInput = {
+    where: EquipmentBorrowGroupScalarWhereInput
+    data: XOR<EquipmentBorrowGroupUpdateManyMutationInput, EquipmentBorrowGroupUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EquipmentBorrowGroupScalarWhereInput = {
+    AND?: EquipmentBorrowGroupScalarWhereInput | EquipmentBorrowGroupScalarWhereInput[]
+    OR?: EquipmentBorrowGroupScalarWhereInput[]
+    NOT?: EquipmentBorrowGroupScalarWhereInput | EquipmentBorrowGroupScalarWhereInput[]
+    id?: StringFilter<"EquipmentBorrowGroup"> | string
+    group_code?: StringFilter<"EquipmentBorrowGroup"> | string
+    userId?: StringFilter<"EquipmentBorrowGroup"> | string
+    reason?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_status?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_comment?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    approval_date?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    it_approval?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_status?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_comment?: StringNullableFilter<"EquipmentBorrowGroup"> | string | null
+    it_approval_date?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    date_needed?: DateTimeNullableFilter<"EquipmentBorrowGroup"> | Date | string | null
+    createdAt?: DateTimeFilter<"EquipmentBorrowGroup"> | Date | string
+    updatedAt?: DateTimeFilter<"EquipmentBorrowGroup"> | Date | string
   }
 
   export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
@@ -16635,6 +18848,7 @@ export namespace Prisma {
 
   export type RequestCreateWithoutEmployeeInput = {
     id?: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -16657,6 +18871,7 @@ export namespace Prisma {
 
   export type RequestUncheckedCreateWithoutEmployeeInput = {
     id?: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -16697,6 +18912,7 @@ export namespace Prisma {
     requests?: RequestCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
@@ -16710,6 +18926,7 @@ export namespace Prisma {
     requests?: RequestUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16755,6 +18972,7 @@ export namespace Prisma {
     requests?: RequestUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
@@ -16768,6 +18986,7 @@ export namespace Prisma {
     requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16818,6 +19037,7 @@ export namespace Prisma {
     employee?: EmployeeCreateNestedOneWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
@@ -16831,6 +19051,7 @@ export namespace Prisma {
     employeeId?: string | null
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16931,6 +19152,7 @@ export namespace Prisma {
     employee?: EmployeeUpdateOneWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
@@ -16944,6 +19166,7 @@ export namespace Prisma {
     employeeId?: NullableStringFieldUpdateOperationsInput | string | null
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16965,6 +19188,7 @@ export namespace Prisma {
 
   export type RequestCreateWithoutCommentsInput = {
     id?: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -16988,6 +19212,7 @@ export namespace Prisma {
   export type RequestUncheckedCreateWithoutCommentsInput = {
     id?: string
     employeeId: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -17022,6 +19247,7 @@ export namespace Prisma {
     employee?: EmployeeCreateNestedOneWithoutUserInput
     requests?: RequestCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
@@ -17035,6 +19261,7 @@ export namespace Prisma {
     employeeId?: string | null
     requests?: RequestUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -17056,6 +19283,7 @@ export namespace Prisma {
 
   export type RequestUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17079,6 +19307,7 @@ export namespace Prisma {
   export type RequestUncheckedUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     employeeId?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17119,6 +19348,7 @@ export namespace Prisma {
     employee?: EmployeeUpdateOneWithoutUserNestedInput
     requests?: RequestUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
@@ -17132,6 +19362,7 @@ export namespace Prisma {
     employeeId?: NullableStringFieldUpdateOperationsInput | string | null
     requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -17208,6 +19439,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderCreateWithoutEntriesInput = {
     id?: string
+    po_code?: string | null
     list?: string | null
     detail?: string | null
     quantity?: number
@@ -17224,6 +19456,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUncheckedCreateWithoutEntriesInput = {
     id?: string
+    po_code?: string | null
     list?: string | null
     detail?: string | null
     quantity?: number
@@ -17245,6 +19478,7 @@ export namespace Prisma {
 
   export type EquipmentListCreateWithoutEquipmentEntryInput = {
     id?: string
+    eq_code?: string | null
     payout_amount?: number | null
     remaining?: number
     status?: string | null
@@ -17255,6 +19489,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedCreateWithoutEquipmentEntryInput = {
     id?: string
+    eq_code?: string | null
     payout_amount?: number | null
     remaining?: number
     status?: string | null
@@ -17286,6 +19521,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUpdateWithoutEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    po_code?: NullableStringFieldUpdateOperationsInput | string | null
     list?: NullableStringFieldUpdateOperationsInput | string | null
     detail?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
@@ -17302,6 +19538,7 @@ export namespace Prisma {
 
   export type EquipmentPurchaseOrderUncheckedUpdateWithoutEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    po_code?: NullableStringFieldUpdateOperationsInput | string | null
     list?: NullableStringFieldUpdateOperationsInput | string | null
     detail?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
@@ -17337,6 +19574,7 @@ export namespace Prisma {
     OR?: EquipmentListScalarWhereInput[]
     NOT?: EquipmentListScalarWhereInput | EquipmentListScalarWhereInput[]
     id?: StringFilter<"EquipmentList"> | string
+    eq_code?: StringNullableFilter<"EquipmentList"> | string | null
     equipment_entry_id?: StringFilter<"EquipmentList"> | string
     payout_amount?: FloatNullableFilter<"EquipmentList"> | number | null
     remaining?: IntFilter<"EquipmentList"> | number
@@ -17380,9 +19618,13 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateWithoutEquipmentListInput = {
     id?: string
+    equipment_code: string
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -17393,14 +19635,20 @@ export namespace Prisma {
     it_approval_date?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    group?: EquipmentBorrowGroupCreateNestedOneWithoutRequestsInput
     user: UserCreateNestedOneWithoutEquipmentRequestsInput
   }
 
   export type EquipmentRequestUncheckedCreateWithoutEquipmentListInput = {
     id?: string
+    equipment_code: string
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    groupId?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -17481,6 +19729,7 @@ export namespace Prisma {
 
   export type EquipmentListCreateWithoutRequestsInput = {
     id?: string
+    eq_code?: string | null
     payout_amount?: number | null
     remaining?: number
     status?: string | null
@@ -17491,6 +19740,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedCreateWithoutRequestsInput = {
     id?: string
+    eq_code?: string | null
     equipment_entry_id: string
     payout_amount?: number | null
     remaining?: number
@@ -17504,6 +19754,47 @@ export namespace Prisma {
     create: XOR<EquipmentListCreateWithoutRequestsInput, EquipmentListUncheckedCreateWithoutRequestsInput>
   }
 
+  export type EquipmentBorrowGroupCreateWithoutRequestsInput = {
+    id?: string
+    group_code: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutEquipmentGroupsInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedCreateWithoutRequestsInput = {
+    id?: string
+    group_code: string
+    userId: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentBorrowGroupCreateOrConnectWithoutRequestsInput = {
+    where: EquipmentBorrowGroupWhereUniqueInput
+    create: XOR<EquipmentBorrowGroupCreateWithoutRequestsInput, EquipmentBorrowGroupUncheckedCreateWithoutRequestsInput>
+  }
+
   export type UserCreateWithoutEquipmentRequestsInput = {
     id?: string
     username: string
@@ -17514,6 +19805,7 @@ export namespace Prisma {
     employee?: EmployeeCreateNestedOneWithoutUserInput
     requests?: RequestCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
@@ -17527,6 +19819,7 @@ export namespace Prisma {
     employeeId?: string | null
     requests?: RequestUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -17548,6 +19841,7 @@ export namespace Prisma {
 
   export type EquipmentListUpdateWithoutRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17558,10 +19852,58 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedUpdateWithoutRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     equipment_entry_id?: StringFieldUpdateOperationsInput | string
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentBorrowGroupUpsertWithoutRequestsInput = {
+    update: XOR<EquipmentBorrowGroupUpdateWithoutRequestsInput, EquipmentBorrowGroupUncheckedUpdateWithoutRequestsInput>
+    create: XOR<EquipmentBorrowGroupCreateWithoutRequestsInput, EquipmentBorrowGroupUncheckedCreateWithoutRequestsInput>
+    where?: EquipmentBorrowGroupWhereInput
+  }
+
+  export type EquipmentBorrowGroupUpdateToOneWithWhereWithoutRequestsInput = {
+    where?: EquipmentBorrowGroupWhereInput
+    data: XOR<EquipmentBorrowGroupUpdateWithoutRequestsInput, EquipmentBorrowGroupUncheckedUpdateWithoutRequestsInput>
+  }
+
+  export type EquipmentBorrowGroupUpdateWithoutRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEquipmentGroupsNestedInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedUpdateWithoutRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17587,6 +19929,7 @@ export namespace Prisma {
     employee?: EmployeeUpdateOneWithoutUserNestedInput
     requests?: RequestUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
@@ -17600,7 +19943,152 @@ export namespace Prisma {
     employeeId?: NullableStringFieldUpdateOperationsInput | string | null
     requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutEquipmentGroupsInput = {
+    id?: string
+    username: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee?: EmployeeCreateNestedOneWithoutUserInput
+    requests?: RequestCreateNestedManyWithoutUserInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEquipmentGroupsInput = {
+    id?: string
+    username: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employeeId?: string | null
+    requests?: RequestUncheckedCreateNestedManyWithoutUserInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEquipmentGroupsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEquipmentGroupsInput, UserUncheckedCreateWithoutEquipmentGroupsInput>
+  }
+
+  export type EquipmentRequestCreateWithoutGroupInput = {
+    id?: string
+    equipment_code: string
+    manual_item_name?: string | null
+    manual_item_type?: string | null
+    quantity?: number
+    reason?: string | null
+    remarks?: string | null
+    borrow_type?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    equipmentList?: EquipmentListCreateNestedOneWithoutRequestsInput
+    user: UserCreateNestedOneWithoutEquipmentRequestsInput
+  }
+
+  export type EquipmentRequestUncheckedCreateWithoutGroupInput = {
+    id?: string
+    equipment_code: string
+    equipment_list_id?: string | null
+    manual_item_name?: string | null
+    manual_item_type?: string | null
+    quantity?: number
+    reason?: string | null
+    remarks?: string | null
+    borrow_type?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentRequestCreateOrConnectWithoutGroupInput = {
+    where: EquipmentRequestWhereUniqueInput
+    create: XOR<EquipmentRequestCreateWithoutGroupInput, EquipmentRequestUncheckedCreateWithoutGroupInput>
+  }
+
+  export type EquipmentRequestCreateManyGroupInputEnvelope = {
+    data: EquipmentRequestCreateManyGroupInput | EquipmentRequestCreateManyGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutEquipmentGroupsInput = {
+    update: XOR<UserUpdateWithoutEquipmentGroupsInput, UserUncheckedUpdateWithoutEquipmentGroupsInput>
+    create: XOR<UserCreateWithoutEquipmentGroupsInput, UserUncheckedCreateWithoutEquipmentGroupsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEquipmentGroupsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEquipmentGroupsInput, UserUncheckedUpdateWithoutEquipmentGroupsInput>
+  }
+
+  export type UserUpdateWithoutEquipmentGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneWithoutUserNestedInput
+    requests?: RequestUpdateManyWithoutUserNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEquipmentGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type EquipmentRequestUpsertWithWhereUniqueWithoutGroupInput = {
+    where: EquipmentRequestWhereUniqueInput
+    update: XOR<EquipmentRequestUpdateWithoutGroupInput, EquipmentRequestUncheckedUpdateWithoutGroupInput>
+    create: XOR<EquipmentRequestCreateWithoutGroupInput, EquipmentRequestUncheckedCreateWithoutGroupInput>
+  }
+
+  export type EquipmentRequestUpdateWithWhereUniqueWithoutGroupInput = {
+    where: EquipmentRequestWhereUniqueInput
+    data: XOR<EquipmentRequestUpdateWithoutGroupInput, EquipmentRequestUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type EquipmentRequestUpdateManyWithWhereWithoutGroupInput = {
+    where: EquipmentRequestScalarWhereInput
+    data: XOR<EquipmentRequestUpdateManyMutationInput, EquipmentRequestUncheckedUpdateManyWithoutGroupInput>
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -17614,6 +20102,7 @@ export namespace Prisma {
     requests?: RequestCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -17627,6 +20116,7 @@ export namespace Prisma {
     requests?: RequestUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -17656,6 +20146,7 @@ export namespace Prisma {
     requests?: RequestUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -17669,11 +20160,13 @@ export namespace Prisma {
     requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RequestCreateManyUserInput = {
     id?: string
     employeeId: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -17703,10 +20196,15 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateManyUserInput = {
     id?: string
-    equipment_list_id: string
+    equipment_code: string
+    equipment_list_id?: string | null
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    groupId?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -17715,6 +20213,23 @@ export namespace Prisma {
     it_approval_status?: string | null
     it_approval_comment?: string | null
     it_approval_date?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentBorrowGroupCreateManyUserInput = {
+    id?: string
+    group_code: string
+    reason?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    date_needed?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17733,6 +20248,7 @@ export namespace Prisma {
 
   export type RequestUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17756,6 +20272,7 @@ export namespace Prisma {
   export type RequestUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     employeeId?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17778,6 +20295,7 @@ export namespace Prisma {
   export type RequestUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     employeeId?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17825,9 +20343,13 @@ export namespace Prisma {
 
   export type EquipmentRequestUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17838,15 +20360,21 @@ export namespace Prisma {
     it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    equipmentList?: EquipmentListUpdateOneRequiredWithoutRequestsNestedInput
+    equipmentList?: EquipmentListUpdateOneWithoutRequestsNestedInput
+    group?: EquipmentBorrowGroupUpdateOneWithoutRequestsNestedInput
   }
 
   export type EquipmentRequestUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    equipment_list_id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    equipment_list_id?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17861,10 +20389,15 @@ export namespace Prisma {
 
   export type EquipmentRequestUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    equipment_list_id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    equipment_list_id?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17873,6 +20406,59 @@ export namespace Prisma {
     it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
     it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentBorrowGroupUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: EquipmentRequestUpdateManyWithoutGroupNestedInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: EquipmentRequestUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type EquipmentBorrowGroupUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group_code?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    date_needed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17915,6 +20501,7 @@ export namespace Prisma {
 
   export type RequestCreateManyEmployeeInput = {
     id?: string
+    request_code: string
     type_request: string
     description: string
     reason?: string | null
@@ -17936,6 +20523,7 @@ export namespace Prisma {
 
   export type RequestUpdateWithoutEmployeeInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17958,6 +20546,7 @@ export namespace Prisma {
 
   export type RequestUncheckedUpdateWithoutEmployeeInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17980,6 +20569,7 @@ export namespace Prisma {
 
   export type RequestUncheckedUpdateManyWithoutEmployeeInput = {
     id?: StringFieldUpdateOperationsInput | string
+    request_code?: StringFieldUpdateOperationsInput | string
     type_request?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     reason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18091,6 +20681,7 @@ export namespace Prisma {
 
   export type EquipmentListCreateManyEquipmentEntryInput = {
     id?: string
+    eq_code?: string | null
     payout_amount?: number | null
     remaining?: number
     status?: string | null
@@ -18100,6 +20691,7 @@ export namespace Prisma {
 
   export type EquipmentListUpdateWithoutEquipmentEntryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18110,6 +20702,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedUpdateWithoutEquipmentEntryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18120,6 +20713,7 @@ export namespace Prisma {
 
   export type EquipmentListUncheckedUpdateManyWithoutEquipmentEntryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    eq_code?: NullableStringFieldUpdateOperationsInput | string | null
     payout_amount?: NullableFloatFieldUpdateOperationsInput | number | null
     remaining?: IntFieldUpdateOperationsInput | number
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18129,9 +20723,14 @@ export namespace Prisma {
 
   export type EquipmentRequestCreateManyEquipmentListInput = {
     id?: string
+    equipment_code: string
+    manual_item_name?: string | null
+    manual_item_type?: string | null
     quantity?: number
     reason?: string | null
     remarks?: string | null
+    groupId?: string | null
+    borrow_type?: string | null
     approval?: string | null
     approval_status?: string | null
     approval_comment?: string | null
@@ -18147,9 +20746,13 @@ export namespace Prisma {
 
   export type EquipmentRequestUpdateWithoutEquipmentListInput = {
     id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18160,14 +20763,20 @@ export namespace Prisma {
     it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: EquipmentBorrowGroupUpdateOneWithoutRequestsNestedInput
     user?: UserUpdateOneRequiredWithoutEquipmentRequestsNestedInput
   }
 
   export type EquipmentRequestUncheckedUpdateWithoutEquipmentListInput = {
     id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18183,9 +20792,106 @@ export namespace Prisma {
 
   export type EquipmentRequestUncheckedUpdateManyWithoutEquipmentListInput = {
     id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     reason?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    groupId?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentRequestCreateManyGroupInput = {
+    id?: string
+    equipment_code: string
+    equipment_list_id?: string | null
+    manual_item_name?: string | null
+    manual_item_type?: string | null
+    quantity?: number
+    reason?: string | null
+    remarks?: string | null
+    borrow_type?: string | null
+    approval?: string | null
+    approval_status?: string | null
+    approval_comment?: string | null
+    approval_date?: Date | string | null
+    it_approval?: string | null
+    it_approval_status?: string | null
+    it_approval_comment?: string | null
+    it_approval_date?: Date | string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentRequestUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    equipmentList?: EquipmentListUpdateOneWithoutRequestsNestedInput
+    user?: UserUpdateOneRequiredWithoutEquipmentRequestsNestedInput
+  }
+
+  export type EquipmentRequestUncheckedUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    equipment_list_id?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
+    approval?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    it_approval?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_status?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_comment?: NullableStringFieldUpdateOperationsInput | string | null
+    it_approval_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentRequestUncheckedUpdateManyWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipment_code?: StringFieldUpdateOperationsInput | string
+    equipment_list_id?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_name?: NullableStringFieldUpdateOperationsInput | string | null
+    manual_item_type?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    borrow_type?: NullableStringFieldUpdateOperationsInput | string | null
     approval?: NullableStringFieldUpdateOperationsInput | string | null
     approval_status?: NullableStringFieldUpdateOperationsInput | string | null
     approval_comment?: NullableStringFieldUpdateOperationsInput | string | null

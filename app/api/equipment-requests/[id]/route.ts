@@ -10,31 +10,34 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const equipmentRequest = await prisma.equipmentRequest.findUnique({
-      where: { id: id },
+    
+    // Check if it's a Group first
+    const group = await prisma.equipmentBorrowGroup.findUnique({
+      where: { id },
       include: {
-        user: {
+        user: { include: { employee: true } },
+        requests: {
           include: {
-            employee: true,
-          },
-        },
-        equipmentList: {
-          include: {
-            equipmentEntry: {
-              include: {
-                purchaseOrder: true,
-              },
-            },
-          },
-        },
-      },
+            equipmentList: { include: { equipmentEntry: { include: { purchaseOrder: true } } } }
+          }
+        }
+      }
     });
 
-    if (!equipmentRequest) {
-      return NextResponse.json({ error: "Equipment request not found" }, { status: 404 });
-    }
+    if (group) return NextResponse.json(group);
 
-    return NextResponse.json(equipmentRequest);
+    // Fallback to individual request (Legacy or specific item view)
+    const eqRequest = await prisma.equipmentRequest.findUnique({
+      where: { id },
+      include: {
+        user: { include: { employee: true } },
+        equipmentList: { include: { equipmentEntry: { include: { purchaseOrder: true } } } }
+      }
+    });
+
+    if (!eqRequest) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return NextResponse.json(eqRequest);
+
   } catch (error) {
     console.error("GET /api/equipment-requests/[id] error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -59,75 +62,74 @@ export async function PATCH(
     } = body;
 
     const result = await prisma.$transaction(async (tx) => {
-      const currentRequest = await tx.equipmentRequest.findUnique({
+      const group = await tx.equipmentBorrowGroup.findUnique({
         where: { id },
-        include: { equipmentList: true }
+        include: { requests: { include: { equipmentList: true } } }
       });
 
-      if (!currentRequest) throw new Error("Request not found");
-
-      // Logic: Transitioning IT_APPROVAL_STATUS TO Approved from anything else
-      if (it_approval_status === "APPROVED" && (currentRequest as any).it_approval_status !== "APPROVED") {
-        if (currentRequest.equipmentList.remaining < currentRequest.quantity) {
-          throw new Error("Insufficient stock to approve this request");
+      if (!group) {
+        // Handle as solo request if no group found
+        const solo = await tx.equipmentRequest.findUnique({ where: { id }, include: { equipmentList: true } });
+        if (!solo) throw new Error("Request not found");
+        
+        // Single item stock logic
+        if (it_approval_status === "APPROVED" && (solo as any).it_approval_status !== "APPROVED") {
+           await tx.equipmentList.update({ where: { id: solo.equipment_list_id }, data: { remaining: { decrement: solo.quantity } } });
+        } else if (it_approval_status !== "APPROVED" && (solo as any).it_approval_status === "APPROVED") {
+           await tx.equipmentList.update({ where: { id: solo.equipment_list_id }, data: { remaining: { increment: solo.quantity } } });
         }
-        await tx.equipmentList.update({
-          where: { id: currentRequest.equipment_list_id },
-          data: { remaining: { decrement: currentRequest.quantity } }
-        });
-      } 
-      // Logic: Transitioning IT_APPROVAL_STATUS FROM Approved to anything else
-      else if (it_approval_status !== "APPROVED" && (currentRequest as any).it_approval_status === "APPROVED") {
-        await tx.equipmentList.update({
-          where: { id: currentRequest.equipment_list_id },
-          data: { remaining: { increment: currentRequest.quantity } }
+
+        return await tx.equipmentRequest.update({
+           where: { id },
+           data: {
+             approval_status, approval_comment, approval, approval_date: approval_status ? new Date() : undefined,
+             it_approval_status, it_approval_comment, it_approval, it_approval_date: it_approval_status ? new Date() : undefined,
+           }
         });
       }
 
-      return await tx.equipmentRequest.update({
+      // Group update logic
+      for (const item of group.requests) {
+        if (it_approval_status === "APPROVED" && (item as any).it_approval_status !== "APPROVED") {
+           await tx.equipmentList.update({ where: { id: item.equipment_list_id }, data: { remaining: { decrement: item.quantity } } });
+        } else if (it_approval_status !== "APPROVED" && (item as any).it_approval_status === "APPROVED") {
+           await tx.equipmentList.update({ where: { id: item.equipment_list_id }, data: { remaining: { increment: item.quantity } } });
+        }
+      }
+
+      await tx.equipmentRequest.updateMany({
+        where: { groupId: group.id },
+        data: {
+          approval_status, approval_comment, approval, approval_date: approval_status ? new Date() : undefined,
+          it_approval_status, it_approval_comment, it_approval, it_approval_date: it_approval_status ? new Date() : undefined,
+        }
+      });
+
+      return await tx.equipmentBorrowGroup.update({
         where: { id },
         data: {
-          approval_status,
-          approval_comment,
-          approval,
-          approval_date: (approval_status === "APPROVED" || approval_status === "REJECTED") ? new Date() : undefined,
-          it_approval_status,
-          it_approval_comment,
-          it_approval,
-          it_approval_date: (it_approval_status === "APPROVED" || it_approval_status === "REJECTED") ? new Date() : undefined,
+          approval_status, approval_comment, approval, approval_date: approval_status ? new Date() : undefined,
+          it_approval_status, it_approval_comment, it_approval, it_approval_date: it_approval_status ? new Date() : undefined,
         },
-        include: {
-          equipmentList: {
-            include: { equipmentEntry: true }
-          }
-        }
+        include: { requests: true }
       });
     });
 
-    const isApprovalAction = (body.approval_status && body.approval_status !== "PENDING") || (body.it_approval_status && body.it_approval_status !== "PENDING");
-    
     const headList = await headers();
-    const ip = headList.get("x-forwarded-for") || "unknown";
-    const ua = headList.get("user-agent") || "unknown";
-
     await logAudit({
       userId: session?.user?.id,
       userName: (session?.user as any)?.name,
-      action: isApprovalAction ? "APPROVE_ACTION" : "UPDATE_BORROW_REQUEST",
+      action: "UPDATE_BORROW_BATCH",
       module: "EQUIPMENT_BORROW",
-      details: { 
-        requestId: id, 
-        approvalStatus: result.approval_status,
-        itApprovalStatus: result.it_approval_status
-      },
-      ipAddress: ip,
-      userAgent: ua
+      details: { id, status: approval_status || it_approval_status },
+      ipAddress: headList.get("x-forwarded-for") || "unknown",
+      userAgent: headList.get("user-agent") || "unknown"
     });
 
     return NextResponse.json(result);
   } catch (error: any) {
-    console.error("PATCH /api/equipment-requests/[id] error:", error);
-    return NextResponse.json({ error: error.message || "Failed to update equipment request" }, { status: 400 });
+    console.error("PATCH error:", error);
+    return NextResponse.json({ error: error.message || "Failed to update" }, { status: 400 });
   }
 }
 
@@ -137,47 +139,48 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+    const session = await auth();
 
     await prisma.$transaction(async (tx) => {
-      const requestToDelete = await tx.equipmentRequest.findUnique({
-        where: { id: id },
+      const group = await tx.equipmentBorrowGroup.findUnique({
+        where: { id },
+        include: { requests: true }
       });
 
-      if (requestToDelete && (requestToDelete as any).it_approval_status === "APPROVED") {
-        // Restore inventory only if it was already deducted (IT APPROVED)
-        await tx.equipmentList.update({
-          where: { id: requestToDelete.equipment_list_id },
-          data: {
-            remaining: {
-              increment: requestToDelete.quantity
-            }
+      if (group) {
+        for (const item of group.requests) {
+          if ((item as any).it_approval_status === "APPROVED") {
+            await tx.equipmentList.update({ where: { id: item.equipment_list_id }, data: { remaining: { increment: item.quantity } } });
           }
-        });
+        }
+        await tx.equipmentRequest.deleteMany({ where: { groupId: group.id } });
+        await tx.equipmentBorrowGroup.delete({ where: { id } });
+      } else {
+        const solo = await tx.equipmentRequest.findUnique({ where: { id } });
+        if (solo) {
+          if ((solo as any).it_approval_status === "APPROVED") {
+            await tx.equipmentList.update({ where: { id: solo.equipment_list_id }, data: { remaining: { increment: solo.quantity } } });
+          }
+          await tx.equipmentRequest.delete({ where: { id } });
+        }
       }
-
-      await tx.equipmentRequest.delete({
-        where: { id: id },
-      });
     });
 
-    const session = await auth();
     const headList = await headers();
-    const ip = headList.get("x-forwarded-for") || "unknown";
-    const ua = headList.get("user-agent") || "unknown";
-
     await logAudit({
       userId: (session?.user as any)?.id,
       userName: (session?.user as any)?.name,
-      action: "DELETE_BORROW_REQUEST",
+      action: "DELETE_BORROW_BATCH",
       module: "EQUIPMENT_BORROW",
-      details: { requestId: id },
-      ipAddress: ip,
-      userAgent: ua
+      details: { id },
+      ipAddress: headList.get("x-forwarded-for") || "unknown",
+      userAgent: headList.get("user-agent") || "unknown"
     });
 
     return new NextResponse(null, { status: 204 });
-  } catch (error) {
-    console.error("DELETE /api/equipment-requests/[id] error:", error);
-    return NextResponse.json({ error: "Failed to delete equipment request" }, { status: 500 });
+  } catch (error: any) {
+    console.error("DELETE error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

@@ -11,9 +11,10 @@ interface ModalProps {
   title?: string;
   children: React.ReactNode;
   className?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
 }
 
-export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, className, size = 'md' }: ModalProps) {
   // Prevent scroll when modal is open
   React.useEffect(() => {
     if (isOpen) {
@@ -46,7 +47,12 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
             exit={{ opacity: 0, y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 350 }}
              className={cn(
-               "relative w-full sm:max-w-lg overflow-hidden",
+               "relative w-full overflow-hidden",
+               size === 'sm' && "sm:max-w-sm",
+               size === 'md' && "sm:max-w-lg",
+               size === 'lg' && "sm:max-w-2xl",
+               size === 'xl' && "sm:max-w-4xl",
+               size === 'full' && "sm:max-w-[95vw]",
                "rounded-t-3xl sm:rounded-3xl",
                "bg-white dark:bg-zinc-900 border border-zinc-100 shadow-sm dark:border-zinc-800",
                className

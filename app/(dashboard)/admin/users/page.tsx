@@ -15,6 +15,7 @@ import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface User {
   id: string;
@@ -23,6 +24,7 @@ interface User {
   employee?: {
     employee_name_th: string;
     employee_code: string;
+    employee_name_en: string;
   }
 }
 
@@ -32,6 +34,7 @@ interface Employee {
 }
 
 export default function UsersPage() {
+  const { t, locale } = useTranslation();
   const [users, setUsers] = useState<User[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState("");
@@ -167,7 +170,7 @@ export default function UsersPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
+    if (!confirm(t('common.confirm_delete'))) return;
     try {
       const res = await fetch(`/api/users/${id}`, { method: "DELETE" });
       if (res.ok) fetchUsers();
@@ -179,46 +182,46 @@ export default function UsersPage() {
   return (
     <div className="p-4 sm:p-6 space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-[#0F1059] tracking-tight uppercase flex items-center gap-3">
-             <div className="h-10 w-10 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10">
-                <Users className="h-5 w-5" />
+        <div className="space-y-1">
+          <h1 className="text-3xl font-black text-[#0F1059] tracking-tighter uppercase leading-none flex items-center gap-3">
+             <div className="h-12 w-12 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
+                <Users className="h-6 w-6" />
              </div>
-             ผู้ใช้งานระบบ / System Users
+             {t('users.title')}
           </h1>
-          <p className="text-sm font-medium text-zinc-500 uppercase tracking-widest mt-1">การควบคุมการเข้าถึงและการจัดการสิทธิ์ / Access Control & Privileged Management</p>
+          <p className="text-[12px] font-medium text-zinc-500 uppercase tracking-widest mt-2">{t('users.subtitle')}</p>
         </div>
-        <Button onClick={() => openModal()} className="rounded-2xl bg-[#0F1059] hover:bg-black py-6 px-8 font-black uppercase tracking-widest text-[11px] transition-all hover:scale-105 active:scale-95">
-          <Plus className="mr-2 h-4 w-4" /> สร้างผู้ใช้ใหม่ / Create User
+        <Button onClick={() => openModal()} className="rounded-2xl bg-[#0F1059] hover:bg-black h-14 px-8 font-black uppercase tracking-widest text-[13px] transition-all shadow-xl shadow-[#0F1059]/10">
+          <Plus className="mr-2 h-4 w-4" /> {t('users.create_user')}
         </Button>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 backdrop-blur-xl bg-white/50">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
         <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-2xl border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all lg:col-span-3">
              <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059]" />
              <input 
-                className="bg-transparent border-none outline-none text-sm font-medium w-full"
-                placeholder="Search by username or employee name..."
+                className="bg-transparent border-none outline-none text-[10px] font-black uppercase w-full"
+                placeholder={t('users.search_placeholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
              />
         </div>
         
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-xs font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30"
+          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[12px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans cursor-pointer transition-all"
           value={filterRole}
           onChange={(e) => setFilterRole(e.target.value)}
         >
-          <option value="ALL">All Roles / ทุกบทบาท</option>
-          <option value="user">USER / ผู้ใช้ทั่วไป</option>
-          <option value="admin">ADMIN / ผู้ดูแลระบบ</option>
+          <option value="ALL">{t('users.all_roles')}</option>
+          <option value="user">{t('users.role_user')}</option>
+          <option value="admin">{t('users.role_admin')}</option>
         </select>
       </div>
 
       <Card className="rounded-[40px] border-zinc-100 overflow-hidden bg-white/90">
         <div className="overflow-x-auto">
-          <Table className="w-full text-left">
+          <Table className="w-full text-left font-sans">
             <TableHeader className="bg-zinc-50/50">
               <TableRow className="border-none">
                 <TableHead 
@@ -226,20 +229,22 @@ export default function UsersPage() {
                    onClick={() => handleSort('username')}
                 >
                   <div className="flex items-center gap-1">
-                    User Account
+                    {t('users.username')}
                     {sortConfig.key === 'username' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
-                <TableHead className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">Linked Identity</TableHead>
+                <TableHead className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{t('users.linked_identity')}</TableHead>
+                <TableHead className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{locale === 'th' ? 'รหัสพนักงาน' : 'EMP CODE'}</TableHead>
                 <TableHead 
-                   className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest cursor-pointer hover:bg-zinc-100 transition-colors"
+                   className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest cursor-pointer hover:bg-zinc-100 transition-colors"
                    onClick={() => handleSort('role')}
                 >
                   <div className="flex items-center gap-1">
-                    System Authority
+                    {t('users.system_authority')}
                     {sortConfig.key === 'role' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
+                <TableHead className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{locale === 'th' ? 'วันที่สร้าง' : 'CREATED'}</TableHead>
                 <TableHead className="p-0"></TableHead>
               </TableRow>
             </TableHeader>
@@ -247,47 +252,57 @@ export default function UsersPage() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell colSpan={4} className="h-24 animate-pulse bg-zinc-50/20" />
+                    <TableCell colSpan={6} className="h-24 animate-pulse bg-zinc-50/20" />
                   </TableRow>
                 ))
               ) : filteredUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
-                      ไม่มีผู้ใช้งานที่ตรงตามเงื่อนไข / No matching users found
+                  <TableCell colSpan={6} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
+                      {t('users.no_users_found')}
                   </TableCell>
                 </TableRow>
               ) : filteredUsers.map((user) => (
                 <TableRow key={user.id} className="hover:bg-zinc-50/50 transition-colors group">
                   <TableCell className="px-6 py-4 whitespace-nowrap">
                      <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-2xl bg-zinc-50 flex items-center justify-center border border-zinc-100 group-hover:bg-white transition-colors">
+                        <div className="h-12 w-12 rounded-2xl bg-zinc-50 flex items-center justify-center border border-zinc-100 group-hover:bg-white transition-colors shadow-sm">
                            <UserIcon className="h-5 w-5 text-zinc-400" />
                         </div>
                         <div className="flex flex-col">
                            <span className="font-black text-[#0F1059] uppercase tracking-tight text-sm">{user.username}</span>
-                           <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest leading-none mt-1">UID: {user.id.slice(-8)}</span>
+                           <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest leading-none mt-1">UID: {user.id.slice(-8).toUpperCase()}</span>
                         </div>
                      </div>
                   </TableCell>
-                  <TableCell className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-xs font-bold text-zinc-700 uppercase">{user.employee?.employee_name_th || 'Not Linked / โปรไฟล์เปล่า'}</div>
-                    <div className="text-[9px] text-zinc-400 font-medium uppercase mt-0.5">{user.employee?.employee_code || '-'}</div>
+                  <TableCell className="px-4 py-4 whitespace-nowrap">
+                    <div className="text-[11px] font-black text-zinc-700 uppercase">{user.employee?.employee_name_th || t('users.no_linked_identity')}</div>
+                    <div className="text-[9px] text-zinc-400 font-medium uppercase mt-0.5">{user.employee?.employee_name_en || '-'}</div>
                   </TableCell>
-                  <TableCell className="px-6 py-4 whitespace-nowrap">
+                  <TableCell className="px-4 py-4 whitespace-nowrap">
+                    <span className="text-[10px] font-bold text-[#0F1059]/60 bg-[#0F1059]/5 px-2 py-0.5 rounded uppercase">
+                      {user.employee?.employee_code || '-'}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-4 py-4 whitespace-nowrap">
                      <Badge 
-                       className={cn("rounded-lg text-[8px] font-black uppercase tracking-widest px-2.5 py-1 border-none shadow-none", 
+                       className={cn("rounded-lg text-[10px] font-black uppercase tracking-widest px-3 py-1 border-none shadow-none", 
                          user.role === "admin" ? "bg-rose-50 text-rose-600" : "bg-blue-50 text-blue-600"
                        )}
                      >
-                        {user.role}
+                        {user.role === 'admin' ? t('users.role_admin') : t('users.role_user')}
                      </Badge>
                   </TableCell>
-                  <TableCell className="px-6 py-4 whitespace-nowrap text-right">
+                  <TableCell className="px-4 py-4 whitespace-nowrap">
+                    <span className="text-[10px] font-bold text-zinc-400">
+                      {(user as any).createdAt ? new Date((user as any).createdAt).toLocaleDateString('en-GB') : '-'}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-4 py-4 whitespace-nowrap text-right">
                     <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
-                        <button onClick={() => openModal(user)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all">
+                        <button onClick={() => openModal(user)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm">
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleDelete(user.id)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all">
+                        <button onClick={() => handleDelete(user.id)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm">
                           <Trash2 className="w-4 h-4" />
                         </button>
                     </div>
@@ -302,28 +317,28 @@ export default function UsersPage() {
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        title={editingId ? "อัปเดตผู้ใช้งาน / UPDATE SYSTEM USER" : "สร้างผู้ใช้งานใหม่ / CREATE SYSTEM USER"}
+        title={editingId ? t('users.update_title') : t('users.new_title')}
       >
-        <form onSubmit={handleSave} className="space-y-6">
+        <form onSubmit={handleSave} className="space-y-6 font-sans">
            <div className="space-y-1.5">
-              <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">ชื่อผู้ใช้ / Account Username</label>
+              <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('users.username')}</label>
               <input 
                  required
-                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all"
+                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all shadow-sm"
                  value={formData.username}
                  onChange={(e) => setFormData({...formData, username: e.target.value})}
               />
            </div>
            
            <div className="space-y-1.5">
-              <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">
-                 {editingId ? "รีเซ็ตรหัสผ่าน (ไม่บังคับ) / Password Reset" : "รหัสผ่านเริ่มต้น / Secret Password"}
+              <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">
+                 {editingId ? t('users.password_reset') : t('users.password_default')}
               </label>
               <input 
                  required={!editingId}
                  type="password"
-                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all"
-                 placeholder={editingId ? "Leave blank to keep current" : "••••••••"}
+                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all shadow-sm"
+                 placeholder={editingId ? t('users.password_placeholder') : "••••••••"}
                  value={formData.password}
                  onChange={(e) => setFormData({...formData, password: e.target.value})}
               />
@@ -331,39 +346,39 @@ export default function UsersPage() {
 
            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                 <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">บทบาทระบบ / System Authority</label>
+                 <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('users.system_authority')}</label>
                  <select 
-                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-bold text-[#0F1059] uppercase outline-none"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] uppercase outline-none focus:border-[#0F1059]/30 shadow-sm transition-all cursor-pointer"
                     value={formData.role}
                     onChange={(e) => setFormData({...formData, role: e.target.value})}
                  >
-                    <option value="user">USER / ผู้ใช้ทั่วไป</option>
-                    <option value="admin">ADMIN / ผู้ดูแลระบบ</option>
+                    <option value="user">{t('users.role_user')}</option>
+                    <option value="admin">{t('users.role_admin')}</option>
                  </select>
               </div>
               <div className="space-y-1.5">
-                 <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">เชื่อมพนักงาน / Link Identity</label>
+                 <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('users.linked_identity')}</label>
                  <select 
-                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:border-[#0F1059]/30 shadow-sm transition-all cursor-pointer"
                     value={formData.employeeId}
                     onChange={(e) => setFormData({...formData, employeeId: e.target.value})}
                  >
-                    <option value="">-- NO LINKED IDENTITY --</option>
+                    <option value="">{t('users.no_linked_identity')}</option>
                     {employees.map(emp => <option key={emp.id} value={emp.id}>{emp.employee_name_th}</option>)}
                  </select>
               </div>
            </div>
 
            <div className="flex items-center gap-3 pt-4 border-t border-zinc-50">
-              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest">
-                 ยกเลิก / Cancel
+              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-xl text-[13px] font-black uppercase tracking-widest">
+                 {t('common.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={isSaving}
-                className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white shadow-2xl shadow-[#0F1059]/20 text-[11px] font-black uppercase tracking-widest transition-all"
+                className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[13px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
               >
-                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : "บันทึก / Save Changes"}
+                 {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t('common.save')}
               </Button>
            </div>
         </form>

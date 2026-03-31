@@ -1,14 +1,6 @@
 @import "tailwindcss";
 
-:root {
-  --background: #F8F9FA;
-  --foreground: #212529;
-  --primary: #0F1059;
-  --secondary: #E9ECEF;
-  --accent: #ADB5BD;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -17,38 +9,49 @@
   --font-sans: var(--font-bai-jamjuree), ui-sans-serif, system-ui;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Explicitly bind dark: variant to .dark class for class-based mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #F8F9FA;
+  --foreground: #212529;
+  --primary: #0F1059;
+  --secondary: #E9ECEF;
+  --accent: #ADB5BD;
+  
+  /* Layout shifts and scrollbars */
+  scrollbar-gutter: stable;
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark {
+  --background: #09090b; /* zinc-950 */
+  --foreground: #fafafa; /* zinc-50 */
+  --secondary: #27272a; /* zinc-800 */
+  --accent: #52525b; /* zinc-600 */
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-bai-jamjuree), sans-serif;
-  font-size: 15px;
-  line-height: 1.65;
-  letter-spacing: 0em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Tame uppercase letter-spacing globally ───────────────────── */
-.uppercase {
-  letter-spacing: 0.04em;
-}
-
-/* ── Consistent small-label utility ──────────────────────────── */
-.ui-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-}
-
+/* ──────────────────────────────────────────────────────────────────────────
+   Robust Scrollbars
+   ────────────────────────────────────────────────────────────────────────── */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -56,10 +59,31 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #E9ECEF;
+  background: var(--accent);
   border-radius: 10px;
+  transition: background 0.2s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #ADB5BD;
+  background: var(--primary);
 }
+
+/* Ensure chart containers and modals respect variables */
+[data-theme='dark'], .dark {
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #ef4444;
+}
+
+[data-theme='light'], :root {
+  --chart-1: #2563eb;
+  --chart-2: #059669;
+  --chart-3: #d97706;
+  --chart-4: #7c3aed;
+  --chart-5: #dc2626;
+}
+
+/* Remove the hacky overrides from previous implementation that used !important */
+/* Instead, we expect components to use dark: variants correctly or semantic tokens */
