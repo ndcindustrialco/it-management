@@ -92,11 +92,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
              <ThemeSwitcher />
              <LanguageSwitcher />
 
-             <button className="p-2 text-accent hover:text-primary relative hover:bg-secondary rounded-lg transition-all">
-                <Bell className="h-5 w-5" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full border-2 border-surface"></span>
-             </button>
-
              <div className="h-8 w-px bg-border mx-1 hidden sm:block"></div>
 
              {/* Profile Dropdown */}
@@ -107,7 +102,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                        {session?.user?.name?.[0] || <User className="h-5 w-5" />}
                     </div>
                     <div className="text-left hidden sm:block pr-1">
-                       <p className="text-sm font-bold text-foreground leading-none">{employee?.employee_name_th || session?.user?.name || "System Member"}</p>
+                       <p className="text-sm font-bold text-foreground leading-none">{employee?.employee_name_th || session?.user?.name || "System Member"}</p> 
                        <p className="text-[10px] text-accent font-medium uppercase mt-1 tracking-tight">{employee?.department || (session?.user as any)?.role || "User"}</p>
                     </div>
                   </button>
