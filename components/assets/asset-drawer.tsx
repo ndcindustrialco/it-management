@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Drawer } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Loader2, Database } from "lucide-react";
+import { Loader2, Database, Laptop, Calendar as CalendarIcon, MapPin, ClipboardList } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { AssetInput } from "@/lib/validations/asset";
 import { EmployeeSearchSelect, Employee } from "@/components/employee-search-select";
@@ -100,16 +100,16 @@ export function AssetDrawer({
       title={initialData ? t("assets.edit_asset") : t("assets.add_asset")}
       size="lg"
     >
-      <form onSubmit={handleSubmit} className="space-y-6 pb-20 font-sans">
-        {/* Quick Reference from Equipment Entry */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6 pb-24 font-sans">
+        {/* Quick Reference Section */}
         {!initialData && (
-          <div className="p-4 bg-[#0F1059]/5 border border-[#0F1059]/10 rounded-2xl space-y-3">
-            <div className="flex items-center gap-2 text-[#0F1059] font-black text-[10px] uppercase tracking-widest">
-              <Database className="h-3 w-3" />
-              Quick Fill from Reception
+          <div className="p-4 bg-primary/5 border border-primary/10 rounded-xl space-y-3">
+            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
+              <Database className="h-3.5 w-3.5" />
+              Quick Fill from Reception Cache
             </div>
             <select
-              className="w-full bg-white border border-zinc-100 rounded-xl px-4 py-2.5 text-[11px] font-bold outline-none cursor-pointer"
+              className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium outline-none focus:border-primary/50 cursor-pointer"
               onChange={(e) => handleSelectEquipEntry(e.target.value)}
               defaultValue=""
             >
@@ -123,148 +123,177 @@ export function AssetDrawer({
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.type")}</label>
-            <select
-              required
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-            >
-              <option value="NOTEBOOK">NOTEBOOK</option>
-              <option value="PC">PC / DESKTOP</option>
-              <option value="SCREEN">SCREEN / MONITOR</option>
-              <option value="PRINTER">PRINTER</option>
-              <option value="OTHER">OTHER</option>
-            </select>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+           {/* Section 1: Basic Info */}
+           <div className="space-y-4 md:col-span-2">
+              <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                 <Laptop className="h-4 w-4 text-primary" />
+                 <span className="text-sm">Device Identification</span>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.type")}</label>
+                   <select
+                     required
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 outline-none focus:border-primary/50 transition-all"
+                     value={formData.type}
+                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                   >
+                     <option value="NOTEBOOK">NOTEBOOK</option>
+                     <option value="PC">PC / DESKTOP</option>
+                     <option value="SCREEN">SCREEN / MONITOR</option>
+                     <option value="PRINTER">PRINTER</option>
+                     <option value="OTHER">OTHER</option>
+                   </select>
+                 </div>
 
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.serial_number")}</label>
-            <input
-              required
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.serial_number}
-              onChange={(e) => setFormData({ ...formData, serial_number: e.target.value })}
-              placeholder="e.g. SN123456789"
-            />
-          </div>
+                 <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.serial_number")}</label>
+                   <input
+                     required
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-bold text-slate-700 outline-none focus:border-primary/50 transition-all placeholder:font-normal placeholder:text-slate-300"
+                     value={formData.serial_number}
+                     onChange={(e) => setFormData({ ...formData, serial_number: e.target.value })}
+                     placeholder="SN123456789"
+                   />
+                 </div>
 
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors col-span-2">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">Device Name / Description</label>
-            <input
-              required
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g. Notebook Admin 01"
-            />
-          </div>
+                 <div className="space-y-1.5 md:col-span-2">
+                   <label className="text-xs font-semibold text-slate-500">Asset Name / Tag</label>
+                   <input
+                     required
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all"
+                     value={formData.name}
+                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                     placeholder="e.g. Notebook Admin 01"
+                   />
+                 </div>
+              </div>
+           </div>
 
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.brand")}</label>
-            <input
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.brand || ""}
-              onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-              placeholder="e.g. Dell, HP, Lenovo"
-            />
-          </div>
+           {/* Section 2: Hardware Specs */}
+           <div className="space-y-4 md:col-span-2">
+              <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                 <ClipboardList className="h-4 w-4 text-primary" />
+                 <span className="text-sm">Hardware Details</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-500">{t("assets.brand")}</label>
+                    <input
+                      className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all"
+                      value={formData.brand || ""}
+                      onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                      placeholder="e.g. Dell, HP"
+                    />
+                 </div>
+                 <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-500">{t("assets.model")}</label>
+                    <input
+                      className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all"
+                      value={formData.model || ""}
+                      onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+                      placeholder="e.g. Latitude 5420"
+                    />
+                 </div>
+                 <div className="space-y-1.5 md:col-span-2">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.specs")}</label>
+                   <textarea
+                     rows={2}
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all resize-none"
+                     value={formData.specs || ""}
+                     onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
+                     placeholder="CPU, RAM, Storage details..."
+                   />
+                 </div>
+              </div>
+           </div>
 
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.model")}</label>
-            <input
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.model || ""}
-              onChange={(e) => setFormData({ ...formData, model: e.target.value })}
-              placeholder="e.g. Latitude 5420"
-            />
-          </div>
+           {/* Section 3: Purchase & Warranty */}
+           <div className="space-y-4 md:col-span-2">
+              <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                 <CalendarIcon className="h-4 w-4 text-primary" />
+                 <span className="text-sm">Timeline & Warranty</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.purchase_date")}</label>
+                   <input
+                     type="date"
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all"
+                     value={formData.purchase_date || ""}
+                     onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })}
+                   />
+                 </div>
+                 <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.warranty_expire")}</label>
+                   <input
+                     type="date"
+                     className={cn(
+                       "w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-bold outline-none focus:border-primary/50 transition-all",
+                       formData.warranty_expire && new Date(formData.warranty_expire) < new Date() ? "text-rose-500 border-rose-200 bg-rose-50/50" : "text-slate-700"
+                     )}
+                     value={formData.warranty_expire || ""}
+                     onChange={(e) => setFormData({ ...formData, warranty_expire: e.target.value })}
+                   />
+                 </div>
+              </div>
+           </div>
 
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors col-span-2">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.specs")}</label>
-            <textarea
-              rows={3}
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm resize-none"
-              value={formData.specs || ""}
-              onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
-              placeholder="CPU, RAM, Storage details..."
-            />
-          </div>
-
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.purchase_date")}</label>
-            <input
-              type="date"
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.purchase_date || ""}
-              onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.warranty_expire")}</label>
-            <input
-              type="date"
-              className={cn(
-                "w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black outline-none focus:bg-white transition-all shadow-sm",
-                formData.warranty_expire && new Date(formData.warranty_expire) < new Date() ? "text-rose-500 border-rose-100 bg-rose-50" : "text-[#0F1059]"
-              )}
-              value={formData.warranty_expire || ""}
-              onChange={(e) => setFormData({ ...formData, warranty_expire: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.location")}</label>
-            <input
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.location || ""}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              placeholder="e.g. IT Room, Rayong"
-            />
-          </div>
-
-          <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-            <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("assets.status")}</label>
-            <select
-              className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-              value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-            >
-              <option value="AVAILABLE">AVAILABLE</option>
-              <option value="IN_USE">IN USE</option>
-              <option value="REPAIR">REPAIR</option>
-              <option value="SCRAP">SCRAP / DISPOSAL</option>
-            </select>
-          </div>
+           {/* Section 4: Assignment & Status */}
+           <div className="space-y-4 md:col-span-2">
+              <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                 <MapPin className="h-4 w-4 text-primary" />
+                 <span className="text-sm">Location & Assignment</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.location")}</label>
+                   <input
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all"
+                     value={formData.location || ""}
+                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                     placeholder="e.g. IT Room, Rayong"
+                   />
+                 </div>
+                 <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("assets.status")}</label>
+                   <select
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-bold text-slate-700 outline-none focus:border-primary/50 transition-all"
+                     value={formData.status}
+                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                   >
+                     <option value="AVAILABLE">AVAILABLE</option>
+                     <option value="IN_USE">IN USE</option>
+                     <option value="REPAIR">REPAIR</option>
+                     <option value="SCRAP">SCRAP / DISPOSAL</option>
+                   </select>
+                 </div>
+                 <div className="space-y-1.5 md:col-span-2">
+                   <label className="text-xs font-semibold text-slate-500">Employee Assignment</label>
+                   <EmployeeSearchSelect
+                     value={formData.employeeId || ""}
+                     onChange={(val) => {
+                       const emp = employees.find(e => e.employee_name_th === val || e.id === val);
+                       setFormData({ ...formData, employeeId: emp?.id || null, status: emp ? "IN_USE" : formData.status });
+                     }}
+                     employees={employees}
+                     placeholder={t("assets.unassigned")}
+                   />
+                 </div>
+              </div>
+           </div>
         </div>
 
-        <div className="space-y-3 pt-4 border-t border-zinc-100">
-          <label className="text-[11px] font-black text-[#0F1059] uppercase tracking-widest px-1 flex items-center gap-2">
-            Assign to Employee (Optional)
-          </label>
-          <EmployeeSearchSelect
-            value={formData.employeeId || ""}
-            onChange={(val) => {
-              // Find the employee ID based on the name or code returned by the select
-              const emp = employees.find(e => e.employee_name_th === val || e.id === val);
-              setFormData({ ...formData, employeeId: emp?.id || null, status: emp ? "IN_USE" : formData.status });
-            }}
-            employees={employees}
-            placeholder={t("assets.unassigned")}
-          />
-        </div>
-
-        <div className="flex items-center gap-3 pt-6">
-          <Button type="button" variant="ghost" onClick={onClose} className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest">
+        <div className="flex items-center gap-3 mt-4">
+          <Button type="button" variant="ghost" onClick={onClose} className="flex-1 h-11 rounded-lg font-bold border border-slate-200">
             {t("common.cancel")}
           </Button>
           <Button 
             type="submit" 
             disabled={isSaving}
-            className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
+            className="flex-1 h-11 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold transition-all shadow-md active:scale-95"
           >
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t("common.save")}
           </Button>

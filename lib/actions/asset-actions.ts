@@ -6,17 +6,66 @@ import { assetSchema, AssetInput } from "@/lib/validations/asset";
 import { generateAssetCode } from "@/lib/asset-utils";
 import { logAudit } from "@/lib/audit";
 
-export async function getAssets() {
+export async function getAssets(params: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  type?: string;
+  status?: string;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+} = {}) {
   try {
-    const assets = await prisma.asset.findMany({
-      include: {
-        employee: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-    return { success: true, data: JSON.parse(JSON.stringify(assets)) };
+    const { 
+      page = 1, 
+      limit = 50, 
+      search = "", 
+      type = "ALL", 
+      status = "ALL",
+      sortField = "asset_code",
+      sortOrder = "desc" 
+    } = params;
+
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { asset_code: { contains: search, mode: 'insensitive' } },
+        { serial_number: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } },
+        { brand: { contains: search, mode: 'insensitive' } },
+        { model: { contains: search, mode: 'insensitive' } },
+        { employee: { employee_name_th: { contains: search, mode: 'insensitive' } } },
+        { employee: { employee_name_en: { contains: search, mode: 'insensitive' } } },
+        { employee: { employee_code: { contains: search, mode: 'insensitive' } } },
+      ];
+    }
+    if (type !== "ALL") where.type = type;
+    if (status !== "ALL") where.status = status;
+
+    const [assets, total] = await Promise.all([
+      prisma.asset.findMany({
+        where,
+        include: {
+          employee: true,
+        },
+        orderBy: {
+          [sortField]: sortOrder,
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.asset.count({ where }),
+    ]);
+
+    return { 
+      success: true, 
+      data: JSON.parse(JSON.stringify(assets)),
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    };
   } catch (error) {
     console.error("Failed to fetch assets:", error);
     return { success: false, error: "Failed to fetch assets" };

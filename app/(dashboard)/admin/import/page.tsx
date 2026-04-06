@@ -48,7 +48,7 @@ export default function ImportPage() {
           list: "MacBook Pro M2", 
           detail: "Apple MacBook Pro M2 13-inch 8/256GB", 
           quantity: 10, 
-          reason_order: "For New Employee", 
+          reason_order: "ขอซื้อรายการใหม่ / Request to buy a new item", 
           buyer: "Admin",
           status: "PENDING",
           reviewer: "Reviewer Name",

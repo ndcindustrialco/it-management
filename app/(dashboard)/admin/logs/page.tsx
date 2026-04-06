@@ -36,22 +36,47 @@ export default function AuditLogsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
+  // Pagination, Filters & Sorting logic states
   const [filterModule, setFilterModule] = useState<string>("ALL");
-  const [sortConfig, setSortConfig] = useState<{ key: keyof AuditLog; direction: 'asc' | 'desc' }>({
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 50;
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' }>({
     key: 'createdAt',
     direction: 'desc'
   });
 
   useEffect(() => {
-    fetchLogs();
-  }, []);
+    const timer = setTimeout(() => {
+      fetchLogs();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, filterModule, sortConfig, page]);
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, filterModule, sortConfig]);
 
   const fetchLogs = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/audit-logs");
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        search,
+        filterModule,
+        sortField: sortConfig.key,
+        sortOrder: sortConfig.direction
+      });
+      const res = await fetch(`/api/audit-logs?${params.toString()}`);
       const data = await res.json();
-      if (Array.isArray(data)) setLogs(data);
+      if (data.logs) {
+        setLogs(data.logs);
+        setTotalPages(data.totalPages);
+        setTotal(data.total);
+      }
     } catch (error) {
       console.error("Fetch logs error:", error);
     } finally {
@@ -59,38 +84,13 @@ export default function AuditLogsPage() {
     }
   };
 
-  const handleSort = (key: keyof AuditLog) => {
+  const handleSort = (key: string) => {
     let direction: 'asc' | 'desc' = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
     setSortConfig({ key, direction });
   };
-
-  const filteredLogs = logs
-    .filter(log => {
-      const searchLow = search.toLowerCase();
-      const actionMatch = log.action.toLowerCase().includes(searchLow);
-      const nameMatch = log.userName?.toLowerCase().includes(searchLow);
-      const moduleMatch = log.module.toLowerCase().includes(searchLow);
-      const detailMatch = log.details?.toLowerCase().includes(searchLow);
-      const deviceMatch = log.device?.toLowerCase().includes(searchLow);
-      
-      const matchesSearch = actionMatch || moduleMatch || nameMatch || detailMatch || deviceMatch;
-      const matchesModule = filterModule === "ALL" || log.module === filterModule;
-      
-      return matchesSearch && matchesModule;
-    })
-    .sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-      
-      if (!aValue || !bValue) return 0;
-      
-      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
 
   const modules = ["ALL", ...new Set(logs.map(l => l.module))];
 
@@ -107,7 +107,7 @@ export default function AuditLogsPage() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl font-black text-[#0F1059] tracking-tighter uppercase leading-none flex items-center gap-3">
-             <div className="h-12 w-12 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
+             <div className="h-12 w-12 rounded-lg bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
                 <ShieldCheck className="h-6 w-6" />
              </div>
              {t('logs.title')}
@@ -115,7 +115,7 @@ export default function AuditLogsPage() {
           <p className="text-[12px] font-medium text-zinc-500 uppercase tracking-widest mt-2">{t('logs.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
-            <Button onClick={fetchLogs} variant="outline" className="rounded-2xl border-zinc-200 h-12 px-6 bg-white/50 backdrop-blur-sm font-black uppercase tracking-widest text-[10px] transition-all">
+            <Button onClick={fetchLogs} variant="outline" className="rounded-lg border-zinc-200 h-11 px-6 bg-white/50 backdrop-blur-sm font-black uppercase tracking-widest text-[10px] transition-all shadow-sm">
                 <Clock className="h-4 w-4 mr-2" /> {t('logs.refresh')}
             </Button>
         </div>
@@ -123,19 +123,19 @@ export default function AuditLogsPage() {
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-         <Card className="p-5 rounded-3xl border-zinc-100 flex items-center gap-4 group bg-white/80 backdrop-blur-sm shadow-sm">
-            <div className="h-12 w-12 rounded-2xl bg-zinc-50 flex items-center justify-center text-[#0F1059] border border-zinc-100 group-hover:bg-[#0F1059] group-hover:text-white transition-all shadow-inner">
+          <Card className="p-5 rounded-xl border-zinc-100 flex items-center gap-4 group bg-white/80 backdrop-blur-sm shadow-sm">
+            <div className="h-12 w-12 rounded-lg bg-zinc-50 flex items-center justify-center text-[#0F1059] border border-zinc-100 group-hover:bg-[#0F1059] group-hover:text-white transition-all shadow-inner">
                <Activity className="h-5 w-5" />
             </div>
             <div>
                <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-0.5">{t('logs.total_logs')}</p>
-               <p className="text-xl font-black text-[#0F1059] leading-none">{logs.length}</p>
+               <p className="text-xl font-black text-[#0F1059] leading-none">{total}</p>
             </div>
-         </Card>
+          </Card>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/80 backdrop-blur-sm p-4 rounded-3xl border border-zinc-100 shadow-sm font-sans">
-        <div className="flex w-full sm:w-1/2 items-center gap-3 px-4 py-2 bg-zinc-50 rounded-2xl border border-zinc-100 focus-within:border-[#0F1059]/30 transition-all group">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-zinc-100 shadow-sm font-sans">
+        <div className="flex w-full sm:w-1/2 items-center gap-3 px-4 py-2 bg-zinc-50 rounded-lg border border-zinc-100 focus-within:border-[#0F1059]/30 transition-all group">
              <Search className="h-4 w-4 text-zinc-300 group-focus-within:text-[#0F1059]" />
              <input 
                 className="bg-transparent border-none outline-none text-[10px] font-black uppercase w-full placeholder:text-zinc-300"
@@ -146,13 +146,16 @@ export default function AuditLogsPage() {
         </div>
         
         <div className="flex gap-2 w-full sm:w-auto overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-2 bg-zinc-50 p-1.5 rounded-2xl border border-zinc-100">
+            <div className="flex items-center gap-2 bg-zinc-50 p-1.5 rounded-lg border border-zinc-100">
                {modules.map(mod => (
                  <button
                    key={mod}
-                   onClick={() => setFilterModule(mod)}
+                   onClick={() => {
+                     setFilterModule(mod);
+                     setPage(1);
+                   }}
                    className={cn(
-                     "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap",
+                     "px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap",
                      filterModule === mod ? "bg-[#0F1059] text-white shadow-lg shadow-[#0F1059]/20" : "text-zinc-400 hover:text-zinc-600"
                    )}
                  >
@@ -163,7 +166,7 @@ export default function AuditLogsPage() {
         </div>
       </div>
 
-      <Card className="rounded-[40px] overflow-hidden bg-white/90 backdrop-blur-xl border border-zinc-100 shadow-sm">
+      <Card className="rounded-xl overflow-hidden bg-white/90 backdrop-blur-xl border border-zinc-100 shadow-sm">
         <Table className="w-full text-left font-sans">
           <TableHeader className="bg-zinc-50/50">
             <TableRow className="border-none">
@@ -215,7 +218,7 @@ export default function AuditLogsPage() {
                    <TableCell colSpan={7} className="h-20 animate-pulse bg-zinc-50/20" />
                  </TableRow>
                ))
-            ) : filteredLogs.length === 0 ? (
+            ) : logs.length === 0 ? (
                <TableRow>
                  <TableCell colSpan={7} className="py-24 text-center">
                     <div className="flex flex-col items-center gap-4 opacity-20">
@@ -224,7 +227,7 @@ export default function AuditLogsPage() {
                     </div>
                  </TableCell>
                </TableRow>
-            ) : filteredLogs.map((log) => (
+            ) : logs.map((log) => (
               <TableRow key={log.id} className="hover:bg-[#0F1059]/2 transition-colors group cursor-pointer" onClick={() => setSelectedLog(log)}>
                 <TableCell className="px-6 py-5 whitespace-nowrap">
                    <div className="flex items-center gap-3">
@@ -244,13 +247,13 @@ export default function AuditLogsPage() {
                   </div>
                 </TableCell>
                 <TableCell className="px-6 py-5 whitespace-nowrap">
-                  <Badge variant={getActionBadge(log.action)} className="rounded-xl text-[9px] font-black uppercase tracking-widest px-3 py-1 border-none drop-shadow-sm">
+                  <Badge variant={getActionBadge(log.action)} className="rounded-lg text-[9px] font-black uppercase tracking-widest px-3 py-1 border-none drop-shadow-sm shadow-sm">
                     {log.action}
                   </Badge>
                 </TableCell>
                 <TableCell className="px-6 py-5 whitespace-nowrap">
                    <div className="flex items-center gap-3">
-                       <div className="h-8 w-8 rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center shadow-sm">
+                       <div className="h-8 w-8 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shadow-sm">
                           <User className="h-4 w-4 text-[#0F1059]" />
                        </div>
                        <div className="flex flex-col">
@@ -260,17 +263,17 @@ export default function AuditLogsPage() {
                    </div>
                 </TableCell>
                 <TableCell className="px-6 py-5 whitespace-nowrap">
-                   <span className="text-[10px] font-black text-zinc-500 bg-zinc-50 px-2.5 py-1.5 rounded-xl border border-zinc-100 uppercase tracking-tight shadow-sm">
+                   <span className="text-[10px] font-black text-zinc-500 bg-zinc-50 px-2.5 py-1.5 rounded-lg border border-zinc-100 uppercase tracking-tight shadow-sm">
                       {log.device || "Unknown Device"}
                    </span>
                 </TableCell>
                 <TableCell className="px-4 py-5 whitespace-nowrap">
-                   <span className="text-[9px] font-mono font-bold text-zinc-400 bg-zinc-50 px-2 py-1 rounded border border-zinc-100">
+                   <span className="text-[9px] font-mono font-bold text-zinc-400 bg-zinc-50 px-2 py-1 rounded-lg border border-zinc-100 shadow-sm">
                       {log.ipAddress || '-'}
                    </span>
                 </TableCell>
                 <TableCell className="px-6 py-5 whitespace-nowrap text-right">
-                    <button className="h-10 w-10 rounded-2xl flex items-center justify-center bg-white border border-zinc-100 transition-all text-zinc-300 group-hover:text-[#0F1059] group-hover:border-[#0F1059]/30 group-hover:bg-[#0F1059]/5 shadow-sm">
+                    <button className="h-10 w-10 rounded-lg flex items-center justify-center bg-white border border-zinc-100 transition-all text-zinc-300 group-hover:text-[#0F1059] group-hover:border-[#0F1059]/30 group-hover:bg-[#0F1059]/5 shadow-sm">
                        <LayoutGrid className="h-4 w-4" />
                     </button>
                 </TableCell>
@@ -278,6 +281,38 @@ export default function AuditLogsPage() {
             ))}
           </TableBody>
         </Table>
+        
+        {/* Pagination UI */}
+        <div className="px-6 py-4 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between">
+            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">
+               {t('common.total')} {total} {t('logs.entry_count') || 'LOGS'}
+            </div>
+            <div className="flex items-center gap-2">
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page <= 1 || isLoading}
+                 onClick={() => setPage(page - 1)}
+                 className="h-8 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.previous')}
+               </Button>
+               <div className="flex items-center gap-1.5 px-3">
+                  <span className="text-[11px] font-black text-[#0F1059]">{page}</span>
+                  <span className="text-[10px] font-bold text-zinc-300">/</span>
+                  <span className="text-[10px] font-bold text-zinc-400">{totalPages}</span>
+               </div>
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page >= totalPages || isLoading}
+                 onClick={() => setPage(page + 1)}
+                 className="h-8 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.next')}
+               </Button>
+            </div>
+        </div>
       </Card>
 
       <Modal
@@ -287,13 +322,13 @@ export default function AuditLogsPage() {
       >
         {selectedLog && (
            <div className="space-y-6 font-sans">
-              <div className="flex items-center justify-between p-6 rounded-3xl bg-zinc-50/50 border border-zinc-100 shadow-inner">
+               <div className="flex items-center justify-between p-6 rounded-xl bg-zinc-50/50 border border-zinc-100 shadow-inner">
                  <div className="space-y-2">
                     <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
                        <Activity className="h-3 w-3" /> {t('logs.action_module')}
                     </p>
                     <div className="flex items-center gap-3">
-                        <Badge variant={getActionBadge(selectedLog.action)} className="rounded-xl px-4 py-1 font-black shadow-sm">{selectedLog.action}</Badge>
+                        <Badge variant={getActionBadge(selectedLog.action)} className="rounded-lg px-4 py-1 font-black shadow-sm">{selectedLog.action}</Badge>
                         <span className="h-1.5 w-1.5 bg-zinc-300 rounded-full" />
                         <span className="text-[11px] font-black text-[#0F1059] uppercase tracking-[0.2em]">{selectedLog.module}</span>
                     </div>
@@ -305,13 +340,13 @@ export default function AuditLogsPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-5">
-                 <div className="p-5 rounded-3xl border border-zinc-100 bg-zinc-50/30 shadow-sm">
+                 <div className="p-5 rounded-xl border border-zinc-100 bg-zinc-50/30 shadow-sm">
                     <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                        <User className="h-3.5 w-3.5" /> {t('users.username')}
                     </p>
                     <p className="text-xs font-black text-[#0F1059] uppercase">{selectedLog.userName || "Guest Access"}</p>
                  </div>
-                 <div className="p-5 rounded-3xl border border-zinc-100 bg-zinc-50/30 shadow-sm">
+                 <div className="p-5 rounded-xl border border-zinc-100 bg-zinc-50/30 shadow-sm">
                     <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                        <LayoutGrid className="h-3.5 w-3.5" /> {t('logs.device')}
                     </p>
@@ -323,21 +358,21 @@ export default function AuditLogsPage() {
                  <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1 flex items-center gap-2">
                     <FileText className="h-3.5 w-3.5" /> {t('logs.raw_json')}
                  </p>
-                 <div className="p-6 rounded-[32px] bg-zinc-900 text-[#A5A6D9] font-mono text-[11px] overflow-x-auto border border-zinc-800 shadow-2xl ring-1 ring-white/5">
+                 <div className="p-6 rounded-lg bg-zinc-900 text-[#A5A6D9] font-mono text-[11px] overflow-x-auto border border-zinc-800 shadow-2xl ring-1 ring-white/5">
                     <pre className="whitespace-pre-wrap leading-relaxed scrollbar-thin scrollbar-thumb-zinc-700">
                         {selectedLog.details ? JSON.stringify(JSON.parse(selectedLog.details), null, 2) : "NO ADDITIONAL DATA"}
                     </pre>
                  </div>
               </div>
               
-              <div className="p-5 rounded-3xl border border-zinc-100 bg-zinc-50/20 shadow-sm">
+              <div className="p-5 rounded-xl border border-zinc-100 bg-zinc-50/20 shadow-sm">
                 <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">{t('logs.user_agent')}</p>
                 <p className="text-[10px] font-bold text-zinc-500 break-all leading-normal opacity-70 italic">{selectedLog.userAgent || "N/A"}</p>
               </div>
 
               <Button 
                 onClick={() => setSelectedLog(null)}
-                className="w-full h-14 rounded-3xl bg-[#0F1059] hover:bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] transition-all active:scale-95 shadow-xl shadow-[#0F1059]/20"
+                className="w-full h-12 rounded-lg bg-[#0F1059] hover:bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] transition-all active:scale-95 shadow-xl shadow-[#0F1059]/20"
               >
                   {t('logs.close')}
               </Button>

@@ -83,6 +83,10 @@ export default function TicketsPage() {
     key: 'createdAt',
     direction: 'desc'
   });
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 50;
 
   // Export states
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -113,23 +117,48 @@ export default function TicketsPage() {
   const [editingTicket, setEditingTicket] = useState<RequestTicket | null>(null);
 
   useEffect(() => {
-    fetchTickets();
     fetchEmployees();
   }, []);
 
-  const fetchTickets = async () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchTicketsList();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, filterStatus, filterPriority, filterCategory, filterTypeRequest, sortConfig, page]);
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, filterStatus, filterPriority, filterCategory, filterTypeRequest, sortConfig]);
+
+  const fetchTicketsList = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/requests");
-      const data = await res.json();
-      if (Array.isArray(data)) setTickets(data);
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        search,
+        status: filterStatus,
+        priority: filterPriority,
+        category: filterCategory,
+        type_request: filterTypeRequest,
+        sortField: sortConfig.key as string,
+        sortOrder: sortConfig.direction
+      });
+      const res = await fetch(`/api/requests?${params.toString()}`);
+      const result = await res.json();
+      if (result.data) {
+        setTickets(result.data);
+        setTotal(result.total || 0);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Fetch tickets error:", error);
     } finally {
       setIsLoading(false);
     }
   };
-
   const fetchEmployees = async () => {
     try {
       const res = await fetch("/api/employees");
@@ -147,42 +176,12 @@ export default function TicketsPage() {
     }
     setSortConfig({ key, direction });
   };
-
-  const filteredTickets = tickets
-    .filter(t => {
-      const searchLow = search.toLowerCase();
-      const matchesSearch =
-        t.description.toLowerCase().includes(searchLow) ||
-        (t.request_code || "").toLowerCase().includes(searchLow) ||
-        (t.employee?.employee_name_th || "").toLowerCase().includes(searchLow) ||
-        (t.employee?.department || "").toLowerCase().includes(searchLow) ||
-        (t.employee?.position || "").toLowerCase().includes(searchLow) ||
-        (t.user?.username || "").toLowerCase().includes(searchLow) ||
-        (t.type_request || "").toLowerCase().includes(searchLow) ||
-        t.category.toLowerCase().includes(searchLow);
-
-      const matchesStatus = filterStatus === "ALL" || t.status === filterStatus;
-      const matchesPriority = filterPriority === "ALL" || t.priority === filterPriority;
-      const matchesCategory = filterCategory === "ALL" || t.category === filterCategory;
-      const matchesTypeRequest = filterTypeRequest === "ALL" || (t.type_request || "") === filterTypeRequest;
-
-      return matchesSearch && matchesStatus && matchesPriority && matchesCategory && matchesTypeRequest;
-    })
-    .sort((a, b) => {
-      const aValue = (a as any)[sortConfig.key] || "";
-      const bValue = (b as any)[sortConfig.key] || "";
-
-      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
-
   const handleExportExcel = () => {
     setIsExportModalOpen(true);
   };
 
   const processExport = async () => {
-    let dataToExport = filteredTickets;
+    let dataToExport = tickets;
 
     if (exportDateStart || exportDateEnd) {
       dataToExport = dataToExport.filter(t => {
@@ -309,7 +308,7 @@ export default function TicketsPage() {
 
       if (res.ok) {
         setIsModalOpen(false);
-        fetchTickets();
+        fetchTicketsList();
       }
     } catch (error) {
       console.error("Save error:", error);
@@ -330,7 +329,7 @@ export default function TicketsPage() {
       const res = await fetch(`/api/requests/${deleteId}`, { method: "DELETE" });
       if (res.ok) {
         setIsDeleteModalOpen(false);
-        fetchTickets();
+        fetchTicketsList();
       }
     } catch (error) {
       console.error("Delete error:", error);
@@ -356,7 +355,7 @@ export default function TicketsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      if (res.ok) fetchTickets();
+      if (res.ok) fetchTicketsList();
     } catch (error) {
       console.error("Quick status update error:", error);
     }
@@ -367,7 +366,7 @@ export default function TicketsPage() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-zinc-900 tracking-tight uppercase flex items-center gap-3">
-            <div className="h-10 w-10 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10">
+            <div className="h-10 w-10 rounded-lg bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
               <Ticket className="h-5 w-5" />
             </div>
             {t('admin_tickets.title')}
@@ -378,20 +377,20 @@ export default function TicketsPage() {
           <Button
             onClick={() => handleExportExcel()}
             variant="outline"
-            className="rounded-2xl border-zinc-100 hover:border-[#0F1059] hover:text-[#0F1059] py-6 px-6 font-black uppercase tracking-widest text-[13px] transition-all hover:scale-105 active:scale-95"
+            className="rounded-lg border-zinc-100 hover:border-[#0F1059] hover:text-[#0F1059] py-5 px-6 font-black uppercase tracking-widest text-[13px] transition-all hover:scale-105 active:scale-95"
           >
             <FileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" /> {t('admin_tickets.export_excel')}
           </Button>
-          <Button onClick={() => openModal()} className="rounded-2xl bg-[#0F1059] hover:bg-black py-6 px-8 font-black uppercase tracking-widest text-[13px] transition-all hover:scale-105 active:scale-95">
+          <Button onClick={() => openModal()} className="rounded-lg bg-[#0F1059] hover:bg-black py-5 px-8 font-black uppercase tracking-widest text-[13px] transition-all hover:scale-105 active:scale-95">
             <Ticket className="mr-2 h-4 w-4" /> {t('admin_tickets.create_ticket')}
           </Button>
         </div>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 gap-3 items-center p-4 rounded-3xl border border-zinc-100 backdrop-blur-xl bg-white/50 shadow-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 gap-3 items-center p-4 rounded-xl border border-zinc-100 backdrop-blur-xl bg-white/50 shadow-sm">
         {/* Search */}
-        <div className="xl:col-span-2 flex items-center gap-3 px-4 py-2.5 bg-zinc-50 rounded-2xl border border-zinc-100 shadow-sm group focus-within:border-[#0F1059]/30 transition-all">
+        <div className="xl:col-span-2 flex items-center gap-3 px-4 py-2.5 bg-zinc-50 rounded-lg border border-zinc-100 shadow-sm group focus-within:border-[#0F1059]/30 transition-all">
           <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059] shrink-0" />
           <input
             className="bg-transparent border-none outline-none text-xs font-bold uppercase w-full placeholder:text-zinc-300"
@@ -403,7 +402,7 @@ export default function TicketsPage() {
 
         {/* Status */}
         <select
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
@@ -416,7 +415,7 @@ export default function TicketsPage() {
 
         {/* Priority */}
         <select
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
           value={filterPriority}
           onChange={(e) => setFilterPriority(e.target.value)}
         >
@@ -429,7 +428,7 @@ export default function TicketsPage() {
 
         {/* Category */}
         <select
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
         >
@@ -442,7 +441,7 @@ export default function TicketsPage() {
 
         {/* Type Request */}
         <select
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[11px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans"
           value={filterTypeRequest}
           onChange={(e) => setFilterTypeRequest(e.target.value)}
         >
@@ -462,7 +461,7 @@ export default function TicketsPage() {
       {/* Results summary */}
       <div className="flex items-center justify-between px-2">
         <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
-          {locale === 'th' ? `แสดง ${filteredTickets.length} จาก ${tickets.length} รายการ` : `Showing ${filteredTickets.length} of ${tickets.length} tickets`}
+          {locale === 'th' ? `แสดงทั้งหมด ${total} รายการ` : `Showing total ${total} tickets`}
         </p>
         {(filterStatus !== 'ALL' || filterPriority !== 'ALL' || filterCategory !== 'ALL' || filterTypeRequest !== 'ALL' || search) && (
           <button
@@ -474,7 +473,7 @@ export default function TicketsPage() {
         )}
       </div>
 
-      <Card className="rounded-[32px] border-zinc-100 overflow-hidden bg-white/90 shadow-sm">
+      <Card className="rounded-xl border-zinc-100 overflow-hidden bg-white/90 shadow-sm">
         <div className="overflow-x-auto">
           <Table className="w-full text-left min-w-[1400px]">
             <TableHeader className="bg-zinc-50/80 border-b border-zinc-100">
@@ -600,13 +599,13 @@ export default function TicketsPage() {
                     <TableCell colSpan={12} className="h-16 animate-pulse bg-zinc-50/20" />
                   </TableRow>
                 ))
-              ) : filteredTickets.length === 0 ? (
+              ) : tickets.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={12} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
                     {t('admin_tickets.no_tickets_found')}
                   </TableCell>
                 </TableRow>
-              ) : filteredTickets.map((t_item: any) => (
+              ) : tickets.map((t_item: any) => (
                 <TableRow key={t_item.id} className="hover:bg-blue-50/20 transition-colors group">
 
                   {/* Request Info */}
@@ -638,7 +637,7 @@ export default function TicketsPage() {
 
                   {/* Type */}
                   <TableCell className="px-4 py-3.5 whitespace-nowrap">
-                    <Badge variant="outline" className="rounded-md text-[8px] font-black uppercase tracking-wide px-2 py-0.5 border-violet-200 text-violet-600 bg-violet-50">
+                    <Badge variant="outline" className="rounded-lg text-[8px] font-black uppercase tracking-wide px-2 py-0.5 border-violet-200 text-violet-600 bg-violet-50">
                       {t_item.type_request || '-'}
                     </Badge>
                   </TableCell>
@@ -646,7 +645,7 @@ export default function TicketsPage() {
                   {/* Category */}
                   <TableCell className="px-4 py-3.5 whitespace-nowrap">
                     <Badge variant="outline" className={cn(
-                      "rounded-md text-[8px] font-black uppercase tracking-wide px-2 py-0.5",
+                      "rounded-lg text-[8px] font-black uppercase tracking-wide px-2 py-0.5",
                       t_item.category === "HARDWARE" ? "text-orange-600 bg-orange-50 border-orange-200" :
                       t_item.category === "SOFTWARE" ? "text-sky-600 bg-sky-50 border-sky-200" :
                       t_item.category === "NETWORK" ? "text-teal-600 bg-teal-50 border-teal-200" :
@@ -759,15 +758,15 @@ export default function TicketsPage() {
                           setPreviewData(t_item);
                           setIsPreviewModalOpen(true);
                         }}
-                        className="p-2 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] hover:border-[#0F1059]/20 transition-all"
+                        className="p-2 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] hover:border-[#0F1059]/20 transition-all shadow-sm"
                         title="View PDF"
                       >
                         <Eye className="h-3.5 w-3.5" />
                       </button>
-                      <button onClick={() => openModal(t_item)} className="p-2 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] hover:border-[#0F1059]/20 transition-all">
+                      <button onClick={() => openModal(t_item)} className="p-2 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] hover:border-[#0F1059]/20 transition-all shadow-sm">
                         <Edit2 className="h-3.5 w-3.5" />
                       </button>
-                      <button onClick={() => handleDelete(t_item.id)} className="p-2 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 hover:border-rose-200 transition-all">
+                      <button onClick={() => handleDelete(t_item.id)} className="p-2 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
@@ -776,6 +775,38 @@ export default function TicketsPage() {
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Pagination UI Desktop */}
+        <div className="px-6 py-4 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between min-w-[1400px]">
+            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+               {t('common.total')} {total} {t('admin_tickets.entry_count') || 'TICKETS'}
+            </div>
+            <div className="flex items-center gap-2">
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page <= 1 || isLoading}
+                 onClick={() => setPage(page - 1)}
+                 className="h-9 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.previous')}
+               </Button>
+               <div className="flex items-center gap-1.5 px-3">
+                  <span className="text-[11px] font-black text-[#0F1059]">{page}</span>
+                  <span className="text-[10px] font-bold text-zinc-300">/</span>
+                  <span className="text-[10px] font-bold text-zinc-400">{totalPages}</span>
+               </div>
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page >= totalPages || isLoading}
+                 onClick={() => setPage(page + 1)}
+                 className="h-9 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.next')}
+               </Button>
+            </div>
         </div>
       </Card>
 

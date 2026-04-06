@@ -5,7 +5,6 @@ import { useSession, signOut } from "next-auth/react";
 import { Sidebar } from "@/components/sidebar";
 import { 
   Menu, 
-  Bell, 
   User, 
   ChevronRight,
   LogOut

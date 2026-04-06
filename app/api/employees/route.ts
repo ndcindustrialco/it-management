@@ -2,17 +2,56 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "50");
+  const search = searchParams.get("search") || "";
+  const status = searchParams.get("status") || "ALL";
+  const department = searchParams.get("department") || "ALL";
+  const sortField = searchParams.get("sortField") || "employee_code";
+  const sortOrder = (searchParams.get("sortOrder") as "asc" | "desc") || "asc";
+
+  const skip = (page - 1) * limit;
+
   try {
-    const employees = await prisma.employee.findMany({
-      include: {
-        user: true,
-      },
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { employee_code: { contains: search, mode: "insensitive" } },
+        { employee_name_th: { contains: search, mode: "insensitive" } },
+        { employee_name_en: { contains: search, mode: "insensitive" } },
+        { department: { contains: search, mode: "insensitive" } },
+        { position: { contains: search, mode: "insensitive" } },
+      ];
+    }
+    if (status !== "ALL") where.status = status;
+    if (department !== "ALL") where.department = department;
+
+    const [employees, total] = await Promise.all([
+      prisma.employee.findMany({
+        where,
+        include: {
+          user: true,
+        },
+        orderBy: {
+          [sortField]: sortOrder,
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.employee.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: employees,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
     });
-    return NextResponse.json(employees);
   } catch (error) {
     console.error("GET /api/employees error:", error);
     return NextResponse.json({ error: "Failed to fetch employees" }, { status: 500 });

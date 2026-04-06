@@ -1,18 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { 
   Plus, 
   Search, 
   Edit2, 
   Trash2, 
-  Loader2, 
   Laptop, 
   ChevronUp, 
   ChevronDown, 
   Calendar,
-  AlertTriangle,
-  History,
   MapPin,
   User as UserIcon,
   Filter
@@ -34,6 +31,8 @@ import { AssetDrawer } from "@/components/assets/asset-drawer";
 import { getAssets, upsertAsset, deleteAsset } from "@/lib/actions/asset-actions";
 import { AssetInput } from "@/lib/validations/asset";
 import { useToast } from "@/components/ui/toast";
+import {CardSkeleton } from "@/components/ui/skeleton";
+import { NoResultsState } from "@/components/ui/empty-state";
 
 export default function AssetsPage() {
   const { t, locale } = useTranslation();
@@ -43,8 +42,13 @@ export default function AssetsPage() {
   const [equipmentEntries, setEquipmentEntries] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInput | null>(null);
+  
+  // Pagination, Filters & Sorting logic states
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 50;
 
   const [filterType, setFilterType] = useState("ALL");
   const [filterStatus, setFilterStatus] = useState("ALL");
@@ -53,24 +57,58 @@ export default function AssetsPage() {
     direction: 'desc'
   });
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   useEffect(() => {
     fetchInitialData();
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchAssetsList();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, filterType, filterStatus, sortConfig, page]);
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, filterType, filterStatus, sortConfig]);
+
   const fetchInitialData = async () => {
-    setIsLoading(true);
     try {
-      const [assetsRes, empRes, equipRes] = await Promise.all([
-        getAssets(),
+      const [empRes, equipRes] = await Promise.all([
         fetch("/api/employees").then(res => res.json()),
         fetch("/api/equipment-entry-lists").then(res => res.json())
       ]);
 
-      if (assetsRes.success) setAssets(assetsRes.data);
       if (Array.isArray(empRes)) setEmployees(empRes);
       if (Array.isArray(equipRes)) setEquipmentEntries(equipRes);
     } catch (error) {
       console.error("Initial fetch error:", error);
+    }
+  };
+
+  const fetchAssetsList = async () => {
+    setIsLoading(true);
+    try {
+      const result = await getAssets({
+        page,
+        limit,
+        search,
+        type: filterType,
+        status: filterStatus,
+        sortField: sortConfig.key,
+        sortOrder: sortConfig.direction
+      });
+
+      if (result.success) {
+        setAssets(result.data);
+        setTotal(result.total || 0);
+        setTotalPages(result.totalPages || 1);
+      }
+    } catch (error) {
+      console.error("Fetch assets error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -84,28 +122,6 @@ export default function AssetsPage() {
     setSortConfig({ key, direction });
   };
 
-  const filteredAssets = assets
-    .filter(asset => {
-      const searchLow = search.toLowerCase();
-      const matchesSearch = asset.asset_code.toLowerCase().includes(searchLow) ||
-                           asset.serial_number.toLowerCase().includes(searchLow) ||
-                           asset.name.toLowerCase().includes(searchLow) ||
-                           (asset.employee?.employee_name_th || "").toLowerCase().includes(searchLow);
-      
-      const matchesType = filterType === "ALL" || asset.type === filterType;
-      const matchesStatus = filterStatus === "ALL" || asset.status === filterStatus;
-      
-      return matchesSearch && matchesType && matchesStatus;
-    })
-    .sort((a, b) => {
-      const aValue = (a as any)[sortConfig.key] || "";
-      const bValue = (b as any)[sortConfig.key] || "";
-      
-      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
-
   const handleUpsert = async (data: AssetInput) => {
     const result = await upsertAsset(data);
     if (result.success) {
@@ -114,7 +130,7 @@ export default function AssetsPage() {
         message: "Asset saved successfully",
         variant: "success"
       });
-      fetchInitialData();
+      fetchAssetsList();
       setIsDrawerOpen(false);
     } else {
       toast({
@@ -133,7 +149,7 @@ export default function AssetsPage() {
         message: "Asset deleted successfully",
         variant: "success"
       });
-      fetchInitialData();
+      fetchAssetsList();
     }
   };
 
@@ -147,7 +163,7 @@ export default function AssetsPage() {
   };
 
   const getWarrantyStatus = (expireDate: string | null) => {
-    if (!expireDate) return { label: "N/A", color: "bg-zinc-50 text-zinc-400" };
+    if (!expireDate) return { label: "N/A", color: "bg-slate-50 text-slate-400" };
     const expire = new Date(expireDate);
     const today = new Date();
     const diffTime = expire.getTime() - today.getTime();
@@ -159,69 +175,76 @@ export default function AssetsPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
+    <div className="flex flex-col gap-4 p-4 lg:p-6 mb-24">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-black text-[#0F1059] tracking-tighter uppercase leading-none flex items-center gap-3">
-             <div className="h-12 w-12 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
-                <Laptop className="h-6 w-6" />
-             </div>
-             {t('assets.title')}
-          </h1>
-          <p className="text-[12px] font-medium text-zinc-500 uppercase tracking-widest mt-2">{t('assets.subtitle')}</p>
+        <div>
+           <h1 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <Laptop className="h-5 w-5 text-primary" />
+              {t('assets.title')}
+           </h1>
+           <p className="text-sm font-medium text-slate-500">{t('assets.subtitle')}</p>
         </div>
-        <Button onClick={() => openDrawer()} className="rounded-2xl bg-[#0F1059] hover:bg-black h-14 px-8 font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-[#0F1059]/10">
+        <Button onClick={() => openDrawer()} size="lg" className="rounded-lg bg-primary hover:bg-primary/90 font-bold shadow-sm">
           <Plus className="mr-2 h-4 w-4" /> {t('assets.add_asset')}
         </Button>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
-        <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-2xl border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all col-span-1 md:col-span-2">
-             <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059]" />
-             <input 
-                className="bg-transparent border-none outline-none text-[10px] font-black uppercase w-full"
-                placeholder={t('assets.search_placeholder')}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-             />
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <Filter className="h-3 w-3 text-zinc-400" />
+      <Card className="p-4 rounded-xl border-slate-200 shadow-sm bg-white">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
+          <div className="md:col-span-2 relative group focus-within:border-primary transition-all">
+               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary" />
+               <input 
+                  className="w-full pl-10 pr-4 py-2 text-sm font-medium border border-slate-200 rounded-lg outline-none focus:border-primary/50 transition-colors"
+                  placeholder={t('assets.search_placeholder')}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+               />
+          </div>
+          
+          <div className="relative">
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
+            <select 
+              className="w-full pl-10 pr-4 py-2 appearance-none text-sm font-semibold border border-slate-200 rounded-lg outline-none text-slate-600 focus:border-primary/50 cursor-pointer transition-all bg-white"
+              value={filterType}
+              onChange={(e) => {
+                setFilterType(e.target.value);
+                setPage(1);
+              }}
+            >
+              <option value="ALL">{t('assets.all_types')}</option>
+              <option value="NOTEBOOK">NOTEBOOK</option>
+              <option value="PC">PC / DESKTOP</option>
+              <option value="SCREEN">SCREEN / MONITOR</option>
+              <option value="PRINTER">PRINTER</option>
+            </select>
+          </div>
+
           <select 
-            className="flex-1 bg-white border border-zinc-100 rounded-2xl px-4 py-2 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
+            className="w-full px-4 py-2 appearance-none text-sm font-semibold border border-slate-200 rounded-lg outline-none text-slate-600 focus:border-primary/50 cursor-pointer transition-all bg-white"
+            value={filterStatus}
+            onChange={(e) => {
+              setFilterStatus(e.target.value);
+              setPage(1);
+            }}
           >
-            <option value="ALL">{t('assets.all_types')}</option>
-            <option value="NOTEBOOK">NOTEBOOK</option>
-            <option value="PC">PC / DESKTOP</option>
-            <option value="SCREEN">SCREEN / MONITOR</option>
-            <option value="PRINTER">PRINTER</option>
+            <option value="ALL">{t('assets.all_status')}</option>
+            <option value="AVAILABLE">AVAILABLE</option>
+            <option value="IN_USE">IN USE</option>
+            <option value="REPAIR">REPAIR</option>
+            <option value="SCRAP">SCRAP</option>
           </select>
         </div>
+      </Card>
 
-        <select 
-          className="bg-white border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-        >
-          <option value="ALL">{t('assets.all_status')}</option>
-          <option value="AVAILABLE">AVAILABLE</option>
-          <option value="IN_USE">IN USE</option>
-          <option value="REPAIR">REPAIR</option>
-          <option value="SCRAP">SCRAP</option>
-        </select>
-      </div>
-
-      <Card className="rounded-[40px] border-zinc-100 overflow-hidden bg-white/90">
-        <div className="overflow-x-auto">
-          <Table className="w-full text-left font-sans">
-            <TableHeader className="bg-zinc-50/50">
-              <TableRow className="border-none">
+      {/* Desktop Table */}
+      <div className="hidden lg:block">
+        <Card className="rounded-xl border-slate-200 shadow-sm overflow-hidden bg-white">
+          <Table>
+            <TableHeader className="bg-slate-50/50">
+              <TableRow className="border-slate-200">
                 <TableHead 
-                   className="px-6 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest cursor-pointer hover:bg-zinc-100"
+                   className="py-3 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100/50 transition-colors"
                    onClick={() => handleSort('asset_code')}
                 >
                   <div className="flex items-center gap-1">
@@ -229,10 +252,10 @@ export default function AssetsPage() {
                     {sortConfig.key === 'asset_code' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
-                <TableHead className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{t('assets.location')}</TableHead>
-                <TableHead className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{t('assets.holder')}</TableHead>
+                <TableHead className="py-3 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('assets.location')}</TableHead>
+                <TableHead className="py-3 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('assets.holder')}</TableHead>
                 <TableHead 
-                  className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest cursor-pointer hover:bg-zinc-100"
+                  className="py-3 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100/50 transition-colors"
                   onClick={() => handleSort('warranty_expire')}
                 >
                   <div className="flex items-center gap-1">
@@ -240,106 +263,246 @@ export default function AssetsPage() {
                     {sortConfig.key === 'warranty_expire' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                   </div>
                 </TableHead>
-                <TableHead className="px-4 py-5 text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{t('assets.status')}</TableHead>
-                <TableHead className="p-0"></TableHead>
+                <TableHead className="py-3 px-4 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('assets.status')}</TableHead>
+                <TableHead className="w-[100px]"></TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="divide-y divide-zinc-100">
+            <TableBody className="divide-y divide-slate-100">
               {isLoading ? (
-                 Array.from({ length: 5 }).map((_, i) => (
-                   <TableRow key={i}>
-                     <TableCell colSpan={6} className="h-20 animate-pulse bg-zinc-50/10" />
-                   </TableRow>
-                 ))
-              ) : filteredAssets.length === 0 ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell colSpan={6} className="h-16 py-4 px-4 bg-slate-50/5">
+                         <div className="flex items-center gap-4">
+                            <div className="h-10 w-10 rounded-lg bg-slate-100 animate-pulse" />
+                            <div className="space-y-2 flex-1">
+                               <div className="h-4 w-1/3 bg-slate-100 animate-pulse rounded" />
+                               <div className="h-3 w-1/4 bg-slate-50 animate-pulse rounded" />
+                            </div>
+                         </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+              ) : assets.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
-                      {t('assets.no_assets_found')}
+                  <TableCell colSpan={6} className="py-20 text-center">
+                      <NoResultsState query={search} onClear={() => setSearch("")} />
                   </TableCell>
                 </TableRow>
-              ) : filteredAssets.map((asset) => (
-                <TableRow key={asset.id} className="hover:bg-zinc-50/50 transition-colors group">
-                  <TableCell className="px-6 py-4">
+              ) : assets.map((asset) => (
+                <TableRow key={asset.id} className="hover:bg-slate-50 transition-colors group">
+                  <TableCell className="py-3 px-4">
                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-400 group-hover:bg-[#0F1059]/10 group-hover:text-[#0F1059] transition-colors">
+                        <div className="h-10 w-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                            <Laptop className="h-5 w-5" />
                         </div>
                         <div className="min-w-0">
-                          <div className="font-bold text-[#0F1059] uppercase text-sm truncate">{asset.name}</div>
-                          <div className="text-[10px] text-zinc-400 font-black uppercase tracking-tighter mt-0.5 flex items-center gap-2">
-                            <span className="text-[#0F1059]/60">{asset.asset_code}</span>
-                            <span className="text-zinc-200">|</span>
-                            <span>SN: {asset.serial_number}</span>
-                            <span className="text-zinc-200">|</span>
+                          <div className="font-bold text-slate-900 text-sm truncate max-w-[200px]">{asset.name}</div>
+                          <div className="text-[12px] text-slate-400 font-medium mt-0.5 flex items-center gap-2">
+                            <span className="text-primary/70 font-semibold">{asset.asset_code}</span>
+                            <span className="text-slate-200">|</span>
                             <span>{asset.type}</span>
                           </div>
                         </div>
                      </div>
                   </TableCell>
-                  <TableCell className="px-4 py-4 whitespace-nowrap">
-                     <div className="flex items-center gap-2 text-[11px] font-black text-zinc-700 uppercase tracking-tight">
-                        <MapPin className="h-3 w-3 text-zinc-300" />
+                  <TableCell className="py-3 px-4 whitespace-nowrap">
+                     <div className="flex items-center gap-2 text-[13px] font-medium text-slate-600">
+                        <MapPin className="h-3.5 w-3.5 text-slate-300" />
                         {asset.location || '-'}
                      </div>
                   </TableCell>
-                  <TableCell className="px-4 py-4 whitespace-nowrap">
+                  <TableCell className="py-3 px-4 whitespace-nowrap">
                     {asset.employee ? (
                       <div className="flex flex-col">
-                        <div className="text-[11px] font-black text-[#0F1059] uppercase flex items-center gap-1">
-                          <UserIcon className="h-3 w-3" />
+                        <div className="text-[13px] font-semibold text-slate-900 flex items-center gap-1.5">
+                          <UserIcon className="h-3.5 w-3.5 text-slate-400" />
                           {asset.employee.employee_name_th}
                         </div>
-                        <div className="text-[9px] font-bold text-zinc-400 uppercase ml-4">{asset.employee.employee_code}</div>
+                        <div className="text-[11px] font-medium text-slate-400 ml-5">{asset.employee.employee_code}</div>
                       </div>
                     ) : (
-                      <span className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest italic">{t('assets.unassigned')}</span>
+                      <span className="text-[12px] font-medium text-slate-300 italic">{t('assets.unassigned')}</span>
                     )}
                   </TableCell>
-                  <TableCell className="px-4 py-4 whitespace-nowrap">
+                  <TableCell className="py-3 px-4 whitespace-nowrap">
                     <div className="flex flex-col gap-1">
-                      <div className="text-[10px] font-bold text-zinc-500 flex items-center gap-1">
-                        <Calendar className="h-3 w-3 text-zinc-300" />
+                      <div className="text-[12px] font-medium text-slate-600 flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5 text-slate-300" />
                         {asset.warranty_expire ? new Date(asset.warranty_expire).toLocaleDateString(locale === 'th' ? 'th-TH' : 'en-GB') : '-'}
                       </div>
                       {asset.warranty_expire && (
-                        <div className={cn("text-[8px] font-black uppercase px-2 py-0.5 rounded-full w-fit", getWarrantyStatus(asset.warranty_expire).color)}>
+                        <div className={cn("text-[10px] font-bold uppercase px-2 py-0.5 rounded-full w-fit", getWarrantyStatus(asset.warranty_expire).color)}>
                           {getWarrantyStatus(asset.warranty_expire).label}
                         </div>
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="px-4 py-4 whitespace-nowrap">
-                     <Badge className={cn(
-                       "rounded-lg text-[9px] font-black uppercase tracking-widest border-none shadow-none px-3 py-1", 
-                       asset.status === "AVAILABLE" ? "bg-emerald-50 text-emerald-600" : 
-                       asset.status === "IN_USE" ? "bg-blue-50 text-blue-600" :
-                       asset.status === "REPAIR" ? "bg-amber-50 text-amber-600" : "bg-rose-50 text-rose-600"
-                     )}>
-                        {asset.status}
-                     </Badge>
+                  <TableCell className="py-3 px-4 whitespace-nowrap">
+                      <Badge className={cn(
+                        "rounded-lg text-[10px] font-bold uppercase tracking-tight border-none shadow-none px-2.5 py-1", 
+                        asset.status === "AVAILABLE" ? "bg-emerald-100 text-emerald-700" : 
+                        asset.status === "IN_USE" ? "bg-blue-100 text-blue-700" :
+                        asset.status === "REPAIR" ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-700"
+                      )}>
+                         {asset.status}
+                      </Badge>
                   </TableCell>
-                  <TableCell className="px-4 py-4 whitespace-nowrap text-right">
-                     <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
-                        <button 
+                  <TableCell className="py-3 px-4 whitespace-nowrap text-right">
+                     <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                        <Button 
+                           variant="ghost" 
+                           size="icon"
                            onClick={() => openDrawer(asset)}
-                           className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm"
+                           className="h-8 w-8 rounded-lg hover:text-primary hover:bg-primary/5 transition-all"
                         >
                             <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button 
+                        </Button>
+                        <Button 
+                           variant="ghost" 
+                           size="icon"
                            onClick={() => handleDelete(asset.id)}
-                           className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm"
+                           className="h-8 w-8 rounded-lg hover:text-rose-600 hover:bg-rose-50 transition-all"
                         >
                             <Trash2 className="w-4 h-4" />
-                        </button>
+                        </Button>
                      </div>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </div>
-      </Card>
+
+          {/* Pagination UI Desktop */}
+          <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+              <div className="text-[12px] font-bold text-slate-400 uppercase tracking-wider">
+                 {t('common.total')} {total} {t('assets.entry_count') || 'ASSETS'}
+              </div>
+              <div className="flex items-center gap-2">
+                 <Button
+                   variant="outline"
+                   size="sm"
+                   disabled={page <= 1 || isLoading}
+                   onClick={() => setPage(page - 1)}
+                   className="h-9 rounded-lg border-slate-200 text-xs font-bold px-4 hover:bg-white transition-all disabled:opacity-30"
+                 >
+                   {t('common.previous')}
+                 </Button>
+                 <div className="flex items-center gap-1.5 px-3">
+                    <span className="text-[13px] font-bold text-slate-900">{page}</span>
+                    <span className="text-xs font-medium text-slate-300">/</span>
+                    <span className="text-xs font-medium text-slate-400">{totalPages}</span>
+                 </div>
+                 <Button
+                   variant="outline"
+                   size="sm"
+                   disabled={page >= totalPages || isLoading}
+                   onClick={() => setPage(page + 1)}
+                   className="h-9 rounded-lg border-slate-200 text-xs font-bold px-4 hover:bg-white transition-all disabled:opacity-30"
+                 >
+                   {t('common.next')}
+                 </Button>
+              </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Mobile Grid */}
+      <div className="lg:hidden grid grid-cols-1 gap-3">
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)
+        ) : assets.length === 0 ? (
+          <NoResultsState query={search} onClear={() => setSearch("")} />
+        ) : (
+          assets.map((asset) => (
+            <Card key={asset.id} className="p-4 rounded-xl border-slate-200 shadow-sm space-y-3 bg-white">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
+                    <Laptop className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-bold text-slate-900 text-sm truncate">{asset.name}</div>
+                    <div className="text-[12px] text-slate-400 font-medium">#{asset.asset_code} • {asset.type}</div>
+                  </div>
+                </div>
+                <Badge className={cn(
+                  "rounded-lg text-[10px] font-bold uppercase border-none px-2 py-0.5 shadow-none", 
+                  asset.status === "AVAILABLE" ? "bg-emerald-100 text-emerald-700" : 
+                  asset.status === "IN_USE" ? "bg-blue-100 text-blue-700" :
+                  asset.status === "REPAIR" ? "bg-amber-100 text-amber-700" : "bg-rose-100 text-rose-700"
+                )}>
+                  {asset.status}
+                </Badge>
+              </div>
+
+              <div className="grid grid-cols-2 gap-y-2 py-2 border-y border-slate-50">
+                <div className="flex flex-col gap-0.5">
+                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{t('assets.holder')}</div>
+                  <div className="text-xs font-semibold text-slate-700 truncate">
+                    {asset.employee?.employee_name_th || t('assets.unassigned')}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                   <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{t('assets.location')}</div>
+                   <div className="text-xs font-semibold text-slate-700 truncate">{asset.location || '-'}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                 <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                    <Calendar className="h-3.5 w-3.5 text-slate-300" />
+                    {asset.warranty_expire ? new Date(asset.warranty_expire).toLocaleDateString(locale === 'th' ? 'th-TH' : 'en-GB') : '-'}
+                 </div>
+                 <div className="flex gap-2">
+                    <Button 
+                       variant="outline" 
+                       size="sm" 
+                       onClick={() => openDrawer(asset)}
+                       className="rounded-lg h-9 px-4 border-slate-200"
+                    >
+                       <Edit2 className="w-3.5 h-3.5 mr-2" /> {t('common.edit')}
+                    </Button>
+                    <Button 
+                       variant="outline" 
+                       size="sm" 
+                       onClick={() => handleDelete(asset.id)}
+                       className="rounded-lg h-9 px-4 border-slate-200 text-rose-600 hover:bg-rose-50"
+                    >
+                       <Trash2 className="w-3.5 h-3.5 mr-2" /> {t('common.delete')}
+                    </Button>
+                 </div>
+              </div>
+            </Card>
+          ))
+        )}
+
+        {/* Pagination UI Mobile */}
+        {!isLoading && totalPages > 1 && (
+           <div className="flex items-center gap-3 justify-center py-4">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => setPage(page - 1)}
+                className="h-10 rounded-xl px-4 font-bold border-slate-200 shadow-sm"
+              >
+                 {t('common.previous')}
+              </Button>
+              <div className="text-sm font-bold text-slate-400">
+                 {page} / {totalPages}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page >= totalPages}
+                onClick={() => setPage(page + 1)}
+                className="h-10 rounded-xl px-4 font-bold border-slate-200 shadow-sm"
+              >
+                 {t('common.next')}
+              </Button>
+           </div>
+        )}
+      </div>
 
       <AssetDrawer
         isOpen={isDrawerOpen}

@@ -383,7 +383,7 @@ export default function AdminEquipmentRequestsPage() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl font-black text-[#0F1059] tracking-tighter uppercase leading-none flex items-center gap-3">
-             <div className="h-12 w-12 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10">
+             <div className="h-12 w-12 rounded-lg bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
                 <Package className="h-6 w-6" />
              </div>
              {t('borrowing.title')}
@@ -394,19 +394,19 @@ export default function AdminEquipmentRequestsPage() {
           <Button 
              onClick={() => handleExportExcel()} 
              variant="outline"
-             className="rounded-2xl border-zinc-200 hover:border-[#0F1059] hover:text-[#0F1059] py-6 px-6 font-black uppercase tracking-widest text-[11px] h-14 transition-all"
+             className="rounded-lg border-zinc-200 hover:border-[#0F1059] hover:text-[#0F1059] py-5 px-6 font-black uppercase tracking-widest text-[11px] h-12 transition-all shadow-sm"
           >
             <FileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" /> {t('admin_tickets.export_excel')}
           </Button>
-          <Button onClick={() => openModal()} className="rounded-2xl bg-[#0F1059] hover:bg-black py-6 px-8 h-14 font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-[#0F1059]/10">
+          <Button onClick={() => openModal()} className="rounded-lg bg-[#0F1059] hover:bg-black py-5 px-8 h-12 font-black uppercase tracking-widest text-[11px] transition-all shadow-sm">
             <Package className="mr-2 h-4 w-4" /> {t('borrowing.create_request')}
           </Button>
         </div>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
-        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-2xl border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
+        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-lg border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all lg:col-span-2">
              <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059]" />
              <input 
                 className="bg-transparent border-none outline-none text-[10px] font-black uppercase w-full"
@@ -417,7 +417,7 @@ export default function AdminEquipmentRequestsPage() {
         </div>
         
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
           value={filterDeptStatus}
           onChange={(e) => setFilterDeptStatus(e.target.value)}
         >
@@ -428,7 +428,7 @@ export default function AdminEquipmentRequestsPage() {
         </select>
 
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
           value={filterItStatus}
           onChange={(e) => setFilterItStatus(e.target.value)}
         >
@@ -439,7 +439,7 @@ export default function AdminEquipmentRequestsPage() {
         </select>
       </div>
 
-      <Card className="rounded-[40px] border-zinc-100 overflow-hidden bg-white/90">
+      <Card className="rounded-xl border-zinc-100 overflow-hidden bg-white/90 shadow-sm">
         <div className="overflow-x-auto">
           <Table className="w-full text-left font-sans">
             <TableHeader className="bg-zinc-50/50">
@@ -529,7 +529,7 @@ export default function AdminEquipmentRequestsPage() {
                       value={g.approval_status || "PENDING"}
                       onChange={(e) => updateStatusInline(g.id, 'approval_status', e.target.value)}
                       className={cn(
-                        "rounded-xl px-3 py-1.5 text-[10px] font-black uppercase tracking-widest border border-zinc-100 outline-none cursor-pointer transition-all",
+                        "rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest border border-zinc-100 outline-none cursor-pointer transition-all shadow-sm",
                         g.approval_status === "APPROVED" ? "bg-emerald-50 text-emerald-600 border-emerald-100" :
                         g.approval_status === "REJECTED" ? "bg-rose-50 text-rose-600 border-rose-100" : "bg-amber-50 text-amber-600 border-amber-100"
                       )}
@@ -544,7 +544,7 @@ export default function AdminEquipmentRequestsPage() {
                       value={g.it_approval_status || "PENDING"}
                       onChange={(e) => updateStatusInline(g.id, 'it_approval_status', e.target.value)}
                       className={cn(
-                        "rounded-xl px-3 py-1.5 text-[10px] font-black uppercase tracking-widest border border-zinc-100 outline-none cursor-pointer transition-all",
+                        "rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest border border-zinc-100 outline-none cursor-pointer transition-all shadow-sm",
                         g.it_approval_status === "APPROVED" ? "bg-[#0F1059] text-white border-[#0F1059]" :
                         g.it_approval_status === "REJECTED" ? "bg-rose-500 text-white border-rose-500" : "bg-zinc-100 text-zinc-500 border-zinc-200"
                       )}
@@ -561,15 +561,15 @@ export default function AdminEquipmentRequestsPage() {
                             setPreviewData(g);
                             setIsPreviewModalOpen(true);
                           }}
-                          className="p-2.5 rounded-xl bg-white border border-zinc-100 text-[#0F1059] hover:bg-[#0F1059]/5 transition-all shadow-sm"
+                          className="p-2.5 rounded-lg bg-white border border-zinc-100 text-[#0F1059] hover:bg-[#0F1059]/5 transition-all shadow-sm"
                           title="View PDF"
                         >
                           <Eye className="h-3.5 w-3.5" />
                         </button>
-                        <button onClick={() => openModal(g)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm">
+                        <button onClick={() => openModal(g)} className="p-2.5 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm">
                           <Edit2 className="h-3.5 w-3.5" />
                         </button>
-                        <button onClick={() => handleDelete(g.id)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm">
+                        <button onClick={() => handleDelete(g.id)} className="p-2.5 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm">
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
                     </div>
@@ -587,8 +587,8 @@ export default function AdminEquipmentRequestsPage() {
         title={editingId ? t('borrowing.process_approval') : t('borrowing.new_request')}
       >
         <form onSubmit={handleSave} className="space-y-6 max-h-[80vh] overflow-y-auto pr-2 font-sans">
-           {selectedGroup ? (
-              <div className="p-5 rounded-3xl bg-zinc-50 border border-zinc-100 space-y-4 shadow-inner">
+            {selectedGroup ? (
+              <div className="p-5 rounded-xl bg-zinc-50 border border-zinc-100 space-y-4 shadow-inner">
                  <div className="flex items-center justify-between pb-3 border-b border-zinc-200/50">
                     <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">{locale === 'th' ? 'ข้อมูลการเบิก' : 'Borrow Info'}</p>
                     <span className="font-black text-[11px] text-[#0F1059] bg-[#0F1059]/8 px-2.5 py-1 rounded-lg tracking-widest">
@@ -620,11 +620,11 @@ export default function AdminEquipmentRequestsPage() {
                  <p className="text-[10px] font-black text-[#0F1059] uppercase tracking-[0.2em]">{t('borrowing.batch_items')}</p>
                  <div className="space-y-3">
                     {selectedGroup.requests.map(r => (
-                       <div key={r.id} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-zinc-100 shadow-sm">
+                       <div key={r.id} className="flex items-center justify-between p-4 bg-white rounded-lg border border-zinc-100 shadow-sm">
                           <div className="flex-1">
                              <p className="text-sm font-black text-[#0F1059]">{r.equipmentList?.equipmentEntry?.list || r.equipmentList?.equipmentEntry?.item_name}</p>
                              <div className="flex items-center gap-3 mt-2">
-                                <Badge variant="secondary" className="text-[9px] font-black uppercase tracking-widest bg-zinc-50 border-zinc-100 text-zinc-500">{r.borrow_type}</Badge>
+                                <Badge variant="secondary" className="text-[9px] font-black uppercase tracking-widest bg-zinc-50 border-zinc-100 text-zinc-500 rounded-lg">{r.borrow_type}</Badge>
                                 <span className="text-[10px] font-bold text-zinc-400 uppercase">Qty: {r.quantity}</span>
                              </div>
                              {r.remarks && <p className="text-[9px] text-zinc-400 italic mt-2 border-l-2 border-zinc-100 pl-2">Note: {r.remarks}</p>}
@@ -635,7 +635,7 @@ export default function AdminEquipmentRequestsPage() {
                  </div>
                   <div className="flex items-center justify-between pt-4 border-t border-zinc-200/50">
                      <p className="text-[10px] font-black text-[#0F1059] uppercase tracking-widest">{t('borrowing.date_needed')}</p>
-                     <p className="text-xs font-black text-rose-600 bg-rose-50 px-4 py-1.5 rounded-xl shadow-sm">
+                     <p className="text-xs font-black text-rose-600 bg-rose-50 px-4 py-1.5 rounded-lg shadow-sm">
                         {selectedGroup.date_needed ? new Date(selectedGroup.date_needed).toLocaleDateString(locale === 'th' ? 'th-TH' : 'en-GB') : t('common.no_info')}
                      </p>
                   </div>
@@ -647,7 +647,7 @@ export default function AdminEquipmentRequestsPage() {
                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('receiving.recipient')}</label>
                      <select 
                         required
-                        className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 shadow-sm transition-all"
+                        className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 shadow-sm transition-all"
                         value={formData.userId}
                         onChange={(e) => setFormData({...formData, userId: e.target.value})}
                      >
@@ -659,7 +659,7 @@ export default function AdminEquipmentRequestsPage() {
                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('receiving.classification')}</label>
                      <select 
                         required
-                        className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 shadow-sm transition-all"
+                        className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 shadow-sm transition-all"
                         value={formData.equipment_list_id}
                         onChange={(e) => setFormData({...formData, equipment_list_id: e.target.value})}
                      >
@@ -676,7 +676,7 @@ export default function AdminEquipmentRequestsPage() {
                <div className="space-y-1.5">
                   <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('po.reason')}</label>
                   <textarea 
-                     className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none min-h-[80px] focus:border-[#0F1059]/30 shadow-sm transition-all"
+                     className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none min-h-[80px] focus:border-[#0F1059]/30 shadow-sm transition-all"
                      value={formData.reason}
                      onChange={(e) => setFormData({...formData, reason: e.target.value})}
                   />
@@ -685,13 +685,13 @@ export default function AdminEquipmentRequestsPage() {
             )}
 
            {/* Step 1: Department Approval */}
-           <div className="p-5 rounded-3xl bg-amber-50/20 border border-amber-100 space-y-4 shadow-sm">
+           <div className="p-5 rounded-xl bg-amber-50/20 border border-amber-100 space-y-4 shadow-sm">
               <h3 className="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] border-b border-amber-100/50 pb-3">{t('borrowing.dept_step')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                  <div className="space-y-2">
                     <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest ml-1">{t('common.status')}</label>
                     <select 
-                       className="w-full bg-white border border-amber-100 rounded-xl px-4 py-3 text-xs font-black text-amber-600 uppercase shadow-sm outline-none"
+                       className="w-full bg-white border border-amber-100 rounded-lg px-4 py-3 text-xs font-black text-amber-600 uppercase shadow-sm outline-none"
                        value={formData.approval_status}
                        onChange={(e) => setFormData({...formData, approval_status: e.target.value})}
                     >
@@ -713,7 +713,7 @@ export default function AdminEquipmentRequestsPage() {
               <div className="space-y-2">
                  <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest ml-1">{t('borrowing.dept_comment')}</label>
                  <textarea 
-                    className="w-full bg-white border border-amber-100 rounded-xl px-4 py-3 text-xs font-medium shadow-sm outline-none min-h-[60px]"
+                    className="w-full bg-white border border-amber-100 rounded-lg px-4 py-3 text-xs font-medium shadow-sm outline-none min-h-[60px]"
                     value={formData.approval_comment}
                     onChange={(e) => setFormData({...formData, approval_comment: e.target.value})}
                  />
@@ -721,13 +721,13 @@ export default function AdminEquipmentRequestsPage() {
            </div>
 
            {/* Step 2: IT Approval */}
-           <div className="p-5 rounded-3xl bg-[#0F1059]/5 border border-[#0F1059]/10 space-y-4 shadow-sm">
+           <div className="p-5 rounded-xl bg-[#0F1059]/5 border border-[#0F1059]/10 space-y-4 shadow-sm">
               <h3 className="text-[10px] font-black text-[#0F1059] uppercase tracking-[0.2em] border-b border-[#0F1059]/10 pb-3">{t('borrowing.it_step')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                  <div className="space-y-2">
                     <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest ml-1">{t('common.status')}</label>
                     <select 
-                       className="w-full bg-white border border-[#0F1059]/10 rounded-xl px-4 py-3 text-xs font-black text-[#0F1059] uppercase shadow-sm outline-none"
+                       className="w-full bg-white border border-[#0F1059]/10 rounded-lg px-4 py-3 text-xs font-black text-[#0F1059] uppercase shadow-sm outline-none"
                        value={formData.it_approval_status}
                        onChange={(e) => setFormData({...formData, it_approval_status: e.target.value})}
                     >
@@ -749,7 +749,7 @@ export default function AdminEquipmentRequestsPage() {
               <div className="space-y-2">
                  <label className="text-[9px] font-black text-zinc-400 uppercase tracking-widest ml-1">{t('borrowing.it_comment')}</label>
                  <textarea 
-                    className="w-full bg-white border border-[#0F1059]/10 rounded-xl px-4 py-3 text-xs font-medium shadow-sm outline-none min-h-[60px]"
+                    className="w-full bg-white border border-[#0F1059]/10 rounded-lg px-4 py-3 text-xs font-medium shadow-sm outline-none min-h-[60px]"
                     placeholder="Stock check result..."
                     value={formData.it_approval_comment}
                     onChange={(e) => setFormData({...formData, it_approval_comment: e.target.value})}
@@ -758,13 +758,13 @@ export default function AdminEquipmentRequestsPage() {
            </div>
 
            <div className="flex items-center gap-3 pt-6 border-t border-zinc-100">
-              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest">
+              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-lg text-[11px] font-black uppercase tracking-widest">
                  {t('common.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={isSaving}
-                className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-[#0F1059]/10"
+                className="flex-1 h-12 rounded-lg bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-[#0F1059]/10"
               >
                  {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t('borrowing.save_result')}
               </Button>
@@ -778,8 +778,8 @@ export default function AdminEquipmentRequestsPage() {
         title={t('admin_tickets.export_report_title')}
       >
         <div className="space-y-6 font-sans">
-          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-4 shadow-sm">
-             <div className="h-12 w-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white">
+          <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center gap-4 shadow-sm">
+             <div className="h-12 w-12 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
                 <FileSpreadsheet className="h-6 w-6" />
              </div>
              <div>
@@ -794,7 +794,7 @@ export default function AdminEquipmentRequestsPage() {
                    <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{locale === 'th' ? 'วันที่เริ่ม' : 'Start Date'}</label>
                    <input 
                       type="date" 
-                      className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
+                      className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none shadow-sm"
                       value={exportDateStart}
                       onChange={(e) => setExportDateStart(e.target.value)}
                    />
@@ -803,7 +803,7 @@ export default function AdminEquipmentRequestsPage() {
                    <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{locale === 'th' ? 'วันที่สิ้นสุด' : 'End Date'}</label>
                    <input 
                       type="date" 
-                      className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none"
+                      className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none shadow-sm"
                       value={exportDateEnd}
                       onChange={(e) => setExportDateEnd(e.target.value)}
                    />

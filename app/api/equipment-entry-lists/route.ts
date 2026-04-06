@@ -2,15 +2,65 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateEQCode } from "@/lib/code-generator";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const entries = await prisma.equipmentEntryList.findMany({
-      include: {
-        purchaseOrder: true,
-        equipmentLists: true,
-      },
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "50");
+    const search = searchParams.get("search") || "";
+    const filterType = searchParams.get("filterType") || "ALL";
+    const sortField = searchParams.get("sortField") || "date_received";
+    const sortOrder = searchParams.get("sortOrder") || "desc";
+
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { list: { contains: search, mode: 'insensitive' } },
+        { brand_name: { contains: search, mode: 'insensitive' } },
+        { recipient: { contains: search, mode: 'insensitive' } },
+        { purchaseOrder: { po_code: { contains: search, mode: 'insensitive' } } },
+        { purchaseOrder: { list: { contains: search, mode: 'insensitive' } } },
+      ];
+    }
+    if (filterType !== "ALL") {
+      where.item_type = filterType;
+    }
+
+    // Determine orderBy object
+    let orderBy: any = {};
+    if (sortField === 'date_received') {
+      orderBy = { date_received: sortOrder };
+    } else if (sortField === 'list') {
+      orderBy = { list: sortOrder };
+    } else if (sortField === 'quantity') {
+      orderBy = { quantity: sortOrder };
+    } else {
+      orderBy = { createdAt: 'desc' };
+    }
+
+    const [entries, total] = await Promise.all([
+      prisma.equipmentEntryList.findMany({
+        where,
+        include: {
+          purchaseOrder: true,
+          equipmentLists: true,
+        },
+        orderBy,
+        skip,
+        take: limit,
+      }),
+      prisma.equipmentEntryList.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      entries,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      limit
     });
-    return NextResponse.json(entries);
   } catch (error) {
     console.error("GET /api/equipment-entry-lists error:", error);
     return NextResponse.json({ error: "Failed to fetch equipment entry lists" }, { status: 500 });

@@ -49,6 +49,10 @@ export default function UsersPage() {
     key: 'username',
     direction: 'asc'
   });
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 50;
 
   // Form State
   const [formData, setFormData] = useState({
@@ -59,23 +63,45 @@ export default function UsersPage() {
   });
 
   useEffect(() => {
-    fetchUsers();
     fetchEmployees();
   }, []);
 
-  const fetchUsers = async () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchUsersList();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, filterRole, sortConfig, page]);
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, filterRole, sortConfig]);
+
+  const fetchUsersList = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/users");
-      const data = await res.json();
-      if (Array.isArray(data)) setUsers(data);
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        search,
+        role: filterRole,
+        sortField: sortConfig.key as string,
+        sortOrder: sortConfig.direction
+      });
+      const res = await fetch(`/api/users?${params.toString()}`);
+      const result = await res.json();
+      if (result.data) {
+        setUsers(result.data);
+        setTotal(result.total || 0);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch (error) {
       console.error("Fetch users error:", error);
     } finally {
       setIsLoading(false);
     }
   };
-
   const fetchEmployees = async () => {
     try {
       const res = await fetch("/api/employees");
@@ -93,33 +119,6 @@ export default function UsersPage() {
     }
     setSortConfig({ key, direction });
   };
-
-  const filteredUsers = users
-    .filter(user => {
-      const searchLow = search.toLowerCase();
-      const matchesSearch = user.username.toLowerCase().includes(searchLow) ||
-                           (user.employee?.employee_name_th || "").toLowerCase().includes(searchLow);
-      
-      const matchesRole = filterRole === "ALL" || user.role === filterRole;
-      
-      return matchesSearch && matchesRole;
-    })
-    .sort((a, b) => {
-      let aValue: any = "";
-      let bValue: any = "";
-
-      if (sortConfig.key === 'username') {
-        aValue = a.username || "";
-        bValue = b.username || "";
-      } else if (sortConfig.key === 'role') {
-        aValue = a.role || "";
-        bValue = b.role || "";
-      }
-
-      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
 
   const openModal = (user?: User) => {
     if (user) {
@@ -157,7 +156,7 @@ export default function UsersPage() {
 
       if (res.ok) {
         setIsModalOpen(false);
-        fetchUsers();
+        fetchUsersList();
       } else {
         const errorData = await res.json();
         alert(errorData.error || "Failed to save user");
@@ -173,7 +172,7 @@ export default function UsersPage() {
     if (!confirm(t('common.confirm_delete'))) return;
     try {
       const res = await fetch(`/api/users/${id}`, { method: "DELETE" });
-      if (res.ok) fetchUsers();
+      if (res.ok) fetchUsersList();
     } catch (error) {
       console.error("Delete error:", error);
     }
@@ -184,21 +183,21 @@ export default function UsersPage() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl font-black text-[#0F1059] tracking-tighter uppercase leading-none flex items-center gap-3">
-             <div className="h-12 w-12 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
+             <div className="h-12 w-12 rounded-lg bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
                 <Users className="h-6 w-6" />
              </div>
              {t('users.title')}
           </h1>
           <p className="text-[12px] font-medium text-zinc-500 uppercase tracking-widest mt-2">{t('users.subtitle')}</p>
         </div>
-        <Button onClick={() => openModal()} className="rounded-2xl bg-[#0F1059] hover:bg-black h-14 px-8 font-black uppercase tracking-widest text-[13px] transition-all shadow-xl shadow-[#0F1059]/10">
+        <Button onClick={() => openModal()} className="rounded-lg bg-[#0F1059] hover:bg-black h-12 px-8 font-black uppercase tracking-widest text-[13px] transition-all shadow-xl shadow-[#0F1059]/10">
           <Plus className="mr-2 h-4 w-4" /> {t('users.create_user')}
         </Button>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
-        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-2xl border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all lg:col-span-3">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
+        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-lg border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all lg:col-span-3">
              <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059]" />
              <input 
                 className="bg-transparent border-none outline-none text-[10px] font-black uppercase w-full"
@@ -209,7 +208,7 @@ export default function UsersPage() {
         </div>
         
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[12px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans cursor-pointer transition-all"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[12px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 font-sans cursor-pointer transition-all"
           value={filterRole}
           onChange={(e) => setFilterRole(e.target.value)}
         >
@@ -219,7 +218,7 @@ export default function UsersPage() {
         </select>
       </div>
 
-      <Card className="rounded-[40px] border-zinc-100 overflow-hidden bg-white/90">
+      <Card className="rounded-xl border-zinc-100 overflow-hidden bg-white/90">
         <div className="overflow-x-auto">
           <Table className="w-full text-left font-sans">
             <TableHeader className="bg-zinc-50/50">
@@ -255,17 +254,17 @@ export default function UsersPage() {
                     <TableCell colSpan={6} className="h-24 animate-pulse bg-zinc-50/20" />
                   </TableRow>
                 ))
-              ) : filteredUsers.length === 0 ? (
+              ) : users.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
                       {t('users.no_users_found')}
                   </TableCell>
                 </TableRow>
-              ) : filteredUsers.map((user) => (
+              ) : users.map((user) => (
                 <TableRow key={user.id} className="hover:bg-zinc-50/50 transition-colors group">
                   <TableCell className="px-6 py-4 whitespace-nowrap">
                      <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-2xl bg-zinc-50 flex items-center justify-center border border-zinc-100 group-hover:bg-white transition-colors shadow-sm">
+                        <div className="h-12 w-12 rounded-lg bg-zinc-50 flex items-center justify-center border border-zinc-100 group-hover:bg-white transition-colors shadow-sm">
                            <UserIcon className="h-5 w-5 text-zinc-400" />
                         </div>
                         <div className="flex flex-col">
@@ -299,10 +298,10 @@ export default function UsersPage() {
                   </TableCell>
                   <TableCell className="px-4 py-4 whitespace-nowrap text-right">
                     <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
-                        <button onClick={() => openModal(user)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm">
+                        <button onClick={() => openModal(user)} className="p-2.5 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm">
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleDelete(user.id)} className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm">
+                        <button onClick={() => handleDelete(user.id)} className="p-2.5 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm">
                           <Trash2 className="w-4 h-4" />
                         </button>
                     </div>
@@ -311,6 +310,38 @@ export default function UsersPage() {
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Pagination UI Desktop */}
+        <div className="px-6 py-4 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between">
+            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+               {t('common.total')} {total} {t('users.entry_count') || 'USERS'}
+            </div>
+            <div className="flex items-center gap-2">
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page <= 1 || isLoading}
+                 onClick={() => setPage(page - 1)}
+                 className="h-9 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.previous')}
+               </Button>
+               <div className="flex items-center gap-1.5 px-3">
+                  <span className="text-[11px] font-black text-[#0F1059]">{page}</span>
+                  <span className="text-[10px] font-bold text-zinc-300">/</span>
+                  <span className="text-[10px] font-bold text-zinc-400">{totalPages}</span>
+               </div>
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page >= totalPages || isLoading}
+                 onClick={() => setPage(page + 1)}
+                 className="h-9 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.next')}
+               </Button>
+            </div>
         </div>
       </Card>
 
@@ -324,7 +355,7 @@ export default function UsersPage() {
               <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('users.username')}</label>
               <input 
                  required
-                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all shadow-sm"
+                 className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all shadow-sm"
                  value={formData.username}
                  onChange={(e) => setFormData({...formData, username: e.target.value})}
               />
@@ -337,7 +368,7 @@ export default function UsersPage() {
               <input 
                  required={!editingId}
                  type="password"
-                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all shadow-sm"
+                 className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:border-[#0F1059]/30 transition-all shadow-sm"
                  placeholder={editingId ? t('users.password_placeholder') : "••••••••"}
                  value={formData.password}
                  onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -348,7 +379,7 @@ export default function UsersPage() {
               <div className="space-y-1.5">
                  <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('users.system_authority')}</label>
                  <select 
-                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] uppercase outline-none focus:border-[#0F1059]/30 shadow-sm transition-all cursor-pointer"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-black text-[#0F1059] uppercase outline-none focus:border-[#0F1059]/30 shadow-sm transition-all cursor-pointer"
                     value={formData.role}
                     onChange={(e) => setFormData({...formData, role: e.target.value})}
                  >
@@ -359,7 +390,7 @@ export default function UsersPage() {
               <div className="space-y-1.5">
                  <label className="text-[13px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('users.linked_identity')}</label>
                  <select 
-                    className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:border-[#0F1059]/30 shadow-sm transition-all cursor-pointer"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-bold outline-none focus:border-[#0F1059]/30 shadow-sm transition-all cursor-pointer"
                     value={formData.employeeId}
                     onChange={(e) => setFormData({...formData, employeeId: e.target.value})}
                  >
@@ -370,13 +401,13 @@ export default function UsersPage() {
            </div>
 
            <div className="flex items-center gap-3 pt-4 border-t border-zinc-50">
-              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-xl text-[13px] font-black uppercase tracking-widest">
+              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-lg text-[13px] font-black uppercase tracking-widest">
                  {t('common.cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={isSaving}
-                className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[13px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
+                className="flex-1 h-12 rounded-lg bg-[#0F1059] hover:bg-black text-white text-[13px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
               >
                  {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t('common.save')}
               </Button>

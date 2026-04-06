@@ -87,7 +87,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
       {/* Chart 1: Trend Area Chart */}
-      <Card ref={trendRef} className="rounded-2xl border-zinc-100 p-4 sm:p-5 bg-white flex flex-col min-h-[350px] lg:col-span-2 relative overflow-hidden">
+      <Card ref={trendRef} className="rounded-xl border-zinc-100 p-4 sm:p-5 bg-white flex flex-col min-h-[350px] lg:col-span-2 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-bl-[100px] opacity-20 pointer-events-none" />
         <div className="mb-6 flex items-start justify-between">
           <div className="flex-1">
@@ -184,7 +184,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({
       </Card>
 
       {/* Chart 2: Priority Chart */}
-      <Card ref={priorityRef} className="rounded-2xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col relative overflow-hidden">
+      <Card ref={priorityRef} className="rounded-xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col relative overflow-hidden">
         <div className="absolute top-0 left-0 w-8 h-full bg-linear-to-r from-red-50/50 to-transparent pointer-events-none" />
         <div className="mb-6 flex items-start justify-between">
           <div className="flex-1">
@@ -275,7 +275,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({
       </Card>
 
       {/* Chart 3: Proportion Donut */}
-      <Card ref={proportionRef} className="rounded-2xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col relative overflow-hidden">
+      <Card ref={proportionRef} className="rounded-xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col relative overflow-hidden">
         <div className="mb-6 flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-[13px] font-black text-zinc-900 uppercase tracking-widest flex items-center gap-2">
@@ -364,7 +364,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({
       </Card>
 
       {/* Chart 4: Department Breakdown */}
-      <Card ref={departmentRef} className="rounded-2xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col lg:col-span-2 xl:col-span-2 relative overflow-hidden mt-2 lg:mt-0">
+      <Card ref={departmentRef} className="rounded-xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col lg:col-span-2 xl:col-span-2 relative overflow-hidden mt-2 lg:mt-0">
         <div className="mb-6 flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-[13px] font-black text-zinc-900 uppercase tracking-widest flex items-center gap-2">
@@ -462,7 +462,7 @@ export const DashboardCharts: React.FC<DashboardChartsProps> = ({
       </Card>
 
       {/* Chart 5: Top Type Requests */}
-      <Card ref={typeRef} className="rounded-2xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col lg:col-span-2 xl:col-span-2 relative overflow-hidden mt-2 lg:mt-0">
+      <Card ref={typeRef} className="rounded-xl border-zinc-100 shadow-sm p-4 sm:p-5 bg-white min-h-[350px] flex flex-col lg:col-span-2 xl:col-span-2 relative overflow-hidden mt-2 lg:mt-0">
         <div className="absolute -right-10 top-10 w-40 h-40 bg-purple-50 rounded-full opacity-50 pointer-events-none" />
         <div className="mb-6 flex items-start justify-between">
           <div className="flex-1">

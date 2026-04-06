@@ -6,27 +6,71 @@ import { credentialSchema, CredentialInput } from "@/lib/validations/credential"
 import { encrypt, decrypt } from "@/lib/crypto";
 import { logAudit } from "@/lib/audit";
 
-export async function getCredentials() {
+export async function getCredentials(params: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  type?: string;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+} = {}) {
   try {
-    const credentials = await prisma.userCredential.findMany({
-      include: {
-        employee: {
-          select: {
-            id: true,
-            employee_name_th: true,
-            employee_name_en: true,
-            employee_code: true,
-            department: true,
-            status: true,
-          }
+    const { 
+      page = 1, 
+      limit = 50, 
+      search = "", 
+      type = "ALL", 
+      sortField = "username",
+      sortOrder = "asc" 
+    } = params;
+
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { username: { contains: search, mode: 'insensitive' } },
+        { email_address: { contains: search, mode: 'insensitive' } },
+        { employee: { employee_name_th: { contains: search, mode: 'insensitive' } } },
+        { employee: { employee_name_en: { contains: search, mode: 'insensitive' } } },
+        { employee: { employee_code: { contains: search, mode: 'insensitive' } } },
+      ];
+    }
+    if (type !== "ALL") {
+      where.account_type = { has: type };
+    }
+
+    const [credentials, total] = await Promise.all([
+      prisma.userCredential.findMany({
+        where,
+        include: {
+          employee: {
+            select: {
+              id: true,
+              employee_name_th: true,
+              employee_name_en: true,
+              employee_code: true,
+              department: true,
+              status: true,
+            }
+          },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+        orderBy: {
+          [sortField]: sortOrder,
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.userCredential.count({ where }),
+    ]);
     
-    return { success: true, data: JSON.parse(JSON.stringify(credentials)) };
+    return { 
+      success: true, 
+      data: JSON.parse(JSON.stringify(credentials)),
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    };
   } catch (error) {
     console.error("Failed to fetch credentials:", error);
     return { success: false, error: "Failed to fetch credentials" };

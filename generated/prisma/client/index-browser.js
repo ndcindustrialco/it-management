@@ -319,6 +319,27 @@ exports.Prisma.UserCredentialScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ItNoteScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  isPrivate: 'isPrivate',
+  isPublished: 'isPublished',
+  content: 'content',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ItNoteDetailScalarFieldEnum = {
+  id: 'id',
+  noteId: 'noteId',
+  label: 'label',
+  value: 'value',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -366,7 +387,9 @@ exports.Prisma.ModelName = {
   AuditLog: 'AuditLog',
   Asset: 'Asset',
   AssetHistory: 'AssetHistory',
-  UserCredential: 'UserCredential'
+  UserCredential: 'UserCredential',
+  ItNote: 'ItNote',
+  ItNoteDetail: 'ItNoteDetail'
 };
 
 /**

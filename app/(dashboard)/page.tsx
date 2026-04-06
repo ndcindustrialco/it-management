@@ -10,6 +10,7 @@ import { logger } from "@/lib/logger";
 import { useEffect, Suspense, lazy } from "react";
 import { Loader2 } from "lucide-react";
 import { QuickActions } from "@/components/dashboard/QuickActions";
+import { PublicDirectory } from "@/components/notes/public-directory";
 
 // Lazy-load heavier components for performance
 const StatsGrid = lazy(() => import("@/components/dashboard/StatsGrid").then(module => ({ default: module.StatsGrid })));
@@ -111,7 +112,10 @@ export default function DashboardPage() {
             </Suspense>
           )}
           {!isAdmin && (
-            <InventoryStock inventory={inventory} />
+            <div className="space-y-4">
+               <PublicDirectory />
+               <InventoryStock inventory={inventory} />
+            </div>
           )}
         </div>
 

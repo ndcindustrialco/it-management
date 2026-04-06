@@ -23,6 +23,7 @@ model User {
   equipmentRequests EquipmentRequest[]
   equipmentGroups   EquipmentBorrowGroup[]
   auditLogs         AuditLog[]
+  itNotes           ItNote[]
 }
 
 model Employee {
@@ -330,4 +331,38 @@ model UserCredential {
   updatedAt     DateTime @updatedAt
 
   @@map("user_credentials")
+}
+
+model ItNote {
+  id              String   @id @default(cuid())
+  title           String
+  isPrivate       Boolean  @default(false)
+  isPublished     Boolean  @default(false) // Show in Public Directory/Dashboard
+  content         String?  @db.Text
+  
+  details     ItNoteDetail[]
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("it_notes")
+}
+
+model ItNoteDetail {
+  id          String   @id @default(cuid())
+  noteId      String
+  note        ItNote   @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  
+  label       String   
+  value       String   
+  
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("it_note_details")
 }

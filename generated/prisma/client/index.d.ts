@@ -78,6 +78,16 @@ export type AssetHistory = $Result.DefaultSelection<Prisma.$AssetHistoryPayload>
  * 
  */
 export type UserCredential = $Result.DefaultSelection<Prisma.$UserCredentialPayload>
+/**
+ * Model ItNote
+ * 
+ */
+export type ItNote = $Result.DefaultSelection<Prisma.$ItNotePayload>
+/**
+ * Model ItNoteDetail
+ * 
+ */
+export type ItNoteDetail = $Result.DefaultSelection<Prisma.$ItNoteDetailPayload>
 
 /**
  * Enums
@@ -375,6 +385,26 @@ export class PrismaClient<
     * ```
     */
   get userCredential(): Prisma.UserCredentialDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.itNote`: Exposes CRUD operations for the **ItNote** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ItNotes
+    * const itNotes = await prisma.itNote.findMany()
+    * ```
+    */
+  get itNote(): Prisma.ItNoteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.itNoteDetail`: Exposes CRUD operations for the **ItNoteDetail** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ItNoteDetails
+    * const itNoteDetails = await prisma.itNoteDetail.findMany()
+    * ```
+    */
+  get itNoteDetail(): Prisma.ItNoteDetailDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -821,7 +851,9 @@ export namespace Prisma {
     AuditLog: 'AuditLog',
     Asset: 'Asset',
     AssetHistory: 'AssetHistory',
-    UserCredential: 'UserCredential'
+    UserCredential: 'UserCredential',
+    ItNote: 'ItNote',
+    ItNoteDetail: 'ItNoteDetail'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -837,7 +869,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "employee" | "request" | "comment" | "equipmentPurchaseOrder" | "equipmentEntryList" | "equipmentList" | "equipmentRequest" | "equipmentBorrowGroup" | "auditLog" | "asset" | "assetHistory" | "userCredential"
+      modelProps: "user" | "employee" | "request" | "comment" | "equipmentPurchaseOrder" | "equipmentEntryList" | "equipmentList" | "equipmentRequest" | "equipmentBorrowGroup" | "auditLog" | "asset" | "assetHistory" | "userCredential" | "itNote" | "itNoteDetail"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1803,6 +1835,154 @@ export namespace Prisma {
           }
         }
       }
+      ItNote: {
+        payload: Prisma.$ItNotePayload<ExtArgs>
+        fields: Prisma.ItNoteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ItNoteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ItNoteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>
+          }
+          findFirst: {
+            args: Prisma.ItNoteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ItNoteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>
+          }
+          findMany: {
+            args: Prisma.ItNoteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>[]
+          }
+          create: {
+            args: Prisma.ItNoteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>
+          }
+          createMany: {
+            args: Prisma.ItNoteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ItNoteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>[]
+          }
+          delete: {
+            args: Prisma.ItNoteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>
+          }
+          update: {
+            args: Prisma.ItNoteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>
+          }
+          deleteMany: {
+            args: Prisma.ItNoteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ItNoteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ItNoteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>[]
+          }
+          upsert: {
+            args: Prisma.ItNoteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNotePayload>
+          }
+          aggregate: {
+            args: Prisma.ItNoteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateItNote>
+          }
+          groupBy: {
+            args: Prisma.ItNoteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ItNoteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ItNoteCountArgs<ExtArgs>
+            result: $Utils.Optional<ItNoteCountAggregateOutputType> | number
+          }
+        }
+      }
+      ItNoteDetail: {
+        payload: Prisma.$ItNoteDetailPayload<ExtArgs>
+        fields: Prisma.ItNoteDetailFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ItNoteDetailFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ItNoteDetailFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>
+          }
+          findFirst: {
+            args: Prisma.ItNoteDetailFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ItNoteDetailFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>
+          }
+          findMany: {
+            args: Prisma.ItNoteDetailFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>[]
+          }
+          create: {
+            args: Prisma.ItNoteDetailCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>
+          }
+          createMany: {
+            args: Prisma.ItNoteDetailCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ItNoteDetailCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>[]
+          }
+          delete: {
+            args: Prisma.ItNoteDetailDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>
+          }
+          update: {
+            args: Prisma.ItNoteDetailUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>
+          }
+          deleteMany: {
+            args: Prisma.ItNoteDetailDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ItNoteDetailUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ItNoteDetailUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>[]
+          }
+          upsert: {
+            args: Prisma.ItNoteDetailUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItNoteDetailPayload>
+          }
+          aggregate: {
+            args: Prisma.ItNoteDetailAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateItNoteDetail>
+          }
+          groupBy: {
+            args: Prisma.ItNoteDetailGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ItNoteDetailGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ItNoteDetailCountArgs<ExtArgs>
+            result: $Utils.Optional<ItNoteDetailCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1924,6 +2104,8 @@ export namespace Prisma {
     asset?: AssetOmit
     assetHistory?: AssetHistoryOmit
     userCredential?: UserCredentialOmit
+    itNote?: ItNoteOmit
+    itNoteDetail?: ItNoteDetailOmit
   }
 
   /* Types for Logging */
@@ -2009,6 +2191,7 @@ export namespace Prisma {
     equipmentRequests: number
     equipmentGroups: number
     auditLogs: number
+    itNotes: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2017,6 +2200,7 @@ export namespace Prisma {
     equipmentRequests?: boolean | UserCountOutputTypeCountEquipmentRequestsArgs
     equipmentGroups?: boolean | UserCountOutputTypeCountEquipmentGroupsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+    itNotes?: boolean | UserCountOutputTypeCountItNotesArgs
   }
 
   // Custom InputTypes
@@ -2063,6 +2247,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AuditLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountItNotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItNoteWhereInput
   }
 
 
@@ -2302,6 +2493,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ItNoteCountOutputType
+   */
+
+  export type ItNoteCountOutputType = {
+    details: number
+  }
+
+  export type ItNoteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    details?: boolean | ItNoteCountOutputTypeCountDetailsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ItNoteCountOutputType without action
+   */
+  export type ItNoteCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteCountOutputType
+     */
+    select?: ItNoteCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ItNoteCountOutputType without action
+   */
+  export type ItNoteCountOutputTypeCountDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItNoteDetailWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -2491,6 +2713,7 @@ export namespace Prisma {
     equipmentRequests?: boolean | User$equipmentRequestsArgs<ExtArgs>
     equipmentGroups?: boolean | User$equipmentGroupsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    itNotes?: boolean | User$itNotesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2534,6 +2757,7 @@ export namespace Prisma {
     equipmentRequests?: boolean | User$equipmentRequestsArgs<ExtArgs>
     equipmentGroups?: boolean | User$equipmentGroupsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    itNotes?: boolean | User$itNotesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2552,6 +2776,7 @@ export namespace Prisma {
       equipmentRequests: Prisma.$EquipmentRequestPayload<ExtArgs>[]
       equipmentGroups: Prisma.$EquipmentBorrowGroupPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+      itNotes: Prisma.$ItNotePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2961,6 +3186,7 @@ export namespace Prisma {
     equipmentRequests<T extends User$equipmentRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$equipmentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     equipmentGroups<T extends User$equipmentGroupsArgs<ExtArgs> = {}>(args?: Subset<T, User$equipmentGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentBorrowGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    itNotes<T extends User$itNotesArgs<ExtArgs> = {}>(args?: Subset<T, User$itNotesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3534,6 +3760,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.itNotes
+   */
+  export type User$itNotesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    where?: ItNoteWhereInput
+    orderBy?: ItNoteOrderByWithRelationInput | ItNoteOrderByWithRelationInput[]
+    cursor?: ItNoteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItNoteScalarFieldEnum | ItNoteScalarFieldEnum[]
   }
 
   /**
@@ -18052,6 +18302,2261 @@ export namespace Prisma {
 
 
   /**
+   * Model ItNote
+   */
+
+  export type AggregateItNote = {
+    _count: ItNoteCountAggregateOutputType | null
+    _min: ItNoteMinAggregateOutputType | null
+    _max: ItNoteMaxAggregateOutputType | null
+  }
+
+  export type ItNoteMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    isPrivate: boolean | null
+    isPublished: boolean | null
+    content: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ItNoteMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    isPrivate: boolean | null
+    isPublished: boolean | null
+    content: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ItNoteCountAggregateOutputType = {
+    id: number
+    title: number
+    isPrivate: number
+    isPublished: number
+    content: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ItNoteMinAggregateInputType = {
+    id?: true
+    title?: true
+    isPrivate?: true
+    isPublished?: true
+    content?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ItNoteMaxAggregateInputType = {
+    id?: true
+    title?: true
+    isPrivate?: true
+    isPublished?: true
+    content?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ItNoteCountAggregateInputType = {
+    id?: true
+    title?: true
+    isPrivate?: true
+    isPublished?: true
+    content?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ItNoteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItNote to aggregate.
+     */
+    where?: ItNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNotes to fetch.
+     */
+    orderBy?: ItNoteOrderByWithRelationInput | ItNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ItNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ItNotes
+    **/
+    _count?: true | ItNoteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ItNoteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ItNoteMaxAggregateInputType
+  }
+
+  export type GetItNoteAggregateType<T extends ItNoteAggregateArgs> = {
+        [P in keyof T & keyof AggregateItNote]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateItNote[P]>
+      : GetScalarType<T[P], AggregateItNote[P]>
+  }
+
+
+
+
+  export type ItNoteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItNoteWhereInput
+    orderBy?: ItNoteOrderByWithAggregationInput | ItNoteOrderByWithAggregationInput[]
+    by: ItNoteScalarFieldEnum[] | ItNoteScalarFieldEnum
+    having?: ItNoteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ItNoteCountAggregateInputType | true
+    _min?: ItNoteMinAggregateInputType
+    _max?: ItNoteMaxAggregateInputType
+  }
+
+  export type ItNoteGroupByOutputType = {
+    id: string
+    title: string
+    isPrivate: boolean
+    isPublished: boolean
+    content: string | null
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ItNoteCountAggregateOutputType | null
+    _min: ItNoteMinAggregateOutputType | null
+    _max: ItNoteMaxAggregateOutputType | null
+  }
+
+  type GetItNoteGroupByPayload<T extends ItNoteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ItNoteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ItNoteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ItNoteGroupByOutputType[P]>
+            : GetScalarType<T[P], ItNoteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ItNoteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    details?: boolean | ItNote$detailsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    _count?: boolean | ItNoteCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itNote"]>
+
+  export type ItNoteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itNote"]>
+
+  export type ItNoteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itNote"]>
+
+  export type ItNoteSelectScalar = {
+    id?: boolean
+    title?: boolean
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ItNoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isPrivate" | "isPublished" | "content" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["itNote"]>
+  export type ItNoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    details?: boolean | ItNote$detailsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    _count?: boolean | ItNoteCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ItNoteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ItNoteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ItNotePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ItNote"
+    objects: {
+      details: Prisma.$ItNoteDetailPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      isPrivate: boolean
+      isPublished: boolean
+      content: string | null
+      userId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["itNote"]>
+    composites: {}
+  }
+
+  type ItNoteGetPayload<S extends boolean | null | undefined | ItNoteDefaultArgs> = $Result.GetResult<Prisma.$ItNotePayload, S>
+
+  type ItNoteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ItNoteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ItNoteCountAggregateInputType | true
+    }
+
+  export interface ItNoteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ItNote'], meta: { name: 'ItNote' } }
+    /**
+     * Find zero or one ItNote that matches the filter.
+     * @param {ItNoteFindUniqueArgs} args - Arguments to find a ItNote
+     * @example
+     * // Get one ItNote
+     * const itNote = await prisma.itNote.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ItNoteFindUniqueArgs>(args: SelectSubset<T, ItNoteFindUniqueArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ItNote that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ItNoteFindUniqueOrThrowArgs} args - Arguments to find a ItNote
+     * @example
+     * // Get one ItNote
+     * const itNote = await prisma.itNote.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ItNoteFindUniqueOrThrowArgs>(args: SelectSubset<T, ItNoteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItNote that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteFindFirstArgs} args - Arguments to find a ItNote
+     * @example
+     * // Get one ItNote
+     * const itNote = await prisma.itNote.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ItNoteFindFirstArgs>(args?: SelectSubset<T, ItNoteFindFirstArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItNote that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteFindFirstOrThrowArgs} args - Arguments to find a ItNote
+     * @example
+     * // Get one ItNote
+     * const itNote = await prisma.itNote.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ItNoteFindFirstOrThrowArgs>(args?: SelectSubset<T, ItNoteFindFirstOrThrowArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ItNotes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ItNotes
+     * const itNotes = await prisma.itNote.findMany()
+     * 
+     * // Get first 10 ItNotes
+     * const itNotes = await prisma.itNote.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const itNoteWithIdOnly = await prisma.itNote.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ItNoteFindManyArgs>(args?: SelectSubset<T, ItNoteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ItNote.
+     * @param {ItNoteCreateArgs} args - Arguments to create a ItNote.
+     * @example
+     * // Create one ItNote
+     * const ItNote = await prisma.itNote.create({
+     *   data: {
+     *     // ... data to create a ItNote
+     *   }
+     * })
+     * 
+     */
+    create<T extends ItNoteCreateArgs>(args: SelectSubset<T, ItNoteCreateArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ItNotes.
+     * @param {ItNoteCreateManyArgs} args - Arguments to create many ItNotes.
+     * @example
+     * // Create many ItNotes
+     * const itNote = await prisma.itNote.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ItNoteCreateManyArgs>(args?: SelectSubset<T, ItNoteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ItNotes and returns the data saved in the database.
+     * @param {ItNoteCreateManyAndReturnArgs} args - Arguments to create many ItNotes.
+     * @example
+     * // Create many ItNotes
+     * const itNote = await prisma.itNote.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ItNotes and only return the `id`
+     * const itNoteWithIdOnly = await prisma.itNote.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ItNoteCreateManyAndReturnArgs>(args?: SelectSubset<T, ItNoteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ItNote.
+     * @param {ItNoteDeleteArgs} args - Arguments to delete one ItNote.
+     * @example
+     * // Delete one ItNote
+     * const ItNote = await prisma.itNote.delete({
+     *   where: {
+     *     // ... filter to delete one ItNote
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ItNoteDeleteArgs>(args: SelectSubset<T, ItNoteDeleteArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ItNote.
+     * @param {ItNoteUpdateArgs} args - Arguments to update one ItNote.
+     * @example
+     * // Update one ItNote
+     * const itNote = await prisma.itNote.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ItNoteUpdateArgs>(args: SelectSubset<T, ItNoteUpdateArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ItNotes.
+     * @param {ItNoteDeleteManyArgs} args - Arguments to filter ItNotes to delete.
+     * @example
+     * // Delete a few ItNotes
+     * const { count } = await prisma.itNote.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ItNoteDeleteManyArgs>(args?: SelectSubset<T, ItNoteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItNotes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ItNotes
+     * const itNote = await prisma.itNote.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ItNoteUpdateManyArgs>(args: SelectSubset<T, ItNoteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItNotes and returns the data updated in the database.
+     * @param {ItNoteUpdateManyAndReturnArgs} args - Arguments to update many ItNotes.
+     * @example
+     * // Update many ItNotes
+     * const itNote = await prisma.itNote.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ItNotes and only return the `id`
+     * const itNoteWithIdOnly = await prisma.itNote.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ItNoteUpdateManyAndReturnArgs>(args: SelectSubset<T, ItNoteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ItNote.
+     * @param {ItNoteUpsertArgs} args - Arguments to update or create a ItNote.
+     * @example
+     * // Update or create a ItNote
+     * const itNote = await prisma.itNote.upsert({
+     *   create: {
+     *     // ... data to create a ItNote
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ItNote we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ItNoteUpsertArgs>(args: SelectSubset<T, ItNoteUpsertArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ItNotes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteCountArgs} args - Arguments to filter ItNotes to count.
+     * @example
+     * // Count the number of ItNotes
+     * const count = await prisma.itNote.count({
+     *   where: {
+     *     // ... the filter for the ItNotes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ItNoteCountArgs>(
+      args?: Subset<T, ItNoteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ItNoteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ItNote.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ItNoteAggregateArgs>(args: Subset<T, ItNoteAggregateArgs>): Prisma.PrismaPromise<GetItNoteAggregateType<T>>
+
+    /**
+     * Group by ItNote.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ItNoteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ItNoteGroupByArgs['orderBy'] }
+        : { orderBy?: ItNoteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ItNoteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetItNoteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ItNote model
+   */
+  readonly fields: ItNoteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ItNote.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ItNoteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    details<T extends ItNote$detailsArgs<ExtArgs> = {}>(args?: Subset<T, ItNote$detailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ItNote model
+   */
+  interface ItNoteFieldRefs {
+    readonly id: FieldRef<"ItNote", 'String'>
+    readonly title: FieldRef<"ItNote", 'String'>
+    readonly isPrivate: FieldRef<"ItNote", 'Boolean'>
+    readonly isPublished: FieldRef<"ItNote", 'Boolean'>
+    readonly content: FieldRef<"ItNote", 'String'>
+    readonly userId: FieldRef<"ItNote", 'String'>
+    readonly createdAt: FieldRef<"ItNote", 'DateTime'>
+    readonly updatedAt: FieldRef<"ItNote", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ItNote findUnique
+   */
+  export type ItNoteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNote to fetch.
+     */
+    where: ItNoteWhereUniqueInput
+  }
+
+  /**
+   * ItNote findUniqueOrThrow
+   */
+  export type ItNoteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNote to fetch.
+     */
+    where: ItNoteWhereUniqueInput
+  }
+
+  /**
+   * ItNote findFirst
+   */
+  export type ItNoteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNote to fetch.
+     */
+    where?: ItNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNotes to fetch.
+     */
+    orderBy?: ItNoteOrderByWithRelationInput | ItNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItNotes.
+     */
+    cursor?: ItNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItNotes.
+     */
+    distinct?: ItNoteScalarFieldEnum | ItNoteScalarFieldEnum[]
+  }
+
+  /**
+   * ItNote findFirstOrThrow
+   */
+  export type ItNoteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNote to fetch.
+     */
+    where?: ItNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNotes to fetch.
+     */
+    orderBy?: ItNoteOrderByWithRelationInput | ItNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItNotes.
+     */
+    cursor?: ItNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItNotes.
+     */
+    distinct?: ItNoteScalarFieldEnum | ItNoteScalarFieldEnum[]
+  }
+
+  /**
+   * ItNote findMany
+   */
+  export type ItNoteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNotes to fetch.
+     */
+    where?: ItNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNotes to fetch.
+     */
+    orderBy?: ItNoteOrderByWithRelationInput | ItNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ItNotes.
+     */
+    cursor?: ItNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItNotes.
+     */
+    distinct?: ItNoteScalarFieldEnum | ItNoteScalarFieldEnum[]
+  }
+
+  /**
+   * ItNote create
+   */
+  export type ItNoteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ItNote.
+     */
+    data: XOR<ItNoteCreateInput, ItNoteUncheckedCreateInput>
+  }
+
+  /**
+   * ItNote createMany
+   */
+  export type ItNoteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ItNotes.
+     */
+    data: ItNoteCreateManyInput | ItNoteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ItNote createManyAndReturn
+   */
+  export type ItNoteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * The data used to create many ItNotes.
+     */
+    data: ItNoteCreateManyInput | ItNoteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItNote update
+   */
+  export type ItNoteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ItNote.
+     */
+    data: XOR<ItNoteUpdateInput, ItNoteUncheckedUpdateInput>
+    /**
+     * Choose, which ItNote to update.
+     */
+    where: ItNoteWhereUniqueInput
+  }
+
+  /**
+   * ItNote updateMany
+   */
+  export type ItNoteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ItNotes.
+     */
+    data: XOR<ItNoteUpdateManyMutationInput, ItNoteUncheckedUpdateManyInput>
+    /**
+     * Filter which ItNotes to update
+     */
+    where?: ItNoteWhereInput
+    /**
+     * Limit how many ItNotes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItNote updateManyAndReturn
+   */
+  export type ItNoteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * The data used to update ItNotes.
+     */
+    data: XOR<ItNoteUpdateManyMutationInput, ItNoteUncheckedUpdateManyInput>
+    /**
+     * Filter which ItNotes to update
+     */
+    where?: ItNoteWhereInput
+    /**
+     * Limit how many ItNotes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItNote upsert
+   */
+  export type ItNoteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ItNote to update in case it exists.
+     */
+    where: ItNoteWhereUniqueInput
+    /**
+     * In case the ItNote found by the `where` argument doesn't exist, create a new ItNote with this data.
+     */
+    create: XOR<ItNoteCreateInput, ItNoteUncheckedCreateInput>
+    /**
+     * In case the ItNote was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ItNoteUpdateInput, ItNoteUncheckedUpdateInput>
+  }
+
+  /**
+   * ItNote delete
+   */
+  export type ItNoteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+    /**
+     * Filter which ItNote to delete.
+     */
+    where: ItNoteWhereUniqueInput
+  }
+
+  /**
+   * ItNote deleteMany
+   */
+  export type ItNoteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItNotes to delete
+     */
+    where?: ItNoteWhereInput
+    /**
+     * Limit how many ItNotes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItNote.details
+   */
+  export type ItNote$detailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    where?: ItNoteDetailWhereInput
+    orderBy?: ItNoteDetailOrderByWithRelationInput | ItNoteDetailOrderByWithRelationInput[]
+    cursor?: ItNoteDetailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItNoteDetailScalarFieldEnum | ItNoteDetailScalarFieldEnum[]
+  }
+
+  /**
+   * ItNote without action
+   */
+  export type ItNoteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNote
+     */
+    select?: ItNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNote
+     */
+    omit?: ItNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ItNoteDetail
+   */
+
+  export type AggregateItNoteDetail = {
+    _count: ItNoteDetailCountAggregateOutputType | null
+    _avg: ItNoteDetailAvgAggregateOutputType | null
+    _sum: ItNoteDetailSumAggregateOutputType | null
+    _min: ItNoteDetailMinAggregateOutputType | null
+    _max: ItNoteDetailMaxAggregateOutputType | null
+  }
+
+  export type ItNoteDetailAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ItNoteDetailSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ItNoteDetailMinAggregateOutputType = {
+    id: string | null
+    noteId: string | null
+    label: string | null
+    value: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ItNoteDetailMaxAggregateOutputType = {
+    id: string | null
+    noteId: string | null
+    label: string | null
+    value: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ItNoteDetailCountAggregateOutputType = {
+    id: number
+    noteId: number
+    label: number
+    value: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ItNoteDetailAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type ItNoteDetailSumAggregateInputType = {
+    order?: true
+  }
+
+  export type ItNoteDetailMinAggregateInputType = {
+    id?: true
+    noteId?: true
+    label?: true
+    value?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ItNoteDetailMaxAggregateInputType = {
+    id?: true
+    noteId?: true
+    label?: true
+    value?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ItNoteDetailCountAggregateInputType = {
+    id?: true
+    noteId?: true
+    label?: true
+    value?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ItNoteDetailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItNoteDetail to aggregate.
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNoteDetails to fetch.
+     */
+    orderBy?: ItNoteDetailOrderByWithRelationInput | ItNoteDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ItNoteDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNoteDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNoteDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ItNoteDetails
+    **/
+    _count?: true | ItNoteDetailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ItNoteDetailAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ItNoteDetailSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ItNoteDetailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ItNoteDetailMaxAggregateInputType
+  }
+
+  export type GetItNoteDetailAggregateType<T extends ItNoteDetailAggregateArgs> = {
+        [P in keyof T & keyof AggregateItNoteDetail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateItNoteDetail[P]>
+      : GetScalarType<T[P], AggregateItNoteDetail[P]>
+  }
+
+
+
+
+  export type ItNoteDetailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItNoteDetailWhereInput
+    orderBy?: ItNoteDetailOrderByWithAggregationInput | ItNoteDetailOrderByWithAggregationInput[]
+    by: ItNoteDetailScalarFieldEnum[] | ItNoteDetailScalarFieldEnum
+    having?: ItNoteDetailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ItNoteDetailCountAggregateInputType | true
+    _avg?: ItNoteDetailAvgAggregateInputType
+    _sum?: ItNoteDetailSumAggregateInputType
+    _min?: ItNoteDetailMinAggregateInputType
+    _max?: ItNoteDetailMaxAggregateInputType
+  }
+
+  export type ItNoteDetailGroupByOutputType = {
+    id: string
+    noteId: string
+    label: string
+    value: string
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ItNoteDetailCountAggregateOutputType | null
+    _avg: ItNoteDetailAvgAggregateOutputType | null
+    _sum: ItNoteDetailSumAggregateOutputType | null
+    _min: ItNoteDetailMinAggregateOutputType | null
+    _max: ItNoteDetailMaxAggregateOutputType | null
+  }
+
+  type GetItNoteDetailGroupByPayload<T extends ItNoteDetailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ItNoteDetailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ItNoteDetailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ItNoteDetailGroupByOutputType[P]>
+            : GetScalarType<T[P], ItNoteDetailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ItNoteDetailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    noteId?: boolean
+    label?: boolean
+    value?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    note?: boolean | ItNoteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itNoteDetail"]>
+
+  export type ItNoteDetailSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    noteId?: boolean
+    label?: boolean
+    value?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    note?: boolean | ItNoteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itNoteDetail"]>
+
+  export type ItNoteDetailSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    noteId?: boolean
+    label?: boolean
+    value?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    note?: boolean | ItNoteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itNoteDetail"]>
+
+  export type ItNoteDetailSelectScalar = {
+    id?: boolean
+    noteId?: boolean
+    label?: boolean
+    value?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ItNoteDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "noteId" | "label" | "value" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["itNoteDetail"]>
+  export type ItNoteDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    note?: boolean | ItNoteDefaultArgs<ExtArgs>
+  }
+  export type ItNoteDetailIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    note?: boolean | ItNoteDefaultArgs<ExtArgs>
+  }
+  export type ItNoteDetailIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    note?: boolean | ItNoteDefaultArgs<ExtArgs>
+  }
+
+  export type $ItNoteDetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ItNoteDetail"
+    objects: {
+      note: Prisma.$ItNotePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      noteId: string
+      label: string
+      value: string
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["itNoteDetail"]>
+    composites: {}
+  }
+
+  type ItNoteDetailGetPayload<S extends boolean | null | undefined | ItNoteDetailDefaultArgs> = $Result.GetResult<Prisma.$ItNoteDetailPayload, S>
+
+  type ItNoteDetailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ItNoteDetailFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ItNoteDetailCountAggregateInputType | true
+    }
+
+  export interface ItNoteDetailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ItNoteDetail'], meta: { name: 'ItNoteDetail' } }
+    /**
+     * Find zero or one ItNoteDetail that matches the filter.
+     * @param {ItNoteDetailFindUniqueArgs} args - Arguments to find a ItNoteDetail
+     * @example
+     * // Get one ItNoteDetail
+     * const itNoteDetail = await prisma.itNoteDetail.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ItNoteDetailFindUniqueArgs>(args: SelectSubset<T, ItNoteDetailFindUniqueArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ItNoteDetail that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ItNoteDetailFindUniqueOrThrowArgs} args - Arguments to find a ItNoteDetail
+     * @example
+     * // Get one ItNoteDetail
+     * const itNoteDetail = await prisma.itNoteDetail.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ItNoteDetailFindUniqueOrThrowArgs>(args: SelectSubset<T, ItNoteDetailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItNoteDetail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailFindFirstArgs} args - Arguments to find a ItNoteDetail
+     * @example
+     * // Get one ItNoteDetail
+     * const itNoteDetail = await prisma.itNoteDetail.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ItNoteDetailFindFirstArgs>(args?: SelectSubset<T, ItNoteDetailFindFirstArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItNoteDetail that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailFindFirstOrThrowArgs} args - Arguments to find a ItNoteDetail
+     * @example
+     * // Get one ItNoteDetail
+     * const itNoteDetail = await prisma.itNoteDetail.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ItNoteDetailFindFirstOrThrowArgs>(args?: SelectSubset<T, ItNoteDetailFindFirstOrThrowArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ItNoteDetails that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ItNoteDetails
+     * const itNoteDetails = await prisma.itNoteDetail.findMany()
+     * 
+     * // Get first 10 ItNoteDetails
+     * const itNoteDetails = await prisma.itNoteDetail.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const itNoteDetailWithIdOnly = await prisma.itNoteDetail.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ItNoteDetailFindManyArgs>(args?: SelectSubset<T, ItNoteDetailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ItNoteDetail.
+     * @param {ItNoteDetailCreateArgs} args - Arguments to create a ItNoteDetail.
+     * @example
+     * // Create one ItNoteDetail
+     * const ItNoteDetail = await prisma.itNoteDetail.create({
+     *   data: {
+     *     // ... data to create a ItNoteDetail
+     *   }
+     * })
+     * 
+     */
+    create<T extends ItNoteDetailCreateArgs>(args: SelectSubset<T, ItNoteDetailCreateArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ItNoteDetails.
+     * @param {ItNoteDetailCreateManyArgs} args - Arguments to create many ItNoteDetails.
+     * @example
+     * // Create many ItNoteDetails
+     * const itNoteDetail = await prisma.itNoteDetail.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ItNoteDetailCreateManyArgs>(args?: SelectSubset<T, ItNoteDetailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ItNoteDetails and returns the data saved in the database.
+     * @param {ItNoteDetailCreateManyAndReturnArgs} args - Arguments to create many ItNoteDetails.
+     * @example
+     * // Create many ItNoteDetails
+     * const itNoteDetail = await prisma.itNoteDetail.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ItNoteDetails and only return the `id`
+     * const itNoteDetailWithIdOnly = await prisma.itNoteDetail.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ItNoteDetailCreateManyAndReturnArgs>(args?: SelectSubset<T, ItNoteDetailCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ItNoteDetail.
+     * @param {ItNoteDetailDeleteArgs} args - Arguments to delete one ItNoteDetail.
+     * @example
+     * // Delete one ItNoteDetail
+     * const ItNoteDetail = await prisma.itNoteDetail.delete({
+     *   where: {
+     *     // ... filter to delete one ItNoteDetail
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ItNoteDetailDeleteArgs>(args: SelectSubset<T, ItNoteDetailDeleteArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ItNoteDetail.
+     * @param {ItNoteDetailUpdateArgs} args - Arguments to update one ItNoteDetail.
+     * @example
+     * // Update one ItNoteDetail
+     * const itNoteDetail = await prisma.itNoteDetail.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ItNoteDetailUpdateArgs>(args: SelectSubset<T, ItNoteDetailUpdateArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ItNoteDetails.
+     * @param {ItNoteDetailDeleteManyArgs} args - Arguments to filter ItNoteDetails to delete.
+     * @example
+     * // Delete a few ItNoteDetails
+     * const { count } = await prisma.itNoteDetail.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ItNoteDetailDeleteManyArgs>(args?: SelectSubset<T, ItNoteDetailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItNoteDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ItNoteDetails
+     * const itNoteDetail = await prisma.itNoteDetail.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ItNoteDetailUpdateManyArgs>(args: SelectSubset<T, ItNoteDetailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItNoteDetails and returns the data updated in the database.
+     * @param {ItNoteDetailUpdateManyAndReturnArgs} args - Arguments to update many ItNoteDetails.
+     * @example
+     * // Update many ItNoteDetails
+     * const itNoteDetail = await prisma.itNoteDetail.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ItNoteDetails and only return the `id`
+     * const itNoteDetailWithIdOnly = await prisma.itNoteDetail.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ItNoteDetailUpdateManyAndReturnArgs>(args: SelectSubset<T, ItNoteDetailUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ItNoteDetail.
+     * @param {ItNoteDetailUpsertArgs} args - Arguments to update or create a ItNoteDetail.
+     * @example
+     * // Update or create a ItNoteDetail
+     * const itNoteDetail = await prisma.itNoteDetail.upsert({
+     *   create: {
+     *     // ... data to create a ItNoteDetail
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ItNoteDetail we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ItNoteDetailUpsertArgs>(args: SelectSubset<T, ItNoteDetailUpsertArgs<ExtArgs>>): Prisma__ItNoteDetailClient<$Result.GetResult<Prisma.$ItNoteDetailPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ItNoteDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailCountArgs} args - Arguments to filter ItNoteDetails to count.
+     * @example
+     * // Count the number of ItNoteDetails
+     * const count = await prisma.itNoteDetail.count({
+     *   where: {
+     *     // ... the filter for the ItNoteDetails we want to count
+     *   }
+     * })
+    **/
+    count<T extends ItNoteDetailCountArgs>(
+      args?: Subset<T, ItNoteDetailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ItNoteDetailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ItNoteDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ItNoteDetailAggregateArgs>(args: Subset<T, ItNoteDetailAggregateArgs>): Prisma.PrismaPromise<GetItNoteDetailAggregateType<T>>
+
+    /**
+     * Group by ItNoteDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItNoteDetailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ItNoteDetailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ItNoteDetailGroupByArgs['orderBy'] }
+        : { orderBy?: ItNoteDetailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ItNoteDetailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetItNoteDetailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ItNoteDetail model
+   */
+  readonly fields: ItNoteDetailFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ItNoteDetail.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ItNoteDetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    note<T extends ItNoteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ItNoteDefaultArgs<ExtArgs>>): Prisma__ItNoteClient<$Result.GetResult<Prisma.$ItNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ItNoteDetail model
+   */
+  interface ItNoteDetailFieldRefs {
+    readonly id: FieldRef<"ItNoteDetail", 'String'>
+    readonly noteId: FieldRef<"ItNoteDetail", 'String'>
+    readonly label: FieldRef<"ItNoteDetail", 'String'>
+    readonly value: FieldRef<"ItNoteDetail", 'String'>
+    readonly order: FieldRef<"ItNoteDetail", 'Int'>
+    readonly createdAt: FieldRef<"ItNoteDetail", 'DateTime'>
+    readonly updatedAt: FieldRef<"ItNoteDetail", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ItNoteDetail findUnique
+   */
+  export type ItNoteDetailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNoteDetail to fetch.
+     */
+    where: ItNoteDetailWhereUniqueInput
+  }
+
+  /**
+   * ItNoteDetail findUniqueOrThrow
+   */
+  export type ItNoteDetailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNoteDetail to fetch.
+     */
+    where: ItNoteDetailWhereUniqueInput
+  }
+
+  /**
+   * ItNoteDetail findFirst
+   */
+  export type ItNoteDetailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNoteDetail to fetch.
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNoteDetails to fetch.
+     */
+    orderBy?: ItNoteDetailOrderByWithRelationInput | ItNoteDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItNoteDetails.
+     */
+    cursor?: ItNoteDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNoteDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNoteDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItNoteDetails.
+     */
+    distinct?: ItNoteDetailScalarFieldEnum | ItNoteDetailScalarFieldEnum[]
+  }
+
+  /**
+   * ItNoteDetail findFirstOrThrow
+   */
+  export type ItNoteDetailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNoteDetail to fetch.
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNoteDetails to fetch.
+     */
+    orderBy?: ItNoteDetailOrderByWithRelationInput | ItNoteDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItNoteDetails.
+     */
+    cursor?: ItNoteDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNoteDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNoteDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItNoteDetails.
+     */
+    distinct?: ItNoteDetailScalarFieldEnum | ItNoteDetailScalarFieldEnum[]
+  }
+
+  /**
+   * ItNoteDetail findMany
+   */
+  export type ItNoteDetailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which ItNoteDetails to fetch.
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItNoteDetails to fetch.
+     */
+    orderBy?: ItNoteDetailOrderByWithRelationInput | ItNoteDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ItNoteDetails.
+     */
+    cursor?: ItNoteDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItNoteDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItNoteDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItNoteDetails.
+     */
+    distinct?: ItNoteDetailScalarFieldEnum | ItNoteDetailScalarFieldEnum[]
+  }
+
+  /**
+   * ItNoteDetail create
+   */
+  export type ItNoteDetailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ItNoteDetail.
+     */
+    data: XOR<ItNoteDetailCreateInput, ItNoteDetailUncheckedCreateInput>
+  }
+
+  /**
+   * ItNoteDetail createMany
+   */
+  export type ItNoteDetailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ItNoteDetails.
+     */
+    data: ItNoteDetailCreateManyInput | ItNoteDetailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ItNoteDetail createManyAndReturn
+   */
+  export type ItNoteDetailCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * The data used to create many ItNoteDetails.
+     */
+    data: ItNoteDetailCreateManyInput | ItNoteDetailCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItNoteDetail update
+   */
+  export type ItNoteDetailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ItNoteDetail.
+     */
+    data: XOR<ItNoteDetailUpdateInput, ItNoteDetailUncheckedUpdateInput>
+    /**
+     * Choose, which ItNoteDetail to update.
+     */
+    where: ItNoteDetailWhereUniqueInput
+  }
+
+  /**
+   * ItNoteDetail updateMany
+   */
+  export type ItNoteDetailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ItNoteDetails.
+     */
+    data: XOR<ItNoteDetailUpdateManyMutationInput, ItNoteDetailUncheckedUpdateManyInput>
+    /**
+     * Filter which ItNoteDetails to update
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * Limit how many ItNoteDetails to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItNoteDetail updateManyAndReturn
+   */
+  export type ItNoteDetailUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * The data used to update ItNoteDetails.
+     */
+    data: XOR<ItNoteDetailUpdateManyMutationInput, ItNoteDetailUncheckedUpdateManyInput>
+    /**
+     * Filter which ItNoteDetails to update
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * Limit how many ItNoteDetails to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItNoteDetail upsert
+   */
+  export type ItNoteDetailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ItNoteDetail to update in case it exists.
+     */
+    where: ItNoteDetailWhereUniqueInput
+    /**
+     * In case the ItNoteDetail found by the `where` argument doesn't exist, create a new ItNoteDetail with this data.
+     */
+    create: XOR<ItNoteDetailCreateInput, ItNoteDetailUncheckedCreateInput>
+    /**
+     * In case the ItNoteDetail was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ItNoteDetailUpdateInput, ItNoteDetailUncheckedUpdateInput>
+  }
+
+  /**
+   * ItNoteDetail delete
+   */
+  export type ItNoteDetailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+    /**
+     * Filter which ItNoteDetail to delete.
+     */
+    where: ItNoteDetailWhereUniqueInput
+  }
+
+  /**
+   * ItNoteDetail deleteMany
+   */
+  export type ItNoteDetailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItNoteDetails to delete
+     */
+    where?: ItNoteDetailWhereInput
+    /**
+     * Limit how many ItNoteDetails to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItNoteDetail without action
+   */
+  export type ItNoteDetailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItNoteDetail
+     */
+    select?: ItNoteDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItNoteDetail
+     */
+    omit?: ItNoteDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItNoteDetailInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18303,6 +20808,33 @@ export namespace Prisma {
   export type UserCredentialScalarFieldEnum = (typeof UserCredentialScalarFieldEnum)[keyof typeof UserCredentialScalarFieldEnum]
 
 
+  export const ItNoteScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    isPrivate: 'isPrivate',
+    isPublished: 'isPublished',
+    content: 'content',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ItNoteScalarFieldEnum = (typeof ItNoteScalarFieldEnum)[keyof typeof ItNoteScalarFieldEnum]
+
+
+  export const ItNoteDetailScalarFieldEnum: {
+    id: 'id',
+    noteId: 'noteId',
+    label: 'label',
+    value: 'value',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ItNoteDetailScalarFieldEnum = (typeof ItNoteDetailScalarFieldEnum)[keyof typeof ItNoteDetailScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18428,6 +20960,13 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
   /**
    * Deep Input Types
    */
@@ -18450,6 +20989,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestListRelationFilter
     equipmentGroups?: EquipmentBorrowGroupListRelationFilter
     auditLogs?: AuditLogListRelationFilter
+    itNotes?: ItNoteListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18466,6 +21006,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestOrderByRelationAggregateInput
     equipmentGroups?: EquipmentBorrowGroupOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
+    itNotes?: ItNoteOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -18485,6 +21026,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestListRelationFilter
     equipmentGroups?: EquipmentBorrowGroupListRelationFilter
     auditLogs?: AuditLogListRelationFilter
+    itNotes?: ItNoteListRelationFilter
   }, "id" | "username" | "employeeId">
 
   export type UserOrderByWithAggregationInput = {
@@ -19684,6 +22226,146 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"UserCredential"> | Date | string
   }
 
+  export type ItNoteWhereInput = {
+    AND?: ItNoteWhereInput | ItNoteWhereInput[]
+    OR?: ItNoteWhereInput[]
+    NOT?: ItNoteWhereInput | ItNoteWhereInput[]
+    id?: StringFilter<"ItNote"> | string
+    title?: StringFilter<"ItNote"> | string
+    isPrivate?: BoolFilter<"ItNote"> | boolean
+    isPublished?: BoolFilter<"ItNote"> | boolean
+    content?: StringNullableFilter<"ItNote"> | string | null
+    userId?: StringFilter<"ItNote"> | string
+    createdAt?: DateTimeFilter<"ItNote"> | Date | string
+    updatedAt?: DateTimeFilter<"ItNote"> | Date | string
+    details?: ItNoteDetailListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ItNoteOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    isPrivate?: SortOrder
+    isPublished?: SortOrder
+    content?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    details?: ItNoteDetailOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ItNoteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ItNoteWhereInput | ItNoteWhereInput[]
+    OR?: ItNoteWhereInput[]
+    NOT?: ItNoteWhereInput | ItNoteWhereInput[]
+    title?: StringFilter<"ItNote"> | string
+    isPrivate?: BoolFilter<"ItNote"> | boolean
+    isPublished?: BoolFilter<"ItNote"> | boolean
+    content?: StringNullableFilter<"ItNote"> | string | null
+    userId?: StringFilter<"ItNote"> | string
+    createdAt?: DateTimeFilter<"ItNote"> | Date | string
+    updatedAt?: DateTimeFilter<"ItNote"> | Date | string
+    details?: ItNoteDetailListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ItNoteOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    isPrivate?: SortOrder
+    isPublished?: SortOrder
+    content?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ItNoteCountOrderByAggregateInput
+    _max?: ItNoteMaxOrderByAggregateInput
+    _min?: ItNoteMinOrderByAggregateInput
+  }
+
+  export type ItNoteScalarWhereWithAggregatesInput = {
+    AND?: ItNoteScalarWhereWithAggregatesInput | ItNoteScalarWhereWithAggregatesInput[]
+    OR?: ItNoteScalarWhereWithAggregatesInput[]
+    NOT?: ItNoteScalarWhereWithAggregatesInput | ItNoteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ItNote"> | string
+    title?: StringWithAggregatesFilter<"ItNote"> | string
+    isPrivate?: BoolWithAggregatesFilter<"ItNote"> | boolean
+    isPublished?: BoolWithAggregatesFilter<"ItNote"> | boolean
+    content?: StringNullableWithAggregatesFilter<"ItNote"> | string | null
+    userId?: StringWithAggregatesFilter<"ItNote"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ItNote"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ItNote"> | Date | string
+  }
+
+  export type ItNoteDetailWhereInput = {
+    AND?: ItNoteDetailWhereInput | ItNoteDetailWhereInput[]
+    OR?: ItNoteDetailWhereInput[]
+    NOT?: ItNoteDetailWhereInput | ItNoteDetailWhereInput[]
+    id?: StringFilter<"ItNoteDetail"> | string
+    noteId?: StringFilter<"ItNoteDetail"> | string
+    label?: StringFilter<"ItNoteDetail"> | string
+    value?: StringFilter<"ItNoteDetail"> | string
+    order?: IntFilter<"ItNoteDetail"> | number
+    createdAt?: DateTimeFilter<"ItNoteDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"ItNoteDetail"> | Date | string
+    note?: XOR<ItNoteScalarRelationFilter, ItNoteWhereInput>
+  }
+
+  export type ItNoteDetailOrderByWithRelationInput = {
+    id?: SortOrder
+    noteId?: SortOrder
+    label?: SortOrder
+    value?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    note?: ItNoteOrderByWithRelationInput
+  }
+
+  export type ItNoteDetailWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ItNoteDetailWhereInput | ItNoteDetailWhereInput[]
+    OR?: ItNoteDetailWhereInput[]
+    NOT?: ItNoteDetailWhereInput | ItNoteDetailWhereInput[]
+    noteId?: StringFilter<"ItNoteDetail"> | string
+    label?: StringFilter<"ItNoteDetail"> | string
+    value?: StringFilter<"ItNoteDetail"> | string
+    order?: IntFilter<"ItNoteDetail"> | number
+    createdAt?: DateTimeFilter<"ItNoteDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"ItNoteDetail"> | Date | string
+    note?: XOR<ItNoteScalarRelationFilter, ItNoteWhereInput>
+  }, "id">
+
+  export type ItNoteDetailOrderByWithAggregationInput = {
+    id?: SortOrder
+    noteId?: SortOrder
+    label?: SortOrder
+    value?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ItNoteDetailCountOrderByAggregateInput
+    _avg?: ItNoteDetailAvgOrderByAggregateInput
+    _max?: ItNoteDetailMaxOrderByAggregateInput
+    _min?: ItNoteDetailMinOrderByAggregateInput
+    _sum?: ItNoteDetailSumOrderByAggregateInput
+  }
+
+  export type ItNoteDetailScalarWhereWithAggregatesInput = {
+    AND?: ItNoteDetailScalarWhereWithAggregatesInput | ItNoteDetailScalarWhereWithAggregatesInput[]
+    OR?: ItNoteDetailScalarWhereWithAggregatesInput[]
+    NOT?: ItNoteDetailScalarWhereWithAggregatesInput | ItNoteDetailScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ItNoteDetail"> | string
+    noteId?: StringWithAggregatesFilter<"ItNoteDetail"> | string
+    label?: StringWithAggregatesFilter<"ItNoteDetail"> | string
+    value?: StringWithAggregatesFilter<"ItNoteDetail"> | string
+    order?: IntWithAggregatesFilter<"ItNoteDetail"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ItNoteDetail"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ItNoteDetail"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -19697,6 +22379,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -19712,6 +22395,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -19727,6 +22411,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -19742,6 +22427,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21122,6 +23808,155 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ItNoteCreateInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    details?: ItNoteDetailCreateNestedManyWithoutNoteInput
+    user: UserCreateNestedOneWithoutItNotesInput
+  }
+
+  export type ItNoteUncheckedCreateInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    details?: ItNoteDetailUncheckedCreateNestedManyWithoutNoteInput
+  }
+
+  export type ItNoteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: ItNoteDetailUpdateManyWithoutNoteNestedInput
+    user?: UserUpdateOneRequiredWithoutItNotesNestedInput
+  }
+
+  export type ItNoteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: ItNoteDetailUncheckedUpdateManyWithoutNoteNestedInput
+  }
+
+  export type ItNoteCreateManyInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteDetailCreateInput = {
+    id?: string
+    label: string
+    value: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    note: ItNoteCreateNestedOneWithoutDetailsInput
+  }
+
+  export type ItNoteDetailUncheckedCreateInput = {
+    id?: string
+    noteId: string
+    label: string
+    value: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteDetailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    note?: ItNoteUpdateOneRequiredWithoutDetailsNestedInput
+  }
+
+  export type ItNoteDetailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    noteId?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteDetailCreateManyInput = {
+    id?: string
+    noteId: string
+    label: string
+    value: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteDetailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteDetailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    noteId?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21198,6 +24033,12 @@ export namespace Prisma {
     none?: AuditLogWhereInput
   }
 
+  export type ItNoteListRelationFilter = {
+    every?: ItNoteWhereInput
+    some?: ItNoteWhereInput
+    none?: ItNoteWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -21220,6 +24061,10 @@ export namespace Prisma {
   }
 
   export type AuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ItNoteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22143,6 +24988,105 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type ItNoteDetailListRelationFilter = {
+    every?: ItNoteDetailWhereInput
+    some?: ItNoteDetailWhereInput
+    none?: ItNoteDetailWhereInput
+  }
+
+  export type ItNoteDetailOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ItNoteCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    isPrivate?: SortOrder
+    isPublished?: SortOrder
+    content?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItNoteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    isPrivate?: SortOrder
+    isPublished?: SortOrder
+    content?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItNoteMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    isPrivate?: SortOrder
+    isPublished?: SortOrder
+    content?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type ItNoteScalarRelationFilter = {
+    is?: ItNoteWhereInput
+    isNot?: ItNoteWhereInput
+  }
+
+  export type ItNoteDetailCountOrderByAggregateInput = {
+    id?: SortOrder
+    noteId?: SortOrder
+    label?: SortOrder
+    value?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItNoteDetailAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type ItNoteDetailMaxOrderByAggregateInput = {
+    id?: SortOrder
+    noteId?: SortOrder
+    label?: SortOrder
+    value?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItNoteDetailMinOrderByAggregateInput = {
+    id?: SortOrder
+    noteId?: SortOrder
+    label?: SortOrder
+    value?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItNoteDetailSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
   export type EmployeeCreateNestedOneWithoutUserInput = {
     create?: XOR<EmployeeCreateWithoutUserInput, EmployeeUncheckedCreateWithoutUserInput>
     connectOrCreate?: EmployeeCreateOrConnectWithoutUserInput
@@ -22184,6 +25128,13 @@ export namespace Prisma {
     connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
+  export type ItNoteCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItNoteCreateWithoutUserInput, ItNoteUncheckedCreateWithoutUserInput> | ItNoteCreateWithoutUserInput[] | ItNoteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItNoteCreateOrConnectWithoutUserInput | ItNoteCreateOrConnectWithoutUserInput[]
+    createMany?: ItNoteCreateManyUserInputEnvelope
+    connect?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+  }
+
   export type RequestUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RequestCreateWithoutUserInput, RequestUncheckedCreateWithoutUserInput> | RequestCreateWithoutUserInput[] | RequestUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RequestCreateOrConnectWithoutUserInput | RequestCreateOrConnectWithoutUserInput[]
@@ -22217,6 +25168,13 @@ export namespace Prisma {
     connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
     createMany?: AuditLogCreateManyUserInputEnvelope
     connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type ItNoteUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItNoteCreateWithoutUserInput, ItNoteUncheckedCreateWithoutUserInput> | ItNoteCreateWithoutUserInput[] | ItNoteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItNoteCreateOrConnectWithoutUserInput | ItNoteCreateOrConnectWithoutUserInput[]
+    createMany?: ItNoteCreateManyUserInputEnvelope
+    connect?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -22307,6 +25265,20 @@ export namespace Prisma {
     deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
   }
 
+  export type ItNoteUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItNoteCreateWithoutUserInput, ItNoteUncheckedCreateWithoutUserInput> | ItNoteCreateWithoutUserInput[] | ItNoteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItNoteCreateOrConnectWithoutUserInput | ItNoteCreateOrConnectWithoutUserInput[]
+    upsert?: ItNoteUpsertWithWhereUniqueWithoutUserInput | ItNoteUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItNoteCreateManyUserInputEnvelope
+    set?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    disconnect?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    delete?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    connect?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    update?: ItNoteUpdateWithWhereUniqueWithoutUserInput | ItNoteUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItNoteUpdateManyWithWhereWithoutUserInput | ItNoteUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItNoteScalarWhereInput | ItNoteScalarWhereInput[]
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -22379,6 +25351,20 @@ export namespace Prisma {
     update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type ItNoteUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItNoteCreateWithoutUserInput, ItNoteUncheckedCreateWithoutUserInput> | ItNoteCreateWithoutUserInput[] | ItNoteUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItNoteCreateOrConnectWithoutUserInput | ItNoteCreateOrConnectWithoutUserInput[]
+    upsert?: ItNoteUpsertWithWhereUniqueWithoutUserInput | ItNoteUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItNoteCreateManyUserInputEnvelope
+    set?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    disconnect?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    delete?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    connect?: ItNoteWhereUniqueInput | ItNoteWhereUniqueInput[]
+    update?: ItNoteUpdateWithWhereUniqueWithoutUserInput | ItNoteUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItNoteUpdateManyWithWhereWithoutUserInput | ItNoteUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItNoteScalarWhereInput | ItNoteScalarWhereInput[]
   }
 
   export type RequestCreateNestedManyWithoutEmployeeInput = {
@@ -23036,6 +26022,80 @@ export namespace Prisma {
     update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutCredentialsInput, EmployeeUpdateWithoutCredentialsInput>, EmployeeUncheckedUpdateWithoutCredentialsInput>
   }
 
+  export type ItNoteDetailCreateNestedManyWithoutNoteInput = {
+    create?: XOR<ItNoteDetailCreateWithoutNoteInput, ItNoteDetailUncheckedCreateWithoutNoteInput> | ItNoteDetailCreateWithoutNoteInput[] | ItNoteDetailUncheckedCreateWithoutNoteInput[]
+    connectOrCreate?: ItNoteDetailCreateOrConnectWithoutNoteInput | ItNoteDetailCreateOrConnectWithoutNoteInput[]
+    createMany?: ItNoteDetailCreateManyNoteInputEnvelope
+    connect?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutItNotesInput = {
+    create?: XOR<UserCreateWithoutItNotesInput, UserUncheckedCreateWithoutItNotesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItNotesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ItNoteDetailUncheckedCreateNestedManyWithoutNoteInput = {
+    create?: XOR<ItNoteDetailCreateWithoutNoteInput, ItNoteDetailUncheckedCreateWithoutNoteInput> | ItNoteDetailCreateWithoutNoteInput[] | ItNoteDetailUncheckedCreateWithoutNoteInput[]
+    connectOrCreate?: ItNoteDetailCreateOrConnectWithoutNoteInput | ItNoteDetailCreateOrConnectWithoutNoteInput[]
+    createMany?: ItNoteDetailCreateManyNoteInputEnvelope
+    connect?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type ItNoteDetailUpdateManyWithoutNoteNestedInput = {
+    create?: XOR<ItNoteDetailCreateWithoutNoteInput, ItNoteDetailUncheckedCreateWithoutNoteInput> | ItNoteDetailCreateWithoutNoteInput[] | ItNoteDetailUncheckedCreateWithoutNoteInput[]
+    connectOrCreate?: ItNoteDetailCreateOrConnectWithoutNoteInput | ItNoteDetailCreateOrConnectWithoutNoteInput[]
+    upsert?: ItNoteDetailUpsertWithWhereUniqueWithoutNoteInput | ItNoteDetailUpsertWithWhereUniqueWithoutNoteInput[]
+    createMany?: ItNoteDetailCreateManyNoteInputEnvelope
+    set?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    disconnect?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    delete?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    connect?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    update?: ItNoteDetailUpdateWithWhereUniqueWithoutNoteInput | ItNoteDetailUpdateWithWhereUniqueWithoutNoteInput[]
+    updateMany?: ItNoteDetailUpdateManyWithWhereWithoutNoteInput | ItNoteDetailUpdateManyWithWhereWithoutNoteInput[]
+    deleteMany?: ItNoteDetailScalarWhereInput | ItNoteDetailScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutItNotesNestedInput = {
+    create?: XOR<UserCreateWithoutItNotesInput, UserUncheckedCreateWithoutItNotesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItNotesInput
+    upsert?: UserUpsertWithoutItNotesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItNotesInput, UserUpdateWithoutItNotesInput>, UserUncheckedUpdateWithoutItNotesInput>
+  }
+
+  export type ItNoteDetailUncheckedUpdateManyWithoutNoteNestedInput = {
+    create?: XOR<ItNoteDetailCreateWithoutNoteInput, ItNoteDetailUncheckedCreateWithoutNoteInput> | ItNoteDetailCreateWithoutNoteInput[] | ItNoteDetailUncheckedCreateWithoutNoteInput[]
+    connectOrCreate?: ItNoteDetailCreateOrConnectWithoutNoteInput | ItNoteDetailCreateOrConnectWithoutNoteInput[]
+    upsert?: ItNoteDetailUpsertWithWhereUniqueWithoutNoteInput | ItNoteDetailUpsertWithWhereUniqueWithoutNoteInput[]
+    createMany?: ItNoteDetailCreateManyNoteInputEnvelope
+    set?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    disconnect?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    delete?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    connect?: ItNoteDetailWhereUniqueInput | ItNoteDetailWhereUniqueInput[]
+    update?: ItNoteDetailUpdateWithWhereUniqueWithoutNoteInput | ItNoteDetailUpdateWithWhereUniqueWithoutNoteInput[]
+    updateMany?: ItNoteDetailUpdateManyWithWhereWithoutNoteInput | ItNoteDetailUpdateManyWithWhereWithoutNoteInput[]
+    deleteMany?: ItNoteDetailScalarWhereInput | ItNoteDetailScalarWhereInput[]
+  }
+
+  export type ItNoteCreateNestedOneWithoutDetailsInput = {
+    create?: XOR<ItNoteCreateWithoutDetailsInput, ItNoteUncheckedCreateWithoutDetailsInput>
+    connectOrCreate?: ItNoteCreateOrConnectWithoutDetailsInput
+    connect?: ItNoteWhereUniqueInput
+  }
+
+  export type ItNoteUpdateOneRequiredWithoutDetailsNestedInput = {
+    create?: XOR<ItNoteCreateWithoutDetailsInput, ItNoteUncheckedCreateWithoutDetailsInput>
+    connectOrCreate?: ItNoteCreateOrConnectWithoutDetailsInput
+    upsert?: ItNoteUpsertWithoutDetailsInput
+    connect?: ItNoteWhereUniqueInput
+    update?: XOR<XOR<ItNoteUpdateToOneWithWhereWithoutDetailsInput, ItNoteUpdateWithoutDetailsInput>, ItNoteUncheckedUpdateWithoutDetailsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -23273,6 +26333,19 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EmployeeCreateWithoutUserInput = {
@@ -23536,6 +26609,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ItNoteCreateWithoutUserInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    details?: ItNoteDetailCreateNestedManyWithoutNoteInput
+  }
+
+  export type ItNoteUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    details?: ItNoteDetailUncheckedCreateNestedManyWithoutNoteInput
+  }
+
+  export type ItNoteCreateOrConnectWithoutUserInput = {
+    where: ItNoteWhereUniqueInput
+    create: XOR<ItNoteCreateWithoutUserInput, ItNoteUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItNoteCreateManyUserInputEnvelope = {
+    data: ItNoteCreateManyUserInput | ItNoteCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EmployeeUpsertWithoutUserInput = {
     update: XOR<EmployeeUpdateWithoutUserInput, EmployeeUncheckedUpdateWithoutUserInput>
     create: XOR<EmployeeCreateWithoutUserInput, EmployeeUncheckedCreateWithoutUserInput>
@@ -23766,6 +26871,36 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
   }
 
+  export type ItNoteUpsertWithWhereUniqueWithoutUserInput = {
+    where: ItNoteWhereUniqueInput
+    update: XOR<ItNoteUpdateWithoutUserInput, ItNoteUncheckedUpdateWithoutUserInput>
+    create: XOR<ItNoteCreateWithoutUserInput, ItNoteUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItNoteUpdateWithWhereUniqueWithoutUserInput = {
+    where: ItNoteWhereUniqueInput
+    data: XOR<ItNoteUpdateWithoutUserInput, ItNoteUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItNoteUpdateManyWithWhereWithoutUserInput = {
+    where: ItNoteScalarWhereInput
+    data: XOR<ItNoteUpdateManyMutationInput, ItNoteUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ItNoteScalarWhereInput = {
+    AND?: ItNoteScalarWhereInput | ItNoteScalarWhereInput[]
+    OR?: ItNoteScalarWhereInput[]
+    NOT?: ItNoteScalarWhereInput | ItNoteScalarWhereInput[]
+    id?: StringFilter<"ItNote"> | string
+    title?: StringFilter<"ItNote"> | string
+    isPrivate?: BoolFilter<"ItNote"> | boolean
+    isPublished?: BoolFilter<"ItNote"> | boolean
+    content?: StringNullableFilter<"ItNote"> | string | null
+    userId?: StringFilter<"ItNote"> | string
+    createdAt?: DateTimeFilter<"ItNote"> | Date | string
+    updatedAt?: DateTimeFilter<"ItNote"> | Date | string
+  }
+
   export type RequestCreateWithoutEmployeeInput = {
     id?: string
     request_code: string
@@ -23834,6 +26969,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEmployeeInput = {
@@ -23848,6 +26984,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEmployeeInput = {
@@ -23974,6 +27111,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmployeeInput = {
@@ -23988,6 +27126,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AssetUpsertWithWhereUniqueWithoutEmployeeInput = {
@@ -24112,6 +27251,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRequestsInput = {
@@ -24126,6 +27266,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRequestsInput = {
@@ -24231,6 +27372,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRequestsInput = {
@@ -24245,6 +27387,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentUpsertWithWhereUniqueWithoutRequestInput = {
@@ -24326,6 +27469,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -24340,6 +27484,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -24427,6 +27572,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -24441,6 +27587,7 @@ export namespace Prisma {
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EquipmentEntryListCreateWithoutPurchaseOrderInput = {
@@ -24884,6 +28031,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEquipmentRequestsInput = {
@@ -24898,6 +28046,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEquipmentRequestsInput = {
@@ -25008,6 +28157,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEquipmentRequestsInput = {
@@ -25022,6 +28172,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEquipmentGroupsInput = {
@@ -25036,6 +28187,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEquipmentGroupsInput = {
@@ -25050,6 +28202,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEquipmentGroupsInput = {
@@ -25136,6 +28289,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEquipmentGroupsInput = {
@@ -25150,6 +28304,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EquipmentRequestUpsertWithWhereUniqueWithoutGroupInput = {
@@ -25180,6 +28335,7 @@ export namespace Prisma {
     comments?: CommentCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -25194,6 +28350,7 @@ export namespace Prisma {
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
+    itNotes?: ItNoteUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -25224,6 +28381,7 @@ export namespace Prisma {
     comments?: CommentUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -25238,6 +28396,7 @@ export namespace Prisma {
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
     equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
+    itNotes?: ItNoteUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EmployeeCreateWithoutAssetsInput = {
@@ -25574,6 +28733,199 @@ export namespace Prisma {
     assets?: AssetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
+  export type ItNoteDetailCreateWithoutNoteInput = {
+    id?: string
+    label: string
+    value: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteDetailUncheckedCreateWithoutNoteInput = {
+    id?: string
+    label: string
+    value: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteDetailCreateOrConnectWithoutNoteInput = {
+    where: ItNoteDetailWhereUniqueInput
+    create: XOR<ItNoteDetailCreateWithoutNoteInput, ItNoteDetailUncheckedCreateWithoutNoteInput>
+  }
+
+  export type ItNoteDetailCreateManyNoteInputEnvelope = {
+    data: ItNoteDetailCreateManyNoteInput | ItNoteDetailCreateManyNoteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutItNotesInput = {
+    id?: string
+    username: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee?: EmployeeCreateNestedOneWithoutUserInput
+    requests?: RequestCreateNestedManyWithoutUserInput
+    comments?: CommentCreateNestedManyWithoutUserInput
+    equipmentRequests?: EquipmentRequestCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutItNotesInput = {
+    id?: string
+    username: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employeeId?: string | null
+    requests?: RequestUncheckedCreateNestedManyWithoutUserInput
+    comments?: CommentUncheckedCreateNestedManyWithoutUserInput
+    equipmentRequests?: EquipmentRequestUncheckedCreateNestedManyWithoutUserInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutItNotesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutItNotesInput, UserUncheckedCreateWithoutItNotesInput>
+  }
+
+  export type ItNoteDetailUpsertWithWhereUniqueWithoutNoteInput = {
+    where: ItNoteDetailWhereUniqueInput
+    update: XOR<ItNoteDetailUpdateWithoutNoteInput, ItNoteDetailUncheckedUpdateWithoutNoteInput>
+    create: XOR<ItNoteDetailCreateWithoutNoteInput, ItNoteDetailUncheckedCreateWithoutNoteInput>
+  }
+
+  export type ItNoteDetailUpdateWithWhereUniqueWithoutNoteInput = {
+    where: ItNoteDetailWhereUniqueInput
+    data: XOR<ItNoteDetailUpdateWithoutNoteInput, ItNoteDetailUncheckedUpdateWithoutNoteInput>
+  }
+
+  export type ItNoteDetailUpdateManyWithWhereWithoutNoteInput = {
+    where: ItNoteDetailScalarWhereInput
+    data: XOR<ItNoteDetailUpdateManyMutationInput, ItNoteDetailUncheckedUpdateManyWithoutNoteInput>
+  }
+
+  export type ItNoteDetailScalarWhereInput = {
+    AND?: ItNoteDetailScalarWhereInput | ItNoteDetailScalarWhereInput[]
+    OR?: ItNoteDetailScalarWhereInput[]
+    NOT?: ItNoteDetailScalarWhereInput | ItNoteDetailScalarWhereInput[]
+    id?: StringFilter<"ItNoteDetail"> | string
+    noteId?: StringFilter<"ItNoteDetail"> | string
+    label?: StringFilter<"ItNoteDetail"> | string
+    value?: StringFilter<"ItNoteDetail"> | string
+    order?: IntFilter<"ItNoteDetail"> | number
+    createdAt?: DateTimeFilter<"ItNoteDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"ItNoteDetail"> | Date | string
+  }
+
+  export type UserUpsertWithoutItNotesInput = {
+    update: XOR<UserUpdateWithoutItNotesInput, UserUncheckedUpdateWithoutItNotesInput>
+    create: XOR<UserCreateWithoutItNotesInput, UserUncheckedCreateWithoutItNotesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutItNotesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutItNotesInput, UserUncheckedUpdateWithoutItNotesInput>
+  }
+
+  export type UserUpdateWithoutItNotesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneWithoutUserNestedInput
+    requests?: RequestUpdateManyWithoutUserNestedInput
+    comments?: CommentUpdateManyWithoutUserNestedInput
+    equipmentRequests?: EquipmentRequestUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutItNotesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    requests?: RequestUncheckedUpdateManyWithoutUserNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    equipmentRequests?: EquipmentRequestUncheckedUpdateManyWithoutUserNestedInput
+    equipmentGroups?: EquipmentBorrowGroupUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ItNoteCreateWithoutDetailsInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutItNotesInput
+  }
+
+  export type ItNoteUncheckedCreateWithoutDetailsInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteCreateOrConnectWithoutDetailsInput = {
+    where: ItNoteWhereUniqueInput
+    create: XOR<ItNoteCreateWithoutDetailsInput, ItNoteUncheckedCreateWithoutDetailsInput>
+  }
+
+  export type ItNoteUpsertWithoutDetailsInput = {
+    update: XOR<ItNoteUpdateWithoutDetailsInput, ItNoteUncheckedUpdateWithoutDetailsInput>
+    create: XOR<ItNoteCreateWithoutDetailsInput, ItNoteUncheckedCreateWithoutDetailsInput>
+    where?: ItNoteWhereInput
+  }
+
+  export type ItNoteUpdateToOneWithWhereWithoutDetailsInput = {
+    where?: ItNoteWhereInput
+    data: XOR<ItNoteUpdateWithoutDetailsInput, ItNoteUncheckedUpdateWithoutDetailsInput>
+  }
+
+  export type ItNoteUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutItNotesNestedInput
+  }
+
+  export type ItNoteUncheckedUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RequestCreateManyUserInput = {
     id?: string
     employeeId: string
@@ -25655,6 +29007,16 @@ export namespace Prisma {
     userAgent?: string | null
     device?: string | null
     createdAt?: Date | string
+  }
+
+  export type ItNoteCreateManyUserInput = {
+    id?: string
+    title: string
+    isPrivate?: boolean
+    isPublished?: boolean
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type RequestUpdateWithoutUserInput = {
@@ -25908,6 +29270,38 @@ export namespace Prisma {
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     device?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: ItNoteDetailUpdateManyWithoutNoteNestedInput
+  }
+
+  export type ItNoteUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: ItNoteDetailUncheckedUpdateManyWithoutNoteNestedInput
+  }
+
+  export type ItNoteUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isPublished?: BoolFieldUpdateOperationsInput | boolean
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RequestCreateManyEmployeeInput = {
@@ -26480,6 +29874,42 @@ export namespace Prisma {
     action?: NullableStringFieldUpdateOperationsInput | string | null
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteDetailCreateManyNoteInput = {
+    id?: string
+    label: string
+    value: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItNoteDetailUpdateWithoutNoteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteDetailUncheckedUpdateWithoutNoteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItNoteDetailUncheckedUpdateManyWithoutNoteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

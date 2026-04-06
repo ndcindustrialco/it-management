@@ -5,27 +5,66 @@ import { logAudit } from "@/lib/audit";
 import { headers } from "next/headers";
 import { generateNewCode } from "@/lib/code-generator";
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  try {
-    // Removed restriction to allow seeing others' requests too
-    const where = {};
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "50");
+  const search = searchParams.get("search") || "";
+  const status = searchParams.get("status") || "ALL";
+  const priority = searchParams.get("priority") || "ALL";
+  const category = searchParams.get("category") || "ALL";
+  const type_request = searchParams.get("type_request") || "ALL";
+  const sortField = searchParams.get("sortField") || "createdAt";
+  const sortOrder = (searchParams.get("sortOrder") as "asc" | "desc") || "desc";
 
-    const requests = await prisma.request.findMany({
-      where,
-      include: {
-        employee: true,
-        user: true,
-        comments: {
-          include: { user: true },
-          orderBy: { createdAt: 'asc' }
+  const skip = (page - 1) * limit;
+
+  try {
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { request_code: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+        { reason: { contains: search, mode: "insensitive" } },
+        { employee: { employee_name_th: { contains: search, mode: "insensitive" } } },
+        { employee: { department: { contains: search, mode: "insensitive" } } },
+        { user: { username: { contains: search, mode: "insensitive" } } },
+      ];
+    }
+    if (status !== "ALL") where.status = status;
+    if (priority !== "ALL") where.priority = priority;
+    if (category !== "ALL") where.category = category;
+    if (type_request !== "ALL") where.type_request = type_request;
+
+    const [requests, total] = await Promise.all([
+      prisma.request.findMany({
+        where,
+        include: {
+          employee: true,
+          user: true,
+          comments: {
+            include: { user: true },
+            orderBy: { createdAt: 'asc' }
+          },
         },
-      },
-      orderBy: { createdAt: "desc" },
+        orderBy: {
+          [sortField]: sortOrder,
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.request.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: requests,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
     });
-    return NextResponse.json(requests);
   } catch (error) {
     console.error("GET /api/requests error:", error);
     return NextResponse.json({ error: "Failed to fetch requests" }, { status: 500 });

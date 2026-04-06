@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Drawer } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Loader2, Key, Mail, Lock, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Loader2, Key, Mail, Lock, ShieldCheck, User } from "lucide-react";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { CredentialInput } from "@/lib/validations/credential";
 import { EmployeeSearchSelect, Employee } from "@/components/employee-search-select";
@@ -65,46 +65,42 @@ export function CredentialDrawer({
     }
   };
 
-  const accountTypes = [
-    { value: "EMAIL", label: t("credentials.account_types.EMAIL") },
-    { value: "FILE_SHARE", label: t("credentials.account_types.FILE_SHARE") },
-    { value: "VPN", label: t("credentials.account_types.VPN") },
-    { value: "ERP", label: t("credentials.account_types.ERP") },
-    { value: "SOFTWARE", label: t("credentials.account_types.SOFTWARE") },
-    { value: "OTHER", label: t("credentials.account_types.OTHER") },
-  ];
-
   return (
     <Drawer
       isOpen={isOpen}
       onClose={onClose}
-      direction="top"
       title={initialData ? t("credentials.edit_credential") : t("credentials.add_credential")}
       size="lg"
     >
-      <form onSubmit={handleSubmit} className="space-y-6 pb-20 font-sans">
-        <div className="space-y-4">
-          <div className="space-y-1.5 px-1">
-             <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                {t("credentials.employee")}
-             </label>
-             <EmployeeSearchSelect
-               value={formData.employeeId}
-               onChange={(val) => {
-                 const emp = employees.find(e => e.employee_name_th === val || e.id === val);
-                 setFormData({ ...formData, employeeId: emp?.id || "" });
-               }}
-               employees={employees}
-               placeholder={t("credentials.search_placeholder")}
-             />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6 pb-24 font-sans">
+        <div className="space-y-6">
+          {/* Section: Assignment */}
+          <div className="space-y-4">
+             <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                <User className="h-4 w-4 text-primary" />
+                <span className="text-sm">Account Assignment</span>
+             </div>
+             <div className="space-y-1.5">
+               <label className="text-xs font-semibold text-slate-500">{t("credentials.employee")}</label>
+               <EmployeeSearchSelect
+                 value={formData.employeeId}
+                 onChange={(val) => {
+                   const emp = employees.find(e => e.employee_name_th === val || e.id === val);
+                   setFormData({ ...formData, employeeId: emp?.id || "" });
+                 }}
+                 employees={employees}
+                 placeholder={t("credentials.search_placeholder")}
+               />
+             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                <ShieldCheck className="h-3 w-3" />{t("credentials.account_type")}
-              </label>
-              <div className="grid grid-cols-2 gap-2">
+          {/* Section: Account Types */}
+          <div className="space-y-4">
+             <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                <span className="text-sm">Account System Types</span>
+             </div>
+             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {ACCOUNT_TYPES.map((type) => {
                   const isSelected = formData.account_type.includes(type);
                   return (
@@ -120,86 +116,92 @@ export function CredentialDrawer({
                         }
                       }}
                       className={cn(
-                        "px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-left border",
+                        "px-3 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-tight transition-all text-center border",
                         isSelected 
-                          ? "bg-[#0F1059] text-white border-[#0F1059] shadow-lg shadow-[#0F1059]/20" 
-                          : "bg-zinc-50 text-zinc-400 border-zinc-100 hover:border-zinc-200"
+                          ? "bg-primary text-white border-primary shadow-sm" 
+                          : "bg-white text-slate-500 border-slate-200 hover:border-slate-300"
                       )}
                     >
                       {t(`credentials.account_types.${type}`)}
                     </button>
                   );
                 })}
-              </div>
-            </div>
+             </div>
+          </div>
 
-            <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-              <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("credentials.username")}</label>
-              <div className="relative group">
-                <Key className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059] transition-colors" />
-                <input
-                  required
-                  className="w-full bg-zinc-50 border border-zinc-100 rounded-xl pl-11 pr-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-                  value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  placeholder="e.g. user.name"
-                />
-              </div>
-            </div>
+          {/* Section: Credentials */}
+          <div className="space-y-4">
+             <div className="flex items-center gap-2 text-slate-900 font-bold border-b border-slate-100 pb-2">
+                <Lock className="h-4 w-4 text-primary" />
+                <span className="text-sm">Login Information</span>
+             </div>
+             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                   <label className="text-xs font-semibold text-slate-500">{t("credentials.username")}</label>
+                   <div className="relative">
+                      <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <input
+                        required
+                        className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm font-bold text-slate-700 outline-none focus:border-primary/50 transition-all"
+                        value={formData.username}
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                        placeholder="e.g. user.name"
+                      />
+                   </div>
+                </div>
 
-            <div className="space-y-1.5 focus-within:text-[#0f7a59] transition-colors">
-              <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("credentials.password")}</label>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-emerald-600 transition-colors" />
-                <input
-                  required
-                  type="text"
-                  className="w-full bg-emerald-50/30 border border-zinc-100 rounded-xl pl-11 pr-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-emerald-500/30 transition-all shadow-sm"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  placeholder="Enter Password..."
-                />
-              </div>
-              <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter px-1 flex items-center gap-1">
-                 <ShieldAlert className="h-3 w-3" /> Data will be AES-256 encrypted automatically
-              </p>
-            </div>
+                <div className="space-y-1.5 focus-within:text-emerald-600">
+                   <label className="text-xs font-semibold text-slate-500">{t("credentials.password")}</label>
+                   <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <input
+                        required
+                        type="text"
+                        className="w-full bg-emerald-50/20 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm font-bold text-slate-700 outline-none focus:border-emerald-500/50 transition-all font-mono"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        placeholder="••••••••"
+                      />
+                   </div>
+                   <p className="text-[10px] font-medium text-slate-400 italic">Self-encrypting AES-256 enabled</p>
+                </div>
 
-            <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-              <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("credentials.email_address")}</label>
-              <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059] transition-colors" />
-                <input
-                  type="email"
-                  className="w-full bg-zinc-50 border border-zinc-100 rounded-xl pl-11 pr-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
-                  value={formData.email_address || ""}
-                  onChange={(e) => setFormData({ ...formData, email_address: e.target.value })}
-                  placeholder="e.g. employee@ndc.co.th"
-                />
-              </div>
-            </div>
+                <div className="space-y-1.5 md:col-span-2">
+                   <label className="text-xs font-semibold text-slate-500">{t("credentials.email_address")}</label>
+                   <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <input
+                        type="email"
+                        className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all"
+                        value={formData.email_address || ""}
+                        onChange={(e) => setFormData({ ...formData, email_address: e.target.value })}
+                        placeholder="employee@ndc.co.th"
+                      />
+                   </div>
+                </div>
 
-            <div className="col-span-2 space-y-1.5 focus-within:text-[#0F1059] transition-colors">
-              <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t("credentials.remarks")}</label>
-              <textarea
-                rows={3}
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm resize-none"
-                value={formData.remarks || ""}
-                onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
-                placeholder="Installation location, specific permissions, etc."
-              />
-            </div>
+                <div className="space-y-1.5 md:col-span-2">
+                   <label className="text-xs font-semibold text-slate-500">{t("credentials.remarks")}</label>
+                   <textarea
+                     rows={3}
+                     className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none focus:border-primary/50 transition-all resize-none"
+                     value={formData.remarks || ""}
+                     onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+                     placeholder="Additional information, permissions, etc."
+                   />
+                </div>
+             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 pt-6">
-          <Button type="button" variant="ghost" onClick={onClose} className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest">
+        <div className="flex items-center gap-3 mt-4">
+          <Button type="button" variant="ghost" onClick={onClose} className="flex-1 h-11 rounded-lg font-bold border border-slate-200">
             {t("common.cancel")}
           </Button>
           <Button 
             type="submit" 
             disabled={isSaving || !formData.employeeId}
-            className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
+            className="flex-1 h-11 rounded-lg bg-primary hover:bg-primary/90 text-white font-bold transition-all shadow-md active:scale-95"
           >
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t("common.save")}
           </Button>

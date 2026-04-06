@@ -89,8 +89,8 @@ export function Drawer({
               <div className={cn(
                 "flex flex-col bg-surface shadow-2xl border-border transition-colors",
                 direction === "right" && "h-full border-l",
-                direction === "top" && "rounded-b-[40px] border-b shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]",
-                direction === "bottom" && "rounded-t-[40px] border-t h-auto"
+                direction === "top" && "rounded-b-xl border-b shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]",
+                direction === "bottom" && "rounded-t-xl border-t h-auto"
               )}>
                 <div className="flex items-center justify-between px-6 py-5 border-b border-border">
                   <h2 className="text-lg font-bold text-foreground capitalize tracking-tight">{title}</h2>

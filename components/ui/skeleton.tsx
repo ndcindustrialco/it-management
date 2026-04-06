@@ -15,7 +15,7 @@ export function Skeleton({
         "animate-pulse bg-secondary/50",
         variant === "text" && "h-4 w-full rounded-md",
         variant === "circular" && "h-12 w-12 rounded-full",
-        variant === "rectangular" && "h-48 w-full rounded-xl",
+        variant === "rectangular" && "h-48 w-full rounded-lg",
         className
       )}
       {...props}
@@ -30,7 +30,7 @@ export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-8 w-24" />
       </div>
-      <div className="border border-border rounded-xl overflow-hidden">
+      <div className="border border-border rounded-lg overflow-hidden">
         <div className="bg-secondary/30 h-10 border-b border-border flex items-center px-4 gap-4">
           {Array.from({ length: cols }).map((_, i) => (
             <Skeleton key={i} className="h-4 flex-1" />

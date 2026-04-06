@@ -60,9 +60,17 @@ export function useDashboardData(isAdmin: boolean, session: any) {
         return;
       }
 
-      const requestsData = requestsRes.data || [];
-      const inventoryData = inventoryRes.data || [];
-      const entriesData = entriesRes.data || [];
+      // Handle paginated or non-paginated responses
+      const getArray = (res: any) => {
+        if (!res || !res.data) return [];
+        if (Array.isArray(res.data)) return res.data;
+        // Check standard paginated keys
+        return res.data.data || res.data.entries || res.data.assets || res.data.credentials || [];
+      };
+
+      const requestsData = getArray(requestsRes);
+      const inventoryData = getArray(inventoryRes);
+      const entriesData = getArray(entriesRes);
 
       setRequests(requestsData);
       setInventory(inventoryData);
@@ -263,13 +271,17 @@ export function useDashboardData(isAdmin: boolean, session: any) {
   const typeRequestData = useMemo(() => {
     // Standard IT Task Types in Thai
     const TASK_TYPE_MAP: Record<string, string> = {
-      'repair': 'งานซ่อมแซมและแก้ไข',
-      'access': 'จัดการสิทธิ์เข้าใช้งาน',
-      'account': 'จัดการสิทธิ์เข้าใช้งาน',
-      'purchase': 'จัดซื้ออุปกรณ์ IT',
+      'repair': 'การแจ้งซ่อมอุปกรณ์',
+      'support': 'ข้อมูล / คำแนะนำ',
+      'access': 'ขอสิทธิ์เข้าถึงระบบ',
+      'account': 'แก้รหัสผ่าน / บัญชี',
+      'purchase': 'จัดซื้ออุปกรณ์ใหม่',
       'software': 'งานด้านซอฟต์แวร์',
       'hardware': 'งานด้านฮาร์ดแวร์',
       'network': 'แก้ปัญหาเครือข่าย',
+      'license': 'ลิขสิทธิ์ซอฟต์แวร์',
+      'change': 'เปลี่ยนแปลงโครงสร้าง',
+      'borrow_acc': 'การยืมอุปกรณ์',
       'consulting': 'ให้คำปรึกษาด้าน IT',
       'other': 'งานบริการอื่นๆ',
       'None': 'ไม่ระบุประเภท',
@@ -277,11 +289,12 @@ export function useDashboardData(isAdmin: boolean, session: any) {
     };
 
     // Initialize with common tasks to ensure they appear in the graph even if count is 0
-    // "ใส่เข้าไปในกราฟทั้งหมด" interpretation: Show these standard categories
     const counts: Record<string, number> = {
-      'งานซ่อมแซมและแก้ไข': 0,
-      'จัดการสิทธิ์เข้าใช้งาน': 0,
-      'จัดซื้ออุปกรณ์ IT': 0,
+      'การแจ้งซ่อมอุปกรณ์': 0,
+      'ข้อมูล / คำแนะนำ': 0,
+      'ขอสิทธิ์เข้าถึงระบบ': 0,
+      'แก้รหัสผ่าน / บัญชี': 0,
+      'จัดซื้ออุปกรณ์ใหม่': 0,
       'งานด้านซอฟต์แวร์': 0,
       'งานด้านฮาร์ดแวร์': 0,
       'แก้ปัญหาเครือข่าย': 0,

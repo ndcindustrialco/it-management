@@ -48,6 +48,11 @@ export default function EmployeesPage() {
     key: 'employee_name_th',
     direction: 'asc'
   });
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 50;
+  const [allDepartments, setAllDepartments] = useState<string[]>([]);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -65,15 +70,53 @@ export default function EmployeesPage() {
   });
 
   useEffect(() => {
-    fetchEmployees();
+    fetchInitialData();
   }, []);
 
-  const fetchEmployees = async () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchEmployeesList();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, filterStatus, filterDepartment, sortConfig, page]);
+
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [search, filterStatus, filterDepartment, sortConfig]);
+
+  const fetchInitialData = async () => {
+    try {
+      const res = await fetch("/api/employees?limit=1000"); // Fetch a larger set to extract departments
+      const result = await res.json();
+      if (result.data) {
+        const depts = Array.from(new Set(result.data.map((e: any) => e.department).filter(Boolean))) as string[];
+        setAllDepartments(depts.sort());
+      }
+    } catch (error) {
+      console.error("Fetch initial error:", error);
+    }
+  };
+
+  const fetchEmployeesList = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/employees");
-      const data = await res.json();
-      if (Array.isArray(data)) setEmployees(data);
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        search,
+        status: filterStatus,
+        department: filterDepartment,
+        sortField: sortConfig.key as string,
+        sortOrder: sortConfig.direction
+      });
+      const res = await fetch(`/api/employees?${params.toString()}`);
+      const result = await res.json();
+      if (result.data) {
+        setEmployees(result.data);
+        setTotal(result.total || 0);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch (error) {
       console.error("Fetch error:", error);
     } finally {
@@ -88,27 +131,6 @@ export default function EmployeesPage() {
     }
     setSortConfig({ key, direction });
   };
-
-  const filteredEmployees = employees
-    .filter(emp => {
-      const searchLow = search.toLowerCase();
-      const matchesSearch = emp.employee_name_th.toLowerCase().includes(searchLow) ||
-                           (emp.employee_name_en || "").toLowerCase().includes(searchLow) ||
-                           emp.employee_code.toLowerCase().includes(searchLow);
-      
-      const matchesStatus = filterStatus === "ALL" || emp.status === filterStatus;
-      const matchesDepartment = filterDepartment === "ALL" || emp.department === filterDepartment;
-      
-      return matchesSearch && matchesStatus && matchesDepartment;
-    })
-    .sort((a, b) => {
-      const aValue = (a as any)[sortConfig.key] || "";
-      const bValue = (b as any)[sortConfig.key] || "";
-      
-      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
-      return 0;
-    });
 
   const openModal = (employee: Employee | null = null) => {
     if (employee) {
@@ -162,7 +184,7 @@ export default function EmployeesPage() {
 
       if (res.ok) {
         setIsModalOpen(false);
-        fetchEmployees();
+        fetchEmployeesList();
       }
     } catch (error) {
       console.error("Save error:", error);
@@ -175,34 +197,34 @@ export default function EmployeesPage() {
     if (!confirm(t('common.confirm_delete'))) return;
     try {
       await fetch(`/api/employees/${id}`, { method: "DELETE" });
-      fetchEmployees();
+      fetchEmployeesList();
     } catch (error) {
       console.error("Delete error:", error);
     }
   };
 
-  const departments = Array.from(new Set(employees.map(e => e.department).filter(Boolean)));
+  const departments = allDepartments;
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl font-black text-[#0F1059] tracking-tighter uppercase leading-none flex items-center gap-3">
-             <div className="h-12 w-12 rounded-2xl bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
+             <div className="h-12 w-12 rounded-lg bg-[#0F1059] flex items-center justify-center text-white border border-[#0F1059]/10 shadow-sm">
                 <User className="h-6 w-6" />
              </div>
              {t('employees.title')}
           </h1>
           <p className="text-[12px] font-medium text-zinc-500 uppercase tracking-widest mt-2">{t('employees.subtitle')}</p>
         </div>
-        <Button onClick={() => openModal()} className="rounded-2xl bg-[#0F1059] hover:bg-black h-14 px-8 font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-[#0F1059]/10">
+        <Button onClick={() => openModal()} className="rounded-lg bg-[#0F1059] hover:bg-black h-12 px-8 font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-[#0F1059]/10">
           <Plus className="mr-2 h-4 w-4" /> {t('employees.add_employee')}
         </Button>
       </header>
 
       {/* Filter Bar */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-3xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
-        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-2xl border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all col-span-1 lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center p-4 rounded-xl border border-zinc-100 bg-white/50 shadow-sm font-sans uppercase">
+        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 rounded-lg border border-zinc-100 group focus-within:border-[#0F1059]/30 transition-all col-span-1 lg:col-span-2">
              <Search className="h-4 w-4 text-zinc-400 group-focus-within:text-[#0F1059]" />
              <input 
                 className="bg-transparent border-none outline-none text-[10px] font-black uppercase w-full"
@@ -213,7 +235,7 @@ export default function EmployeesPage() {
         </div>
         
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
@@ -223,7 +245,7 @@ export default function EmployeesPage() {
         </select>
 
         <select 
-          className="bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
+          className="bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-2.5 text-[10px] font-black uppercase outline-none text-zinc-600 focus:border-[#0F1059]/30 cursor-pointer transition-all"
           value={filterDepartment}
           onChange={(e) => setFilterDepartment(e.target.value)}
         >
@@ -234,7 +256,7 @@ export default function EmployeesPage() {
         </select>
       </div>
 
-      <Card className="rounded-[40px] border-zinc-100 overflow-hidden bg-white/90">
+      <Card className="rounded-xl border-zinc-100 overflow-hidden bg-white/90">
         <div className="overflow-x-auto">
           <Table className="w-full text-left font-sans">
             <TableHeader className="bg-zinc-50/50">
@@ -280,13 +302,13 @@ export default function EmployeesPage() {
                      <TableCell colSpan={8} className="h-20 animate-pulse bg-zinc-50/10" />
                    </TableRow>
                  ))
-              ) : filteredEmployees.length === 0 ? (
+              ) : employees.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8} className="px-6 py-20 text-center text-zinc-400 italic font-bold uppercase tracking-widest">
                       {t('employees.no_employees_found')}
                   </TableCell>
                 </TableRow>
-              ) : filteredEmployees.map((emp) => (
+              ) : employees.map((emp) => (
                 <TableRow key={emp.id} className="hover:bg-zinc-50/50 transition-colors group">
                   <TableCell className="px-6 py-4 whitespace-nowrap">
                      <div className="font-bold text-[#0F1059] uppercase text-sm">{emp.employee_name_th}</div>
@@ -324,24 +346,56 @@ export default function EmployeesPage() {
                   </TableCell>
                   <TableCell className="px-4 py-4 whitespace-nowrap text-right">
                      <div className="flex justify-end gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
-                        <button 
-                           onClick={() => openModal(emp)}
-                           className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm"
-                        >
-                            <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button 
-                           onClick={() => handleDelete(emp.id)}
-                           className="p-2.5 rounded-xl bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                        </button>
+                      <button 
+                         onClick={() => openModal(emp)}
+                         className="p-2.5 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-[#0F1059] transition-all shadow-sm"
+                      >
+                          <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button 
+                         onClick={() => handleDelete(emp.id)}
+                         className="p-2.5 rounded-lg bg-white border border-zinc-100 text-zinc-400 hover:text-rose-600 transition-all shadow-sm"
+                      >
+                          <Trash2 className="w-4 h-4" />
+                      </button>
                      </div>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Pagination UI Desktop */}
+        <div className="px-6 py-4 bg-zinc-50/50 border-t border-zinc-100 flex items-center justify-between">
+            <div className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+               {t('common.total')} {total} {t('employees.entry_count') || 'EMPLOYEES'}
+            </div>
+            <div className="flex items-center gap-2">
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page <= 1 || isLoading}
+                 onClick={() => setPage(page - 1)}
+                 className="h-9 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.previous')}
+               </Button>
+               <div className="flex items-center gap-1.5 px-3">
+                  <span className="text-[11px] font-black text-[#0F1059]">{page}</span>
+                  <span className="text-[10px] font-bold text-zinc-300">/</span>
+                  <span className="text-[10px] font-bold text-zinc-400">{totalPages}</span>
+               </div>
+               <Button
+                 variant="outline"
+                 size="sm"
+                 disabled={page >= totalPages || isLoading}
+                 onClick={() => setPage(page + 1)}
+                 className="h-9 rounded-lg border-zinc-200 text-[10px] font-black uppercase tracking-widest px-4 hover:bg-white transition-all disabled:opacity-30"
+               >
+                 {t('common.next')}
+               </Button>
+            </div>
         </div>
       </Card>
 
@@ -356,7 +410,7 @@ export default function EmployeesPage() {
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.employee_code')}</label>
               <input 
                 required
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-black text-[#0F1059] outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.employee_code}
                 onChange={(e) => setFormData({...formData, employee_code: e.target.value})}
               />
@@ -364,7 +418,7 @@ export default function EmployeesPage() {
             <div className="space-y-1.5">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.gender')}</label>
               <select 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-bold outline-none focus:border-[#0F1059]/30 shadow-sm cursor-pointer transition-all"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-bold outline-none focus:border-[#0F1059]/30 shadow-sm cursor-pointer transition-all"
                 value={formData.gender}
                 onChange={(e) => setFormData({...formData, gender: e.target.value})}
               >
@@ -377,7 +431,7 @@ export default function EmployeesPage() {
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.name_th')}</label>
               <input 
                 required
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.employee_name_th}
                 onChange={(e) => setFormData({...formData, employee_name_th: e.target.value})}
               />
@@ -385,7 +439,7 @@ export default function EmployeesPage() {
             <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors col-span-2">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.name_en')}</label>
               <input 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.employee_name_en}
                 onChange={(e) => setFormData({...formData, employee_name_en: e.target.value})}
               />
@@ -393,7 +447,7 @@ export default function EmployeesPage() {
             <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.department')}</label>
               <input 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.department}
                 onChange={(e) => setFormData({...formData, department: e.target.value})}
               />
@@ -401,7 +455,7 @@ export default function EmployeesPage() {
             <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.position')}</label>
               <input 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.position}
                 onChange={(e) => setFormData({...formData, position: e.target.value})}
               />
@@ -409,7 +463,7 @@ export default function EmployeesPage() {
             <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.location')}</label>
               <input 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.work_location}
                 onChange={(e) => setFormData({...formData, work_location: e.target.value})}
               />
@@ -417,7 +471,7 @@ export default function EmployeesPage() {
             <div className="space-y-1.5 focus-within:text-[#0F1059] transition-colors">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.supervisor')}</label>
               <input 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.supervisor_name}
                 onChange={(e) => setFormData({...formData, supervisor_name: e.target.value})}
               />
@@ -426,7 +480,7 @@ export default function EmployeesPage() {
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.start_date')}</label>
               <input 
                 type="date"
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.start_date}
                 onChange={(e) => setFormData({...formData, start_date: e.target.value})}
               />
@@ -435,7 +489,7 @@ export default function EmployeesPage() {
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.end_date')}</label>
               <input 
                 type="date"
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-medium outline-none focus:bg-white focus:border-[#0F1059]/30 transition-all shadow-sm"
                 value={formData.end_date}
                 onChange={(e) => setFormData({...formData, end_date: e.target.value})}
               />
@@ -445,7 +499,7 @@ export default function EmployeesPage() {
           <div className="space-y-2 px-1">
               <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">{t('employees.employment_status')}</label>
               <select 
-                className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-sm font-black text-[#0F1059] uppercase outline-none shadow-sm cursor-pointer transition-all"
+                className="w-full bg-zinc-50 border border-zinc-100 rounded-lg px-4 py-3 text-sm font-black text-[#0F1059] uppercase outline-none shadow-sm cursor-pointer transition-all"
                 value={formData.status}
                 onChange={(e) => setFormData({...formData, status: e.target.value})}
               >
@@ -455,13 +509,13 @@ export default function EmployeesPage() {
           </div>
           
           <div className="flex items-center gap-3 pt-4 border-t border-zinc-100">
-            <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-xl text-[11px] font-black uppercase tracking-widest">
+            <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="flex-1 h-12 rounded-lg text-[11px] font-black uppercase tracking-widest">
               {t('common.cancel')}
             </Button>
             <Button 
               type="submit" 
               disabled={isSaving}
-              className="flex-1 h-12 rounded-xl bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
+              className="flex-1 h-12 rounded-lg bg-[#0F1059] hover:bg-black text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-xl shadow-[#0F1059]/20"
             >
               {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : t('common.save')}
             </Button>

@@ -1,41 +1,37 @@
 "use client";
 
-import  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { 
-  LogOut, 
-  X,
-  ChevronRight,
-  LayoutDashboard,
+  LayoutDashboard, 
+  Ticket, 
+  PlusCircle, 
+  Box, 
+  ShoppingCart, 
+  Truck, 
+  Warehouse, 
+  Laptop, 
+  Lock, 
+  ShieldCheck, 
+  Users, 
+  UserCog, 
+  FileJson, 
+  History, 
   CheckCircle2,
-  Ticket,
-  Box,
-  ShoppingCart,
-  Truck,
-  Warehouse,
-  Users,
-  UserCog,
-  FileJson,
-  History,
   ChevronLeft,
-  PlusCircle,
-  Laptop,
-  Lock
+  ChevronRight,
+  LogOut,
+  User as UserIcon,
+  X
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
-import { Badge } from "@/components/ui/badge";
-import { LucideIcon } from "lucide-react";
-
-interface SidebarLink {
-  name: string;
-  href: string;
-  icon: LucideIcon;
-  badge?: string;
-}
+import { LanguageSwitcher } from "./language-switcher";
+import { getPendingTicketsCount } from "@/lib/actions/ticket-actions";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -44,40 +40,36 @@ interface SidebarProps {
   onCloseMobile: () => void;
 }
 
+interface SidebarLink {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+  badge?: string;
+}
+
 export function Sidebar({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { t } = useTranslation();
-  const role = (session?.user as any)?.role || "user";
+  const [pendingCount, setPendingCount] = useState(0);
 
-  // Dynamic Badge State
-  const [pendingCount, setPendingCount] = useState<number>(0);
+  const role = (session?.user as any)?.role;
 
   useEffect(() => {
-    if (role !== "admin") return;
-
-    const fetchCounts = async () => {
+    const fetchPendingCount = async () => {
       try {
-        const [eqRes, ticketRes] = await Promise.all([
-          fetch("/api/equipment-requests"),
-          fetch("/api/requests")
-        ]);
-        const eqData = await eqRes.json();
-        const ticketData = await ticketRes.json();
-
-        const pendingEq = Array.isArray(eqData) ? eqData.filter((r: any) => !r.it_approval_status || r.it_approval_status === "PENDING").length : 0;
-        const pendingTickets = Array.isArray(ticketData) ? ticketData.filter((r: any) => !r.it_approval_status || r.it_approval_status === "PENDING").length : 0;
-
-        setPendingCount(pendingEq + pendingTickets);
+        const count = await getPendingTicketsCount();
+        setPendingCount(count);
       } catch (error) {
-        console.error("Failed to fetch pending counts:", error);
+        console.error("Failed to fetch pending tickets:", error);
       }
     };
 
-    fetchCounts();
-    // Refresh counts every 30 seconds
-    const interval = setInterval(fetchCounts, 30000);
-    return () => clearInterval(interval);
+    if (role === "admin") {
+      fetchPendingCount();
+      const interval = setInterval(fetchPendingCount, 60000); // Update every minute
+      return () => clearInterval(interval);
+    }
   }, [role]);
 
   const adminLinks: SidebarLink[] = [
@@ -90,6 +82,7 @@ export function Sidebar({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }: 
     { name: t('sidebar.inventory'), href: "/admin/inventory", icon: Warehouse },
     { name: t('sidebar.assets'), href: "/admin/assets", icon: Laptop },
     { name: t('sidebar.credentials'), href: "/admin/credentials", icon: Lock },
+    { name: t('sidebar.it_vault'), href: "/user/notes", icon: ShieldCheck },
     { name: t('sidebar.employees'), href: "/admin/employees", icon: Users },
     { name: t('sidebar.users'), href: "/admin/users", icon: UserCog },
     { name: t('sidebar.import'), href: "/admin/import", icon: FileJson },
@@ -100,9 +93,40 @@ export function Sidebar({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }: 
     { name: t('sidebar.dashboard'), href: "/", icon: LayoutDashboard },
     { name: t('sidebar.my_requests'), href: "/user/my-requests", icon: Ticket },
     { name: t('sidebar.borrow_equipment'), href: "/user/borrow", icon: PlusCircle },
+    { name: t('sidebar.it_vault'), href: "/user/notes", icon: ShieldCheck },
   ];
 
   const links = role === "admin" ? adminLinks : userLinks;
+
+  const NavLink = ({ link, onClick }: { link: SidebarLink, onClick?: () => void }) => {
+    const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+    
+    return (
+      <Link
+        href={link.href}
+        onClick={onClick}
+        className={cn(
+          "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group",
+          isActive 
+            ? "bg-primary text-white shadow-lg shadow-primary/20 font-bold" 
+            : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+        )}
+      >
+        <link.icon className={cn(
+          "h-5 w-5 transition-transform duration-300",
+          isActive ? "scale-110" : "group-hover:scale-110"
+        )} />
+        {!isCollapsed && (
+          <span className="text-sm truncate flex-1">{link.name}</span>
+        )}
+        {!isCollapsed && link.badge && (
+           <span className="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-lg shadow-rose-500/20">
+              {link.badge}
+           </span>
+        )}
+      </Link>
+    );
+  };
 
   const sidebarContent = (
     <div className="flex h-full flex-col bg-[#0B0C10] text-[#E9ECEF] border-r border-[#2A2E36] transition-all duration-300">
@@ -111,107 +135,66 @@ export function Sidebar({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }: 
         "flex items-center h-16 px-4 border-b border-[#2A2E36] transition-all duration-300",
         isCollapsed ? "justify-center" : "justify-between"
       )}>
-        <div className="flex items-center gap-3 overflow-hidden">
-          <div className="h-9 w-9 shrink-0 rounded-xl bg-[#4C6EF5] flex items-center justify-center text-white shadow-lg shadow-[#4C6EF5]/20">
-            <Laptop className="h-5 w-5" />
-          </div>
-          {!isCollapsed && (
-            <div className="flex flex-col whitespace-nowrap">
-              <span className="font-bold text-sm tracking-tight uppercase leading-none text-white">NDC IT</span>
+        {!isCollapsed && (
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+               <ShieldCheck className="h-5 w-5 text-white" />
             </div>
-          )}
-        </div>
-        
-        {!isCollapsed && (
-          <button 
-            onClick={onToggle}
-            className="hidden lg:flex p-1.5 rounded-lg hover:bg-[#1A1D24] text-[#868E96] transition-colors"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-
-      {/* Menu Links */}
-      <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1 custom-scrollbar">
-        {!isCollapsed && (
-          <p className="px-3 mb-2 text-[10px] font-bold text-[#868E96] uppercase tracking-[0.15em]">
-            {t('sidebar.main_menu')}
-          </p>
-        )}
-        
-        {links.map((link) => {
-          const isActive = pathname === link.href;
-          const Icon = link.icon;
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => onCloseMobile()}
-              title={isCollapsed ? link.name : ""}
-              className={cn(
-                "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 relative",
-                isActive 
-                  ? "bg-[#4C6EF5] text-white shadow-md shadow-[#4C6EF5]/20" 
-                  : "text-[#868E96] hover:bg-[#1A1D24] hover:text-[#E9ECEF]"
-              )}
-            >
-              <Icon className={cn("h-5 w-5 shrink-0 transition-transform group-hover:scale-110", isActive && "text-white")} />
-              
-              {!isCollapsed && (
-                <span className="flex-1 text-sm font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                  {link.name}
-                </span>
-              )}
-
-              {link.badge && !isCollapsed && (
-                <Badge className="bg-[#FF6B6B] text-white border-none h-5 min-w-5 flex items-center justify-center rounded-full text-[10px] px-1 font-bold">
-                  {link.badge}
-                </Badge>
-              )}
-
-              {link.badge && isCollapsed && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-[#FF6B6B] rounded-full border-2 border-[#0B0C10]"></span>
-              )}
-
-              {isActive && !isCollapsed && (
-                 <div className="absolute right-3 w-1.5 h-1.5 rounded-full bg-white/50" />
-              )}
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Footer / User */}
-      <div className="p-3 border-t border-[#2A2E36] bg-[#111217]/50">
-        {isCollapsed ? (
-          <button 
-            onClick={onToggle}
-            className="w-full flex justify-center p-2.5 rounded-xl hover:bg-[#1A1D24] text-[#868E96] transition-colors"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        ) : (
-          <div className="space-y-4">
-             <div className="flex items-center gap-3 px-1">
-                <div className="h-9 w-9 rounded-lg bg-[#1A1D24] border border-[#2A2E36] flex items-center justify-center text-white shrink-0">
-                   {session?.user?.name?.[0] || <Users className="h-4 w-4" />}
-                </div>
-                <div className="min-w-0 flex-1">
-                   <p className="text-xs font-bold text-white truncate">{session?.user?.name || 'Authorized'}</p>
-                   <p className="text-[10px] text-[#868E96] uppercase font-bold truncate tracking-tight">{role}</p>
-                </div>
-             </div>
-             
-             <button
-                onClick={() => signOut()}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-[#FF6B6B] hover:bg-[#FF6B6B]/10 transition-all active:scale-95"
-             >
-                <LogOut className="h-5 w-5" />
-                <span className="uppercase tracking-wide">{t('sidebar.logout')}</span>
-             </button>
+            <span className="font-black text-lg tracking-tighter uppercase whitespace-nowrap">
+               IT <span className="text-primary">System</span>
+            </span>
           </div>
         )}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onToggle}
+          className="hidden lg:flex h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg"
+        >
+          {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onCloseMobile}
+          className="lg:hidden h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg"
+        >
+          <X size={18} />
+        </Button>
+      </div>
+
+      {/* Navigation */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide px-3 py-4 space-y-1">
+        {links.map((link) => (
+          <NavLink key={link.href} link={link} onClick={onCloseMobile} />
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-[#2A2E36] space-y-2">
+        
+        {!isCollapsed && session?.user && (
+           <div className="flex items-center gap-3 p-2 bg-slate-800/30 rounded-xl mb-2">
+              <div className="h-9 w-9 rounded-lg bg-slate-700 flex items-center justify-center text-slate-400 shrink-0 capitalize">
+                 {session.user.name?.charAt(0) || <UserIcon size={18} />}
+              </div>
+              <div className="min-w-0 flex-1">
+                 <p className="text-xs font-black truncate">{session.user.name}</p>
+                 <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest truncate">{role}</p>
+              </div>
+           </div>
+        )}
+
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className={cn(
+            "flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-all duration-300",
+            isCollapsed && "justify-center px-0"
+          )}
+        >
+          <LogOut size={20} />
+          {!isCollapsed && <span className="text-sm font-bold uppercase tracking-wider">{t('profile.sign_out')}</span>}
+        </button>
       </div>
     </div>
   );
@@ -219,42 +202,33 @@ export function Sidebar({ isCollapsed, onToggle, isMobileOpen, onCloseMobile }: 
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside 
-        className={cn(
-          "hidden lg:flex flex-col fixed inset-y-0 left-0 z-30 transition-all duration-300",
-          isCollapsed ? "w-[72px]" : "w-[240px]"
-        )}
-      >
+      <aside className={cn(
+        "hidden lg:block h-screen fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out",
+        isCollapsed ? "w-[72px]" : "w-[240px]"
+      )}>
         {sidebarContent}
       </aside>
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {isMobileOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden">
+          <>
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={onCloseMobile}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
             />
             <motion.aside
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute inset-y-0 left-0 w-[280px] max-w-[85vw] shadow-2xl"
+              className="fixed inset-y-0 left-0 w-[280px] z-50 lg:hidden"
             >
               {sidebarContent}
-              <button 
-                onClick={onCloseMobile}
-                className="absolute top-4 -right-12 p-2 bg-white rounded-full text-zinc-900 shadow-lg lg:hidden"
-              >
-                <X className="h-6 w-6" />
-              </button>
             </motion.aside>
-          </div>
+          </>
         )}
       </AnimatePresence>
     </>
