@@ -196,9 +196,11 @@ export default function TicketsPage() {
       "Category": t.category,
       "Priority": t.priority,
       "Requester": t.employee?.employee_name_th || t.user?.username || '-',
+      "Dept Approver": t.approval || '-',
       "Dept Status": t.approval_status,
+      "IT Approver": t.it_approval || '-',
       "IT Status": t.it_approval_status,
-      "Final Status": t.status
+      "Progress": t.status
     }));
 
     await exportToExcel(worksheetData, `Support_Tickets_${new Date().toISOString().split('T')[0]}`, "Tickets");

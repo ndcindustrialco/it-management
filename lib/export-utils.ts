@@ -29,13 +29,15 @@ export async function exportToExcel(data: any[], filename: string, sheetName: st
 
     // Style the header row
     const headerRow = worksheet.getRow(1);
-    headerRow.font = { bold: true, color: { argb: "FFFFFFFF" } };
-    headerRow.fill = {
-      type: "pattern",
-      pattern: "solid",
-      fgColor: { argb: "FF0F1059" } // Primary theme color
-    };
-    headerRow.alignment = { vertical: "middle", horizontal: "center" };
+    headerRow.eachCell((cell) => {
+      cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF0F1059" } // Primary theme color
+      };
+      cell.alignment = { vertical: "middle", horizontal: "center" };
+    });
 
     // Auto-fit column widths based on content
     worksheet.columns.forEach(column => {
